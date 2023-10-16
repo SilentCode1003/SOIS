@@ -82,8 +82,36 @@ exports.Select = (sql, table, callback) => {
         callback(error, null);
       }
 
-      if (table == "ProductionTransfer") {
-        callback(null, model.ProductionTransfer(results));
+      if (table == "MasterEmployee") {
+        callback(null, model.MasterEmployee(results));
+      }
+
+      if (table == "MasterAccessType") {
+        callback(null, model.MasterAccessType(results));
+      }
+
+      if (table == "MasterPositionType") {
+        callback(null, model.MasterPositionType(results));
+      }
+
+      if (table == "MasterPayment") {
+        callback(null, model.MasterPayment(results));
+      }
+
+      if (table == "MasterProductCategory") {
+        callback(null, model.MasterProductCategory(results));
+      }
+
+      if (table == "MasterUser") {
+        callback(null, model.MasterUser(results));
+      }
+
+      if (table == "MasterPOS") {
+        callback(null, model.MasterPOS(results));
+      }
+
+      if (table == "MasterStore") {
+        callback(null, model.MasterStore(results));
       }
     });
   } catch (error) {
@@ -216,12 +244,129 @@ exports.Delete = (sql, id, callback) => {
 };
 
 exports.InsertTable = (tablename, data, callback) => {
+  if (tablename == "master_employee") {
+    let sql = `INSERT INTO master_employee(
+        me_firstname,
+        me_middlename,
+        me_lastname,
+        me_position,
+        me_accesstype,
+        me_contactno,
+        me_datehire,
+        me_status,
+        me_createdby,
+        me_createddate) VALUES ?`;
+
+    this.Insert(sql, data, (err, result) => {
+      if (err) {
+        callback(err, null);
+      }
+      callback(null, result);
+    });
+  }
+
   if (tablename == "master_access_type") {
     let sql = `INSERT INTO master_access_type(
-            mat_accessname,
-            mat_status,
-            mat_createdby,
-            mat_createddate) VALUES ?`;
+        mat_name,
+        mat_status,
+        mat_createdby,
+        mat_createddate) VALUES ?`;
+
+    this.Insert(sql, data, (err, result) => {
+      if (err) {
+        callback(err, null);
+      }
+      callback(null, result);
+    });
+  }
+
+  if (tablename == "master_position") {
+    let sql = `INSERT INTO master_position(
+        mp_name,
+        mp_status,
+        mp_createdby,
+        mp_createddate) VALUES ?`;
+
+    this.Insert(sql, data, (err, result) => {
+      if (err) {
+        callback(err, null);
+      }
+      callback(null, result);
+    });
+  }
+
+  if (tablename == "master_payment") {
+    let sql = `INSERT INTO master_payment(
+        mp_name,
+        mp_createddate,
+        mp_createdby,
+        mp_status) VALUES ?`;
+
+    this.Insert(sql, data, (err, result) => {
+      if (err) {
+        callback(err, null);
+      }
+      callback(null, result);
+    });
+  }
+
+  if (tablename == "master_product_category") {
+    let sql = `INSERT INTO master_product_category(
+        mpc_name,
+        mpc_status,
+        mpc_createdby,
+        mpc_createddate) VALUES ?`;
+
+    this.Insert(sql, data, (err, result) => {
+      if (err) {
+        callback(err, null);
+      }
+      callback(null, result);
+    });
+  }
+
+  if (tablename == "master_user") {
+    let sql = `INSERT INTO master_user(
+        mu_employeeid,
+        mu_fullname,
+        mu_username,
+        mu_password,
+        mu_accessid,
+        mu_status,
+        mu_createdby,
+        mu_createddate) VALUES ?`;
+
+    this.Insert(sql, data, (err, result) => {
+      if (err) {
+        callback(err, null);
+      }
+      callback(null, result);
+    });
+  }
+
+  if (tablename == "master_pos") {
+    let sql = `INSERT INTO master_pos(
+        mp_name,
+        mp_serial,
+        mp_min,
+        mp_ptu,
+        mp_status) VALUES ?`;
+
+    this.Insert(sql, data, (err, result) => {
+      if (err) {
+        callback(err, null);
+      }
+      callback(null, result);
+    });
+  }
+
+  if (tablename == "master_user") {
+    let sql = `INSERT INTO master_user(
+        ms_name,
+        ms_logo,
+        ms_address,
+        ms_contact,
+        ms_message) VALUES ?`;
 
     this.Insert(sql, data, (err, result) => {
       if (err) {
