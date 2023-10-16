@@ -1,0 +1,82 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-light" id="topbar">
+    <div class="container mt-5 justify-content-end">
+        <div class="row justify-content-end">
+            <div class="col-auto">
+                <div class="btn-group ml-10">
+                    <!-- TOP BAR BUTTONS FOR MESSAGE -->
+                    <button href="#messageDropdown" class="btn topbar-btn btn-dark" type="button" data-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-regular fa-message" style="color: #ffffff;"></i>
+                    </button>
+
+                    <!-- MESSAGE BOX -->
+                    <ul class="dropdown-menu dropdown-menu-right" id="messageDropdown">
+                        <li class="topbar-dropbox">
+                            <div id="box-tittle-bar">
+                                <label class="box-tittle-bar">Message</label>
+                            </div>
+                            <div class="container mt-3"> <!-- Reduced top margin for spacing -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="card-title">Subject of the Email</h5>
+                                        <small class="text-muted">From: sender@example.com</small>
+                                    </div>
+                                    <div class="card-body">
+                                        <!-- Display only the beginning of the message content (e.g., first 100 characters) -->
+                                        <p class="card-text message-preview">
+                                            This is the content of the email message. You can write a long email message here with paragraphs and formatting as needed. But we will limit the content to a few lines for the preview.
+                                        </p>
+                                    </div>
+                                    <div class="card-footer text-muted">
+                                        <small>Received: September 8, 2023</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <!-- TOP BAR BUTTONS FOR NOTIFICATION -->
+                    <button href="#notificationDropdown" class="btn topbar-btn btn-dark" type="button" data-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-regular fa-bell" style="color: #ffffff;"></i>
+                    </button>
+
+                    <!-- NOTIFICATION BOX -->
+                    <ul class="dropdown-menu dropdown-menu-right" id="notificationDropdown">
+                        <li class="topbar-dropbox">
+                            <div id="box-tittle-bar">
+                                <label class="box-tittle-bar">Notification</label>
+                            </div>
+                            <div class="alert alert-success">
+                                <strong>Success!</strong> This is a success notification.
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <!-- TOP BAR BUTTON FOR SEARCH -->
+                    <button href="#searchDropdown" class="btn topbar-btn btn-dark" type="button" data-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
+
+                    <!-- SEARCH BOX -->
+                    <ul class="dropdown-menu dropdown-menu-right" id="searchDropdown">
+                        <li class="topbar-dropbox">
+                            <form class="searchbar form-inline my-2 my-lg-0">
+                                <div class="input-group mb-3">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Search...">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-dark" type="submit">Search</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
