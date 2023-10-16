@@ -1,0 +1,201 @@
+/* ------------------------------
+            Title Bar
+------------------------------ */
+.title-entproduct {
+    margin-top: -20px;
+    margin-bottom: 10px;
+    background-color: #262626;
+    color: white;
+    border: none;
+    border-radius: 7px;
+  }
+
+  .title-tblproduct {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: #262626;
+    color: white;
+    border: none;
+    border-radius: 7px;
+  }
+  
+  #tittle-bar {
+    font-size: 20px;
+    margin: 5px;
+  }
+ 
+  
+/* ------------------------------
+    Entries Container & Line
+------------------------------ */
+  .enntry-container {
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    background-color: white;
+    padding: 10px;
+  }
+  
+  .table-container {
+    background-color: white;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .div-line {
+    background-color: #262626;
+    height: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+
+
+/* ------------------------------
+    Edit & Delete Buttons
+------------------------------ */
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+*:focus,
+*:active {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.wrapper {
+  display: inline-flex;
+  list-style: none;
+}
+
+#icons {
+  width: 30px;
+  height: 30px;
+}
+
+.wrapper .icon1 {
+  position: relative;
+  background: #1da0f26d;
+  border-radius: 50%;
+  padding: 15px;
+  margin: 10px;
+  width: 50px;
+  height: 50px;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.wrapper .icon2 {
+  position: relative;
+  background: #cd1f1f86;
+  border-radius: 50%;
+  padding: 15px;
+  margin: 10px;
+  width: 50px;
+  height: 50px;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.wrapper .tooltip {
+  position: absolute;
+  top: 0;
+  font-size: 14px;
+  background: #ffffff;
+  color: #ffffff;
+  padding: 5px 8px;
+  border-radius: 5px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.wrapper .tooltip::before {
+  position: absolute;
+  content: "";
+  height: 8px;
+  width: 8px;
+  background: #ffffff;
+  bottom: -3px;
+  left: 50%;
+  transform: translate(-50%) rotate(45deg);
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.wrapper .icon1:hover .tooltip {
+  top: -45px;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.wrapper .icon1:hover span,
+.wrapper .icon1:hover .tooltip {
+  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.5);
+}
+
+.wrapper .icon2:hover .tooltip {
+  top: -45px;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.wrapper .icon2:hover span,
+.wrapper .icon2:hover .tooltip {
+  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.5);
+}
+
+.wrapper .edit:hover,
+.wrapper .edit:hover .tooltip,
+.wrapper .edit:hover .tooltip::before {
+  background: #1DA1F2;
+  color: #ffffff;
+}
+
+.wrapper .delete:hover,
+.wrapper .delete:hover .tooltip,
+.wrapper .delete:hover .tooltip::before {
+  background: #CD201F;
+  color: #ffffff;
+}
+
+
+/* ------------------------------
+            Images
+------------------------------ */
+#imgdata {
+    width: 150px;
+    height: 100%;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+  }
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+.wrapper {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+}
+

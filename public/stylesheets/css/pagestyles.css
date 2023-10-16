@@ -1,0 +1,433 @@
+.top-title-bar {
+  margin-bottom: 10px;
+  background-color: #262626;
+  color: white;
+  border: none;
+  border-radius: 7px;
+  display: flex;
+}
+
+.mid-title-bar {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: #262626;
+  color: white;
+  border: none;
+  border-radius: 7px;
+}
+
+#tittle-bar {
+  line-height: 50px;
+  font-size: 20px;
+}
+
+.button-holder {
+  margin-top: -20px;
+  padding: 5px;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* ------------------------------
+    Entries Container & Line
+------------------------------ */
+.entry-container {
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  background-color: white;
+  padding: 10px;
+}
+
+.table-container {
+  background-color: white;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+/* ------------------------------
+    Edit & Delete Buttons
+------------------------------ */
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+*:focus,
+*:active {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.wrapper {
+  display: inline-flex;
+  list-style: none;
+}
+
+#icons {
+  width: 30px;
+  height: 30px;
+}
+
+.wrapper .icon1 {
+  position: relative;
+  background: #1da0f26d;
+  border-radius: 50%;
+  padding: 15px;
+  margin: 10px;
+  width: 50px;
+  height: 50px;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.wrapper .icon2 {
+  position: relative;
+  background: #cd1f1f86;
+  border-radius: 50%;
+  padding: 15px;
+  margin: 10px;
+  width: 50px;
+  height: 50px;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.wrapper .tooltip {
+  position: absolute;
+  top: 0;
+  font-size: 14px;
+  background: #ffffff;
+  color: #ffffff;
+  padding: 5px 8px;
+  border-radius: 5px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.wrapper .tooltip::before {
+  position: absolute;
+  content: "";
+  height: 8px;
+  width: 8px;
+  background: #ffffff;
+  bottom: -3px;
+  left: 50%;
+  transform: translate(-50%) rotate(45deg);
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.wrapper .icon1:hover .tooltip {
+  top: -45px;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.wrapper .icon1:hover span,
+.wrapper .icon1:hover .tooltip {
+  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.5);
+}
+
+.wrapper .icon2:hover .tooltip {
+  top: -45px;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.wrapper .icon2:hover span,
+.wrapper .icon2:hover .tooltip {
+  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.5);
+}
+
+.wrapper .edit:hover,
+.wrapper .edit:hover .tooltip,
+.wrapper .edit:hover .tooltip::before {
+  background: #1DA1F2;
+  color: #ffffff;
+}
+
+.wrapper .delete:hover,
+.wrapper .delete:hover .tooltip,
+.wrapper .delete:hover .tooltip::before {
+  background: #CD201F;
+  color: #ffffff;
+}
+
+
+/* ------------------------------
+            Images
+------------------------------ */
+#imgdata {
+  width: 150px;
+  height: 100%;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+}
+
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
+
+.wrapper {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+}
+
+th {
+  justify-items: flex-start;
+}
+
+/* ------------------------------
+            SIDEBAR
+------------------------------ */
+
+/* Style for the sidebar logo container */
+.sidebar-logo {
+  background-color: #fff;
+  border-bottom: 5px solid #9A3B3B;
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 10px;
+}
+
+/* Style for the logo image */
+.logo-img {
+  width: 45px;
+  height: 45px;
+  margin-bottom: 5px;
+  margin-right: 10px;
+}
+
+/* Style for the label */
+.logo-label {
+  color: black;
+  font-size: 20px;
+}
+
+#page-name {
+  color: black;
+  font-size: 100px;
+  margin-top: -20px;
+  letter-spacing: -15px;
+  /* Using pixels */
+}
+
+#page-name-bottom {
+  color: white;
+  margin-top: -45px;
+  margin-bottom: 5px;
+  margin-left: 10px;
+  font-size: 0.5em !important;
+}
+
+#sidebar {
+  z-index: 3;
+  margin-top: -85px;
+  min-width: 250px;
+  max-width: 250px;
+  height: 100vh;
+  /* position: fixed; */
+  color: black;
+  transition: all 0.3s;
+}
+
+#sidebar.active {
+  margin-left: -250px;
+}
+
+/* Sidebar line-sperator */
+#sidebar ul.components {
+  padding: 20px 0;
+}
+
+#sidebar ul p {
+  color: #fff;
+  padding: 10px;
+}
+
+#sidebar ul li a {
+  display: flex;
+  justify-content: flex-start;
+  text-align: left;
+  padding: 15px;
+  font-size: 1.1em;
+}
+
+/* Color Change when hover */
+#sidebar ul li a:hover {
+  color: white;
+  background: #262626;
+}
+
+/* Change color stay in select items */
+#sidebar ul li.active>a,
+a[aria-expanded="true"] {
+  color: white;
+  background: #262626;
+}
+
+a[data-toggle="collapse"] {
+  position: relative;
+}
+
+.dropdown-toggle::after {
+  display: block;
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+}
+
+/* Dropdown box menu color */
+ul ul a {
+  font-size: 1.1em !important;
+  padding-left: 30px !important;
+  color: black;
+  background: white;
+}
+
+ul.CTAs {
+  padding: 20px;
+}
+
+ul.CTAs a {
+  display: flex;
+  justify-content: flex-start;
+  text-align: left;
+  font-size: 1.1em !important;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+a.download {
+  background: #fff;
+  color: #7386D5;
+}
+
+a.article,
+a.article:hover {
+  background: #6d7fcc !important;
+  color: #fff !important;
+}
+
+#dd-label {
+  font-size: 15px;
+}
+
+.sidebar-icons {
+  width: 30px;
+  height: 30px;
+  margin-left: 15px;
+  margin-right: 10px;
+}
+
+.dropdown-container {
+  background-color: green !important;
+}
+
+.sidebar-menu {
+  border: none;
+  position: fixed;
+  margin-top: -80px;
+  margin-left: 270px;
+}
+
+/* ---------------------------------------------------
+                        TOP BAR
+----------------------------------------------------- */
+#topbar {
+  z-index: 1;
+  width: 100%;
+  height: 85px;
+  padding-top: 25px;
+  border-bottom: 5px solid #9A3B3B;
+}
+
+/* TOP BAR BUTTONS */
+.topbar-dropbox {
+  width: 300px;
+  max-height: auto;
+  overflow-y: auto;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+.box-tittle-bar {
+  background-color: #262626;
+  padding: 10px;
+  width: 300px;
+}
+
+#box-tittle-bar {
+  color: yellow;
+}
+
+.alert {
+  margin-top: 5px;
+}
+
+.dropdown-menu {
+  padding: 5px;
+  background-color: transparent;
+  border: none;
+  position: absolute;
+  display: none;
+  z-index: 3;
+}
+
+.btn:hover+.dropdown-menu,
+.dropdown-menu:hover {
+  display: block;
+}
+
+.btn-group {
+  margin-top: -55px;
+}
+
+.topbar-btn {
+  border: none;
+  border-radius: 10px !important;
+  margin: 5px;
+}
+
+/* Add this CSS to limit the message content to a certain number of characters */
+.message-preview {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.searchbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
