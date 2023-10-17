@@ -137,3 +137,185 @@ exports.MasterStore = (data) => {
 
   return dataResult;
 };
+
+exports.Product = (data) => {
+  let dataResult = [];
+
+  data.forEach((key, item) => {
+    dataResult.push({
+      id: key.p_id,
+      categoryid: key.p_categoryid,
+      description: key.p_description,
+      barcode: key.p_barcode,
+      price: key.p_price,
+      status: key.p_status,
+      createdby: key.p_createdby,
+      createddate: key.p_createddate,
+    });
+  });
+
+  return dataResult;
+};
+
+exports.SalesDetail = (data) => {
+  let dataResult = [];
+
+  data.forEach((key, item) => {
+    dataResult.push({
+      id: key.sd_id,
+      date: key.sd_date,
+      cashier: key.sd_cashier,
+      paymenttype: key.sd_paymenttype,
+      details: key.sd_details,
+      total: key.sd_total,
+    });
+  });
+
+  return dataResult;
+};
+
+exports.SalesItem = (data) => {
+  let dataResult = [];
+
+  data.forEach((key, item) => {
+    dataResult.push({
+      id: key.si_id,
+      detailid: key.si_detailid,
+      description: key.si_description,
+      price: key.si_price,
+      quantity: key.si_quantity,
+      total: key.si_total,
+    });
+  });
+
+  return dataResult;
+};
+
+exports.Customer = (data) => {
+  let dataResult = [];
+
+  data.forEach((key, item) => {
+    dataResult.push({
+      id: key.c_id,
+      firstname: key.c_firstname,
+      middlename: key.c_middlename,
+      lastname: key.c_lastname,
+      contactnumber: key.c_contactnumber,
+      gender: key.c_gender,
+      address: key.c_address,
+      registereddate: key.c_registereddate,
+    });
+  });
+
+  return dataResult;
+};
+
+exports.CustomerOrder = (data) => {
+  let dataResult = [];
+
+  data.forEach((key, item) => {
+    dataResult.push({
+      id: key.co_id,
+      customerid: key.co_customerid,
+      date: key.co_date,
+      details: key.co_details,
+      total: key.co_total,
+      paymenttype: key.co_paymenttype,
+      status: key.co_status,
+    });
+  });
+
+  return dataResult;
+};
+
+exports.RequestOrder = (data) => {
+  let dataResult = [];
+
+  data.forEach((key, item) => {
+    dataResult.push({
+      id: key.ro_id,
+      customerorderid: key.ro_customerorderid,
+      date: key.ro_date,
+      status: key.ro_status,
+    });
+  });
+
+  return dataResult;
+};
+
+exports.CustomerCredit = (data) => {
+  let dataResult = [];
+
+  data.forEach((key, item) => {
+    dataResult.push({
+      id: key.cc_id,
+      customerid: key.cc_customerid,
+      balance: key.cc_balance,
+      status: key.cc_status,
+    });
+  });
+
+  return dataResult;
+};
+
+exports.BalanceHistory = (data) => {
+  let dataResult = [];
+
+  data.forEach((key, item) => {
+    dataResult.push({
+      id: key.bh_id,
+      creditid: key.bh_creditid,
+      date: key.bh_date,
+      amount: key.bh_amount,
+      type: key.bh_type,
+    });
+  });
+
+  return dataResult;
+};
+
+exports.ProdcutInventory = (data) => {
+  let dataResult = [];
+
+  data.forEach((key, item) => {
+    dataResult.push({
+      id: key.pi_id,
+      productid: key.ppi_productid,
+      quantity: key.ppi_quantity,
+    });
+  });
+
+  return dataResult;
+};
+
+exports.InventoryHistory = (data) => {
+  let dataResult = [];
+
+  data.forEach((key, item) => {
+    dataResult.push({
+      id: key.ih_id,
+      date: key.ih_date,
+      inventoryid: key.ih_inventoryid,
+      productid: key.ih_productid,
+      quantity: key.ih_quantity,
+      type: key.ih_type,
+    });
+  });
+
+  return dataResult;
+};
+
+exports.SalesInventory = (data) => {
+  let dataResult = [];
+
+  data.forEach((key, item) => {
+    dataResult.push({
+      id: key.si_id,
+      detailid: key.si_detailid,
+      productid: key.si_productid,
+      posid: key.si_posid,
+    });
+  });
+
+  return dataResult;
+};
