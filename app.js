@@ -20,7 +20,9 @@ var customerOrderRouter = require('./routes/customerorder');
 var requestOrderRouter = require('./routes/requestorder');
 var customerCreditRouter = require('./routes/customercredit');
 var balanceHisotryRouter = require('./routes/balancehistory');
-
+var productInventoryRouter = require('./routes/productinventory');
+var salesInventoryRouter = require('./routes/salesinventory');
+var inventoryHistoryRouter = require('./routes/inventoryhistory');
 
 var app = express();
 
@@ -50,6 +52,10 @@ app.use('/customerorder', customerOrderRouter);
 app.use('/requestorder', requestOrderRouter);
 app.use('/customercredit', customerCreditRouter);
 app.use('/balancehistory', balanceHisotryRouter);
+app.use('/productinventory', productInventoryRouter);
+app.use('/salesinventory', salesInventoryRouter);
+app.use('/inventoryhistory', inventoryHistoryRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
