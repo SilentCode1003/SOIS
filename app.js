@@ -12,7 +12,9 @@ var masterPaymentRouter = require('./routes/masterpayment');
 var masterCategoryRouter = require('./routes/mastercategory');
 var masterPosRouter = require('./routes/masterpos');
 var masterUserRouter = require('./routes/masteruser');
-var masterStoreRouter = require('./routes/masteruser');
+var masterStoreRouter = require('./routes/masterstore');
+var productRouter = require('./routes/product');
+var salesDetailsRouter = require('./routes/salesdetails');
 
 var app = express();
 
@@ -35,6 +37,8 @@ app.use('/mastercategory', masterCategoryRouter);
 app.use('/masterpos', masterPosRouter);
 app.use('/masteruser', masterUserRouter);
 app.use('/masterstore', masterStoreRouter);
+app.use('/product', productRouter);
+app.use('/salesdetails', salesDetailsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
