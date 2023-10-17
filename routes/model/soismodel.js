@@ -36,16 +36,16 @@ exports.MasterAccessType = (data) => {
   return dataResult;
 };
 
-exports.MasterPositionType = (data) => {
+exports.MasterPosition = (data) => {
   let dataResult = [];
 
   data.forEach((key, item) => {
     dataResult.push({
-      id: key.mpt_id,
-      name: key.mpt_name,
-      status: key.mpt_status,
-      createdby: key.mpt_createdby,
-      createddate: key.mpt_createddate,
+      id: key.mp_id,
+      name: key.mp_name,
+      status: key.mp_status,
+      createdby: key.mp_createdby,
+      createddate: key.mp_createddate,
     });
   });
 
