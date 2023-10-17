@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <%- include("./components/header.ejs")%>
+  </head>
+  <body>
+
+    <!-- Topbar Content -->
+    <%- include("./components/topbar.ejs")%>
+    <!-- Topbar Content End -->
+    
+    <div class="wrapper">
+
+        <!-- Sidebar Content -->
+        <%- include("./components/sidebar.ejs")%>
+        <!-- Sidebar Content End -->
+
+        <!-- Page Content -->
+        <div id="content">
+
+          <!-- Main Content -->
+          <%- include("./pages/customerorder/customerorder.ejs")%>
+          <!-- Main Content End -->
+          
+          </div>
+    </div>
+    <!-- Optional JavaScript -->
+    <%- include("./components/scripts.ejs")%>
+    <!-- Optional JavaScript -->
+    <%- include("./pages/customerorder/customerorderscripts.ejs")%>
+       
+</body>
+</html>

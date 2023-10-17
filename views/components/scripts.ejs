@@ -1,14 +1,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>    
-
 <script src="/javascripts/scripts.js"></script>
-    
 <!-- Bootstrap core JavaScript-->
 <script src="/vendor/jquery/jquery.min.js"></script>
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -22,3 +14,225 @@
 
 <!-- PCreated by level custom scripts -->
 <script src="/javascripts/js/demo/datatables-demo.js"></script>
+
+<script src="/javascripts/toastr.min.js"></script>
+
+<script>
+    function formatCurrency(value) {
+        if (!value) {
+            return '₱0.00';
+        }
+        var formattedValue = parseFloat(value).toFixed(2);
+        return '₱' + formattedValue.replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    }
+
+    
+    function success(title, text) {
+        toastr.success(text, title, {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        })
+    }
+
+    function warning(title, text) {
+        toastr.warning(text, title, {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        });
+    }
+
+    function info(title, text) {
+        toastr.info(text, title, {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        });
+    }
+
+    function errormsg(err) {
+        toastr.error(err, "Error!", {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        });
+    }
+    function success(title, text) {
+        toastr.success(text, title, {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        });
+    }
+
+    function warning(title, text) {
+        toastr.warning(text, title, {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        });
+    }
+
+    function info(title, text) {
+        toastr.info(text, title, {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        });
+    }
+
+    function errormsg(err) {
+        toastr.error(err, "Error!", {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        });
+    }
+
+</script>
+
+<script>
+  $(document).ready(function(){
+    $(document).ready(function () {
+        if ($('.collapse-item.active').length > 0) {
+            $('.collapse-item.active').closest('.collapse').addClass('show');
+        }
+
+        $('.collapse-item').click(function () {
+            $('.collapse-item').removeClass('active');
+            $(this).addClass('active');
+        });
+
+        var path = window.location.pathname;
+
+        $('.collapse-item').each(function () {
+            var href = $(this).attr('href');
+            if (path === href) {
+                $(this).addClass('active');
+                $(this).closest('.collapse').addClass('show');
+            }
+        });
+
+        function adjustCollapse() {
+            if ($(window).width() <= 767) {
+                $('.collapse').removeClass('show');
+                $('.row.d-flex.justify-content-center.align-items-center').removeClass('login-height');
+            } else {
+                $('.collapse-item.active').closest('.collapse').addClass('show');
+            }
+        }
+        adjustCollapse();
+
+        $(window).resize(function () {
+            adjustCollapse();
+        });
+
+        $(document).on('click', function (event) {
+            if ($(window).width() <= 767) {
+                if (!$(event.target).closest('.collapse').length) {
+                    $('.collapse').removeClass('show');
+                }
+            }
+
+        });
+    });
+  });
+
+</script>

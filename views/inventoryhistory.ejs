@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <%- include("./components/header.ejs")%>
+  </head>
+  <body>
+
+    <!-- Topbar Content -->
+    <%- include("./components/topbar.ejs")%>
+    <!-- Topbar Content End -->
+    
+    <div class="wrapper">
+
+        <!-- Sidebar Content -->
+        <%- include("./components/sidebar.ejs")%>
+        <!-- Sidebar Content End -->
+
+        <!-- Page Content -->
+        <div id="content">
+
+          <!-- Main Content -->
+          <%- include("./pages/inventoryhistory/inventoryhistory.ejs")%>
+          <!-- Main Content End -->
+          
+          </div>
+    </div>
+    <!-- Optional JavaScript -->
+    <%- include("./components/scripts.ejs")%>
+    <!-- Optional JavaScript -->
+    <%- include("./pages/inventoryhistory/inventoryhistoryscripts.ejs")%>
+       
+</body>
+</html>
