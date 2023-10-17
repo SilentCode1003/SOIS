@@ -90,8 +90,8 @@ exports.Select = (sql, table, callback) => {
         callback(null, model.MasterAccessType(results));
       }
 
-      if (table == "MasterPositionType") {
-        callback(null, model.MasterPositionType(results));
+      if (table == "MasterPosition") {
+        callback(null, model.MasterPosition(results));
       }
 
       if (table == "MasterPayment") {

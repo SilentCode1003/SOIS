@@ -2,8 +2,8 @@ const bcrypt = require('bcrypt');
 const salt = '$2b$10$nsumtNnZ5fP5s5GHybnCu.' //bcrypt.genSaltSync(saltRounds);
 const crypto = require('crypto');
 const algorithm = 'aes-256-cbc';
-const initVector = Buffer.alloc(16, 'SOIS');
-const Securitykey = Buffer.alloc(32, 'SOISSOIS');
+const initVector = Buffer.alloc(16, '5LSOLUTIONS');
+const Securitykey = Buffer.alloc(32, 'DEV42FIRSTDEV');
 
 
 exports.CreateHashPassword = (password, callback) => {
