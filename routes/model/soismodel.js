@@ -258,7 +258,7 @@ exports.CustomerCredit = (data) => {
   return dataResult;
 };
 
-exports.BalanceCredit = (data) => {
+exports.BalanceHistory = (data) => {
   let dataResult = [];
 
   data.forEach((key, item) => {

@@ -113,6 +113,46 @@ exports.Select = (sql, table, callback) => {
       if (table == "MasterStore") {
         callback(null, model.MasterStore(results));
       }
+
+      if (table == "BalanceHistory") {
+        callback(null, model.BalanceHistory(results));
+      }
+
+      if (table == "Customer") {
+        callback(null, model.Customer(results));
+      }
+
+      if (table == "CustomerCredit") {
+        callback(null, model.CustomerCredit(results));
+      }
+
+      if (table == "CustomerOrder") {
+        callback(null, model.CustomerOrder(results));
+      }
+
+      if (table == "InventoryHistory") {
+        callback(null, model.InventoryHistory(results));
+      }
+
+      if (table == "Product") {
+        callback(null, model.Product(results));
+      }
+
+      if (table == "ProdcutInventory") {
+        callback(null, model.ProdcutInventory(results));
+      }
+
+      if (table == "RequestOrder") {
+        callback(null, model.RequestOrder(results));
+      }
+
+      if (table == "SalesDetail") {
+        callback(null, model.SalesDetail(results));
+      }
+
+      if (table == "SalesItem") {
+        callback(null, model.SalesItem(results));
+      }
     });
   } catch (error) {
     console.log(error);
