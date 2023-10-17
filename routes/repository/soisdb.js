@@ -375,4 +375,175 @@ exports.InsertTable = (tablename, data, callback) => {
       callback(null, result);
     });
   }
+
+  if (tablename == "product") {
+    let sql = `INSERT INTO product(
+      p_categoryid,
+      p_description,
+      p_barcode,
+      p_price,
+      p_status,
+      p_createdby,
+      p_createddate) VALUES ?`;
+
+    this.Insert(sql, data, (err, result) => {
+      if (err) {
+        callback(err, null);
+      }
+      callback(null, result);
+    });
+  }
+
+  if (tablename == "sales_detail") {
+    let sql = `INSERT INTO sales_detail(
+      sd_date,
+      sd_cashier,
+      sd_paymenttype,
+      sd_details,
+      sd_total) VALUES ?`;
+
+    this.Insert(sql, data, (err, result) => {
+      if (err) {
+        callback(err, null);
+      }
+      callback(null, result);
+    });
+  }
+
+  if (tablename == "sales_item") {
+    let sql = `INSERT INTO sales_item(
+      si_detailid,
+      si_description,
+      si_price,
+      si_quantity,
+      si_total) VALUES ?`;
+
+    this.Insert(sql, data, (err, result) => {
+      if (err) {
+        callback(err, null);
+      }
+      callback(null, result);
+    });
+  }
+
+  if (tablename == "customer") {
+    let sql = `INSERT INTO customer(
+      c_firstname,
+      c_middlename,
+      c_lastname,
+      c_contactnumber,
+      c_gender,
+      c_address,
+      c_registereddate) VALUES ?`;
+
+    this.Insert(sql, data, (err, result) => {
+      if (err) {
+        callback(err, null);
+      }
+      callback(null, result);
+    });
+  }
+
+  if (tablename == "customer_order") {
+    let sql = `INSERT INTO customer_order(
+      co_customerid,
+      co_date,
+      co_details,
+      co_total,
+      co_paymenttype,
+      co_status) VALUES ?`;
+
+    this.Insert(sql, data, (err, result) => {
+      if (err) {
+        callback(err, null);
+      }
+      callback(null, result);
+    });
+  }
+
+  if (tablename == "request_order") {
+    let sql = `INSERT INTO request_order(
+      ro_customerorderid,
+      ro_date,
+      ro_status) VALUES ?`;
+
+    this.Insert(sql, data, (err, result) => {
+      if (err) {
+        callback(err, null);
+      }
+      callback(null, result);
+    });
+  }
+
+  if (tablename == "customer_credit") {
+    let sql = `INSERT INTO customer_credit(
+      cc_customerid,
+      cc_balance,
+      cc_status) VALUES ?`;
+
+    this.Insert(sql, data, (err, result) => {
+      if (err) {
+        callback(err, null);
+      }
+      callback(null, result);
+    });
+  }
+
+  if (tablename == "balance_history") {
+    let sql = `INSERT INTO balance_history(
+      bh_creditid,
+      bh_date,
+      bh_amount,
+      bh_type) VALUES ?`;
+
+    this.Insert(sql, data, (err, result) => {
+      if (err) {
+        callback(err, null);
+      }
+      callback(null, result);
+    });
+  }
+
+  if (tablename == "product_inventory") {
+    let sql = `INSERT INTO product_inventory(
+      pi_productid,
+      pi_quantity) VALUES ?`;
+
+    this.Insert(sql, data, (err, result) => {
+      if (err) {
+        callback(err, null);
+      }
+      callback(null, result);
+    });
+  }
+
+  if (tablename == "inventory_history") {
+    let sql = `INSERT INTO inventory_history(
+      ih_date,
+      ih_inventoryid,
+      ih_productid,
+      ih_quantity,
+      ih_type) VALUES ?`;
+
+    this.Insert(sql, data, (err, result) => {
+      if (err) {
+        callback(err, null);
+      }
+      callback(null, result);
+    });
+  }
+
+  if (tablename == "sales_inventory") {
+    let sql = `INSERT INTO sales_inventory(
+      si_detailid,
+      si_productid,
+      si_posid) VALUES ?`;
+
+    this.Insert(sql, data, (err, result) => {
+      if (err) {
+        callback(err, null);
+      }
+      callback(null, result);
+    });
+  }
 };
