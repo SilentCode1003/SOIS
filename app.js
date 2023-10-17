@@ -15,6 +15,12 @@ var masterUserRouter = require('./routes/masteruser');
 var masterStoreRouter = require('./routes/masterstore');
 var productRouter = require('./routes/product');
 var salesDetailsRouter = require('./routes/salesdetails');
+var customerRouter = require('./routes/customer');
+var customerOrderRouter = require('./routes/customerorder');
+var requestOrderRouter = require('./routes/requestorder');
+var customerCreditRouter = require('./routes/customercredit');
+var balanceHisotryRouter = require('./routes/balancehistory');
+
 
 var app = express();
 
@@ -39,6 +45,11 @@ app.use('/masteruser', masterUserRouter);
 app.use('/masterstore', masterStoreRouter);
 app.use('/product', productRouter);
 app.use('/salesdetails', salesDetailsRouter);
+app.use('/customer', customerRouter);
+app.use('/customerorder', customerOrderRouter);
+app.use('/requestorder', requestOrderRouter);
+app.use('/customercredit', customerCreditRouter);
+app.use('/balancehistory', balanceHisotryRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
