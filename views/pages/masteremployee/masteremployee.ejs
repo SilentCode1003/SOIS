@@ -1,74 +1,5 @@
 <!-- Main Content Area -->
 <div class="page-holder">
-    <!-- ENTRIES CALLER -->
-    <div class="col-12 ml-auto d-flex justify-content-end button-holder">
-      <!-- SHOW ENTRIES -->
-      <button class="btn btn-dark mr-1" id="showButton">Entries</button>
-      <!-- HIDE ENTRIES -->
-      <button class="btn btn-danger" id="hideButton">Close</button>
-    </div>
-    
-    <!-- ENTRIES -->
-    <div class="mt-3" id="targetDiv" style="display: none;">
-        <!-- PAGE TITLE -->
-          <div class="col-sm-12 top-title-bar">
-            <label id="tittle-bar">CONTENT ENTRIES</label>
-          </div>
-
-        <!-- ENTRIES CONTAINER -->
-          <div class="col-md-12 entry-container">
-            <div>
-              <!-- <form class="needs-validation combined-form" novalidate> -->
-                <div class="form-row">
-                  <div class="col-md-4 mb-3">
-                    <label for="c_pagename">Page Title</label>
-                    <input id="c_pagename" name="c_pagename" type="text" class="form-control" id="p_name" placeholder="Product Name" required/>
-                  </div>
-
-                  <div class="col-md-4 mb-3">
-                    <label for="c_pagecontent">Page Content</label>
-                    <input id="c_pagecontent" name="c_pagecontent" type="text" class="form-control" id="p_price" placeholder="Product Price" step="0.01" required/>
-                  </div>
-
-                  <div class="col-md-4 mb-3">
-                    <label for="c_pageclick">Number of Clicks</label>
-                    <input id="c_pageclick" name="c_pageclick" type="text" class="form-control" id="p_price" placeholder="Product Price" step="0.01" required/>
-                  </div>
-
-                  <div class="col-md-4 mb-3">
-                    <label for="c_publishdate">Publish Date</label>
-                    <input id="c_publishdate" name="c_publishdate" type="text" class="form-control" id="p_price" placeholder="Product Price" step="0.01" required/>
-                  </div>
-                </div>
-
-                <button id="addbtncontent" class="btn btn-success" type="submit">+ Add</button>
-              <!-- </form> -->
-            </div>
-          </div>
-        <!-- CONTAINER END -->
-    </div>
-    <!-- END ENTRIES -->
-
-  <!-- TABLE TITLE -->
-  <div class="col-sm-12 mid-title-bar">
-    <label id="tittle-bar">CONTENT TABLE</label>
-  </div>
-    
-  <!-- TABLE -->
-  <div class="col-md-12 table-container">
-      <table id="page-table" class="table">
-        <thead>
-            <th>Page ID</th>
-            <th>Page Title</th>
-            <th>Page Content</th>
-            <th>Page Clicks</th>
-            <th>Content Date</th>
-            <th>Action</th> 
-        </thead>
-        <tbody></tbody>
-      </table>
-  </div>
-
   <!-- ------------------------------------------------------------------------------------------
        ------------------------------------------ BLOG ------------------------------------------
        ------------------------------------------------------------------------------------------ -->
@@ -81,59 +12,97 @@
     <button class="btn btn-danger" id="hideButton2">Close</button>
   </div>
 
-    <!-- ENTRIES -->
-    <div class="mt-3" id="targetDiv2" style="display: none;">
-        <!-- PAGE TITLE -->
-          <div class="col-sm-12 top-title-bar">
-            <label id="tittle-bar">BLOG ENTRIES</label>
-          </div>
-
-        <!-- ENTRIES CONTAINER -->
-          <div class="col-md-12 entry-container">
-            <div>
-              <!-- <form class="needs-validation combined-form" novalidate> -->
-                <div class="form-row">
-                  <div class="col-md-4 mb-3">
-                    <label for="b_title">Title</label>
-                    <input id="b_title" name="b_title" type="text" class="form-control" id="p_name" placeholder="Product Name" required/>
-                  </div>
-
-                  <div class="col-md-4 mb-3">
-                    <label for="b_blogcontent">Content</label>
-                    <input id="b_blogcontent" name="b_blogcontent" type="text" class="form-control" id="p_price" placeholder="Product Price" step="0.01" required/>
-                  </div>
-
-                  <div class="col-md-4 mb-3">
-                    <label for="b_publishdate">Publish Date</label>
-                    <input id="b_publishdate" name="b_publishdate" type="datetime-local" class="form-control" id="p_quantity" placeholder="Quantity Stock" required />
-                  </div>
-                </div>
-
-                <button id="addbtnblog" class="btn btn-success" type="submit">+ Add</button>
-              <!-- </form> -->
-            </div>
-          </div>
-        <!-- CONTAINER END -->
+  <!-- ENTRIES -->
+  <div class="mt-3" id="targetDiv2" style="display: none;">
+    <!-- PAGE TITLE -->
+    <div class="col-sm-12 top-title-bar">
+      <label id="tittle-bar">BLOG ENTRIES</label>
     </div>
-    <!-- END ENTRIES -->
+
+    <!-- ENTRIES CONTAINER -->
+    <div class="col-md-12 entry-container">
+      <div>
+        <!-- <form class="needs-validation combined-form" novalidate> -->
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label for="firstname">First Name</label>
+            <input id="firstname" name="firstname" type="text" class="form-control" placeholder="First Name" required />
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="Middle Name">Middle Name</label>
+            <input id="Middle Name" name="Middle Name" type="text" class="form-control" placeholder="Middle Name"
+              required />
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="lastname">Last Name</label>
+            <input id="lastname" name="lastname" type="text" class="form-control" placeholder="Last Name" required />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label for="position">Position</label>
+            <input id="position" name="position" type="text" class="form-control" placeholder="Position" required />
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="accesstype">Access Type</label>
+            <input id="accesstype" name="accesstype" type="text" class="form-control" placeholder="Access Type step="
+              required />
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="contactno">Contact Number</label>
+            <input id="contactno" name="contactno" type="text" class="form-control" placeholder="Contact Number"
+              required />
+          </div>
+        </div>
+
+        <div class="row justify-content-center">
+          <div class="col-md-4 mb-3">
+            <label for="datehier">Position</label>
+            <input id="datehier" name="datehier" type="datetime-local" class="form-control" placeholder="Position"
+              required />
+          </div>
+        </div>
+
+        <div class="row justify-content-end mr-4">
+          <button id="addbtnblog" class="btn btn-success" type="submit">+ Add</button>
+        </div>
+        <!-- </form> -->
+      </div>
+    </div>
+    <!-- CONTAINER END -->
+  </div>
+  <!-- END ENTRIES -->
 
   <!-- TABLE TITLE -->
   <div class="col-sm-12 mid-title-bar">
-    <label id="tittle-bar">BLOG TABLE</label>
+    <label id="tittle-bar">Employee Table</label>
   </div>
 
   <!-- TABLE -->
-  <div class="col-md-12 table-container">
-      <table id="blog-post-table" class="table">
-        <thead>
-            <th>BlogPost ID</th>
-            <th>BlogPost Title</th>
-            <th>BlogPost Content</th>
-            <th>Publish Date</th>
-            <th>Action</th>
-        </thead>
-        <tbody></tbody>
-      </table>
+  <div class="table-responsive scrollable-table-container">
+    <table id="data-table" class="table custom-mobile-table">
+      <thead class="table-header">
+        <th class="no-wrap">ID</th>
+        <th class="no-wrap">First Name</th>
+        <th class="no-wrap">Middle Name</th>
+        <th class="no-wrap">Last Name</th>
+        <th class="no-wrap">Position</th>
+        <th class="no-wrap">Access Type</th>
+        <th class="no-wrap">Contact Number</th>
+        <th class="no-wrap">Date Hired</th>
+        <th class="no-wrap">Status</th>
+        <th class="no-wrap">Created By</th>
+        <th class="no-wrap">Created Date</th>
+        <th class="no-wrap">Action</th>
+      </thead>
+      <tbody></tbody>
+    </table>
   </div>
 
-</div>  
+
+</div>

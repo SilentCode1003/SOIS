@@ -39,6 +39,14 @@
   padding: 10px;
 }
 
+.table-container {
+  background-color: white;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
 /* ------------------------------
     Edit & Delete Buttons
 ------------------------------ */
@@ -197,8 +205,8 @@ th {
 
 /* Style for the sidebar logo container */
 .sidebar-logo {
-  background-color: #fff;
-  border-bottom: 5px solid #9A3B3B;
+  background-color: #262626;
+  border-bottom: 5px solid #FBBF2D;
   display: flex;
   position: relative;
   flex-direction: row;
@@ -218,7 +226,7 @@ th {
 
 /* Style for the label */
 .logo-label {
-  color: black;
+  color: white;
   font-size: 20px;
 }
 
@@ -243,10 +251,12 @@ th {
   margin-top: -85px;
   min-width: 250px;
   max-width: 250px;
-  height: 100vh;
+  height: auto;
   /* position: fixed; */
+  background: white;
   color: black;
   transition: all 0.3s;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
 }
 
 #sidebar.active {
@@ -256,6 +266,7 @@ th {
 /* Sidebar line-sperator */
 #sidebar ul.components {
   padding: 20px 0;
+  border-bottom: 1px solid black;
 }
 
 #sidebar ul p {
@@ -348,6 +359,7 @@ a.article:hover {
   position: fixed;
   margin-top: -80px;
   margin-left: 270px;
+  box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
 }
 
 /* ---------------------------------------------------
@@ -358,7 +370,8 @@ a.article:hover {
   width: 100%;
   height: 85px;
   padding-top: 25px;
-  border-bottom: 5px solid #9A3B3B;
+  border-bottom: 5px solid #FBBF2D;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
 }
 
 /* TOP BAR BUTTONS */
@@ -407,6 +420,7 @@ a.article:hover {
   border: none;
   border-radius: 10px !important;
   margin: 5px;
+  box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
 }
 
 /* Add this CSS to limit the message content to a certain number of characters */
