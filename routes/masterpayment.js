@@ -44,7 +44,7 @@ router.post("/save", (req, res) => {
     let createdby =
       req.session.fullname == null ? "TESTER" : req.session.fullname;
     let createddate = helper.GetCurrentDatetime();
-    let master_payment = [[name, status, createdby, createddate]];
+    let master_payment = [[name, createddate, createdby, status,]];
 
     InsertTable("master_payment", master_payment, (err, result) => {
       if (err) console.error("Error: ", err);

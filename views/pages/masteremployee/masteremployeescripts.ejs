@@ -44,53 +44,65 @@
         //     }
         // });
     
-        // $(document).on('click', '#addBtn', function () {
-        //     let fullname = $('#fullname').val();
-        //     let positionname = $('#positionname').val();
-        //     let contactinfo = $('#contactinfo').val();
-        //     let datehired = $('#datehired').val();
+        $(document).on('click', '#addBtn', function () {
+            let firstname = $('#firstname').val();
+            let middlename = $('#middlename').val();
+            let lastname = $('#lastname').val();
+            let position = $('#position').val();
+            let accesstype = $('#accesstype').val();
+            let contactno = $('#contactno').val();
+            let datehire = $('#datehire').val();
+
+            var message = "";
+            if (firstname == '') { message += 'First Name, ' }
+            if (middlename == '') { message += 'Middle Name, ' }
+            if (lastname == '') { message += 'Last Name, ' }
+            if (position == '') { message += 'Position, ' }
+            if (accesstype == '') { message += 'Access Type, ' }
+            if (contactno == '') { message += 'Contact No., ' }
+            if (datehire == '') { message += 'Date Hire, ' }
     
-        //     var message = "";
-        //     if (fullname == '') { message += 'Fullname, ' }
-        //     if (positionname == '') { message += 'Position Name, ' }
-        //     if (contactinfo == '') { message += 'Contact Info, ' }
-        //     if (datehired == '') { message += 'Date Hired, ' }
+            if (message != '') {
+                warning('Required', `Please fill up ${message}`);
+            }
+            else {
+                console.log(firstname, middlename, lastname, position, accesstype, contactno, datehire)
+                $.ajax({
+                    type: 'POST',
+                    url: '/masteremployee/save',
+                    data: {
+                        firstname: firstname,
+                        middlename: middlename,
+                        lastname: lastname,
+                        position: position,
+                        accesstype: accesstype,
+                        contactno: contactno,
+                        datehire: datehire
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable()
+                            success('Saved', 'Successfully')
+                            $('#firstname').val('');
+                            $('#middlename').val('');
+                            $('#lastname').val('');
+                            $('#position').val('');
+                            $('#accesstype').val('');
+                            $('#contactno').val('');
+                            $('#datehire').val('');
+                        }
     
-        //     if (message != '') {
-        //         warning('Required', `Please fill up ${message}`);
-        //     }
-        //     else {
-        //         $.ajax({
-        //             type: 'POST',
-        //             url: '/employees/save',
-        //             data: {
-        //                 fullname: fullname,
-        //                 positionname: positionname,
-        //                 contactinfo: contactinfo,
-        //                 datehired: datehired
-        //             },
-        //             success: function (result) {
-        //                 if (result.msg == 'success') {
-        //                     LoadTable()
-        //                     success('Saved', 'Successfully')
-        //                     $('#employeeid').val('');
-        //                     $('#fullname').val('');
-        //                     $('#positionname').val('');
-        //                     $('#contactinfo').val('');
-        //                     $('#datehired').val('');
-        //                 }
+                        if (result.msg == 'exist') {
+                            warning('Exist', `${firstname} already exist!`);
+                        }
     
-        //                 if (result.msg == 'exist') {
-        //                     warning('Exist', `${fullname} already exist!`);
-        //                 }
-    
-        //             },
-        //             error: function (err) {
-        //                 errormsg(err);
-        //             }
-        //         })
-        //     }
-        // })
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+            }
+        })
      
         function populatetable(data) {
             console.log(data);
