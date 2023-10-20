@@ -1,4 +1,5 @@
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+@import url(toastr.css);
 body {
     font-family: 'Poppins', sans-serif;
     background: whitesmoke;
@@ -48,6 +49,98 @@ a:focus {
     margin: 40px 0;
 }
 
+.no-wrap{
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------
+  MOBILE RESPONSIVE TABLE
+----------------------------------------------------- */
+@media (max-width: 767px) {
+
+  .custom-mobile-table thead{
+    display: none;
+  }
+  
+  .custom-mobile-table, .custom-mobile-table tbody, .custom-mobile-table tr, .custom-mobile-table td{
+    display: block;
+    width: 100%;
+  }
+  .custom-mobile-table tr{
+    margin-bottom:15px;
+  }
+  .custom-mobile-table .custom-mobile-align{
+    padding-left: 50%;
+    position: relative;
+  }
+  .custom-mobile-table .custom-mobile-align::before{
+    content: attr(data-label)": ";
+    position: absolute;
+    left:0;
+    width: 50%;
+    padding-left:15px;
+    font-size:15px;
+    font-weight: bold;
+    text-align: left;
+  }
+  
+  .custom-mobile-table tbody tr:nth-child(even){
+      background-color: black !important;
+      color: white;
+  }
+}
+
+
+/* ---------------------------------------------------
+  Table Styule
+----------------------------------------------------- */
+.table-responsive{
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+}
+
+th{
+  text-align: center !important;
+  white-space: nowrap !important;
+  color: var(--clr-font-color);
+}
+
+td{
+  text-align: center !important;
+  vertical-align: middle!important;
+}
+
+.tr-hover:hover{
+  background-color: var(--clr-3);
+}
+
+.scrollable-table-container-lg{
+  max-height: 670px !important; 
+  overflow-y: auto !important;
+}
+
+.scrollable-table-container {
+  max-height: 480px !important; 
+  overflow-y: auto !important;
+}
+
+.scrollable-table-container-sm{
+  max-height: 310px !important; 
+  overflow-y: auto !important;
+}
+
+.scrollable-table-container-xsm{
+  max-height: 210px !important; 
+  overflow-y: auto !important;
+}
+
+.table-header {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1;
+}
+
 /* ---------------------------------------------------
   CONTENT STYLE
 ----------------------------------------------------- */
@@ -69,13 +162,16 @@ main {
 ----------------------------------------------------- */
 
 @media (max-width: 768px) {
-    #sidebar {
-      margin-left: -250px;
-    }
-    #sidebar.active {
-      margin-left: 0;
-    }
-    #sidebarCollapse span {
-      display: none;
-    }
+  #content{
+    padding-top: 0;
+  }
+  #sidebar {
+    margin-left: -250px;
+  }
+  #sidebar.active {
+    margin-left: 0;
+  }
+  #sidebarCollapse span {
+    display: none;
+  }
 }
