@@ -1,4 +1,4 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 
 const {
@@ -8,11 +8,9 @@ const {
   UpdateMultiple,
 } = require("./repository/soisdb.js");
 
-const helper = require("./repository/customhelper.js");
-
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('masterstore', { title: 'Express' });
+router.get("/", function (req, res, next) {
+  res.render("masterstore", { title: "Express" });
 });
 
 module.exports = router;
@@ -27,6 +25,27 @@ router.get("/load", (req, res) => {
       res.json({
         msg: "success",
         data: result,
+      });
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
+
+router.post("/save", (req, res) => {
+  try {
+    const { name, logo, address, contact, message } = req.body;
+    let master_store = [[name, logo, address, contact, message]];
+
+    InsertTable("master_store", master_store, (err, result) => {
+      if (err) console.error("Error: ", err);
+
+      console.log(result);
+
+      res.json({
+        msg: "success",
       });
     });
   } catch (error) {
