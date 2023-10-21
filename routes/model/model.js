@@ -117,6 +117,7 @@ class ProductModel {
     id,
     categoryid,
     description,
+    image,
     barcode,
     price,
     status,
@@ -126,6 +127,7 @@ class ProductModel {
     this.id = id;
     this.categoryid = categoryid;
     this.description = description;
+    this.image = image;
     this.barcode = barcode;
     this.price = price;
     this.status = status;

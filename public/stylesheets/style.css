@@ -175,3 +175,8 @@ main {
     display: none;
   }
 }
+
+.img-thumbnail{
+  height: 200px !important;
+  width: 200px !important;
+}

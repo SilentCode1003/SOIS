@@ -344,6 +344,7 @@ exports.InsertTable = (tablename, data, callback) => {
     let sql = `INSERT INTO product(
       p_categoryid,
       p_description,
+      p_image,
       p_barcode,
       p_price,
       p_status,

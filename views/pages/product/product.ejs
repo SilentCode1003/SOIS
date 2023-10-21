@@ -1,6 +1,5 @@
 <!-- Main Content Area -->
 <div class="page-holder">
-
   <!-- ENTRIES CALLER -->
   <div class="col-12 ml-auto mt-3 d-flex justify-content-end button-holder">
     <!-- SHOW ENTRIES -->
@@ -10,7 +9,7 @@
   </div>
 
   <!-- ENTRIES -->
-  <div class="mt-3" id="targetDiv2" style="display: none;">
+  <div class="mt-3" id="targetDiv2" style="display: none">
     <!-- PAGE TITLE -->
     <div class="col-sm-12 top-title-bar">
       <label id="tittle-bar">Employee Entries</label>
@@ -23,34 +22,86 @@
         <div class="row">
           <div class="col-md-4 mb-3">
             <label for="categoryid">Category</label>
-            <select class="form-control text-center" name="categoryid" id="categoryid">
+            <select
+              class="form-control text-center"
+              name="categoryid"
+              id="categoryid"
+            >
               <option value="">-- Select Category --</option>
-            </select>  
+            </select>
           </div>
 
           <div class="col-md-4 mb-3">
             <label for="description">Description</label>
-            <input id="description" name="description" type="text" class="form-control" placeholder="Description"
-              required />
+            <input
+              id="description"
+              name="description"
+              type="text"
+              class="form-control"
+              placeholder="Description"
+              required
+            />
           </div>
 
           <div class="col-md-4 mb-3">
             <label for="barcode">Barcode</label>
-            <input id="barcode" name="barcode" type="text" class="form-control" placeholder="Barcode" required />
+            <input
+              id="barcode"
+              name="barcode"
+              type="text"
+              class="form-control"
+              placeholder="Barcode"
+              required
+            />
           </div>
         </div>
 
         <div class="row justify-content-center">
-
           <div class="col-md-4 mb-3">
             <label for="price">Price</label>
-            <input id="price" name="price" type="text" class="form-control" placeholder="Price"
-              required />
+            <input
+              id="price"
+              name="price"
+              type="text"
+              class="form-control"
+              placeholder="Price"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="row justify-content-center">
+          <div class="col-md-4 ">
+            <div class="input-group mb-3">
+              <div class="custom-file">
+                <input
+                  class="btn btn-outline-inventory w-100"
+                  type="file"
+                  id="imageInput"
+                  placeholder="Select Image"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row justify-content-center">
+          <div class="col-md-4">
+            <div class="align-img">
+              <img
+                id="productimage"
+                src="/images/logo/urbanhideout.png"
+                class="img-thumbnail"
+                alt="..."
+              />
+            </div>
           </div>
         </div>
 
         <div class="row justify-content-end mr-4">
-          <button id="addBtn" class="btn btn-success" type="submit">+ Add</button>
+          <button id="addBtn" class="btn btn-success" type="submit">
+            + Add
+          </button>
         </div>
         <!-- </form> -->
       </div>
@@ -71,6 +122,7 @@
         <th class="no-wrap">ID</th>
         <th class="no-wrap">Category</th>
         <th class="no-wrap">Description</th>
+        <th class="no-wrap">Image</th>
         <th class="no-wrap">Barcode</th>
         <th class="no-wrap">Price</th>
         <th class="no-wrap">Status</th>
@@ -81,6 +133,4 @@
       <tbody></tbody>
     </table>
   </div>
-
-
 </div>

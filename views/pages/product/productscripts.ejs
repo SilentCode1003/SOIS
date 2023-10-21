@@ -1,272 +1,377 @@
 <script>
-    $(document).ready(function () {
-        //Functionality
-        let id = "";
-        let status = "";
-    
-        LoadTable();
-    
-        $('#data-table tbody').on('click', 'tr', function () {
-            var dataRow = [];
-            $(this).closest('tr').find('td').each(function () {
-                dataRow.push($(this).text());
-            });
-            console.log(dataRow);
-            id = dataRow[0];
-            status = dataRow[5]
-        }) 
-    
-        // $(document).on('click', '#editBtn', function(){
-        //     $('#employeeidmodal').val(employeeid);
-        //     $('#employeesModal').modal('show');
-        // })
-    
-        // $(document).on('click', '#closeBtn', function(){
-        //     $('#positionlist').val('');
-        //     $('#contactinfomodal').val('');
-        // })
-    
-        // $(document).on('click', '#deleteBtn', function(){
-        //     $('#employeeidmodal2').val(employeeid);
-        //     $('#deleteModal').modal('show');
-        // })
-        
-        // $('#confirm').on('input', function() {
-        //     const confirmValue = $(this).val().trim().toUpperCase();
-        //     const deleteBtnModal = $('#deleteBtnModal');
-    
-        //     // Enable the 'DELETE' button if the input value is 'CONFIRM', otherwise disable it
-        //     if (confirmValue === 'CONFIRM') {
-        //         deleteBtnModal.prop('disabled', false);
-        //     } else {
-        //         deleteBtnModal.prop('disabled', true);
-        //     }
-        // });
-    
-        $(document).on('click', '#addBtn', function () {
-            let categoryid = $('#categoryid').val();
-            let description = $('#description').val();
-            let barcode = $('#barcode').val();
-            let price = $('#price').val();
+  $(document).ready(function () {
+    //Functionality
+    let id = "";
+    let status = "";
+    let base64String = "";
 
-            var message = "";
-            if (categoryid == '') { message += 'First Name, ' }
-            if (description == '') { message += 'Middle Name, ' }
-            if (barcode == '') { message += 'Last Name, ' }
-            if (price == '') { message += 'price, ' }
-    
-            if (message != '') {
-                warning('Required', `Please fill up ${message}`);
+    LoadTable();
+
+    $("#data-table tbody").on("click", "tr", function () {
+      var dataRow = [];
+      $(this)
+        .closest("tr")
+        .find("td")
+        .each(function () {
+          dataRow.push($(this).text());
+        });
+      console.log(dataRow);
+      id = dataRow[0];
+      status = dataRow[5];
+    });
+
+    // $(document).on('click', '#editBtn', function(){
+    //     $('#employeeidmodal').val(employeeid);
+    //     $('#employeesModal').modal('show');
+    // })
+
+    // $(document).on('click', '#closeBtn', function(){
+    //     $('#positionlist').val('');
+    //     $('#contactinfomodal').val('');
+    // })
+
+    // $(document).on('click', '#deleteBtn', function(){
+    //     $('#employeeidmodal2').val(employeeid);
+    //     $('#deleteModal').modal('show');
+    // })
+
+    // $('#confirm').on('input', function() {
+    //     const confirmValue = $(this).val().trim().toUpperCase();
+    //     const deleteBtnModal = $('#deleteBtnModal');
+
+    //     // Enable the 'DELETE' button if the input value is 'CONFIRM', otherwise disable it
+    //     if (confirmValue === 'CONFIRM') {
+    //         deleteBtnModal.prop('disabled', false);
+    //     } else {
+    //         deleteBtnModal.prop('disabled', true);
+    //     }
+    // });
+
+    $(document).on("click", "#addBtn", function () {
+      let categoryid = $("#categoryid").val();
+      let description = $("#description").val();
+      let barcode = $("#barcode").val();
+      let price = $("#price").val();
+      let productimage = base64String;
+
+      var message = "";
+      if (categoryid == "") {
+        message += "First Name, ";
+      }
+      if (description == "") {
+        message += "Middle Name, ";
+      }
+      if (barcode == "") {
+        message += "Last Name, ";
+      }
+      if (price == "") {
+        message += "price, ";
+      }
+
+      if (message != "") {
+        warning("Required", `Please fill up ${message}`);
+      } else {
+        console.log(categoryid, description, barcode, price);
+        $.ajax({
+          type: "POST",
+          url: "/product/save",
+          data: {
+            categoryid: categoryid,
+            description: description,
+            barcode: barcode,
+            price: price,
+            image: productimage,
+          },
+          success: function (result) {
+            if (result.msg == "success") {
+              LoadTable();
+              success("Saved", "Successfully");
+              $("#categoryid").val("");
+              $("#description").val("");
+              $("#barcode").val("");
+              $("#price").val("");
             }
-            else {
-                console.log(categoryid, description, barcode, price)
-                $.ajax({
-                    type: 'POST',
-                    url: '/product/save',
-                    data: {
-                        categoryid: categoryid,
-                        description: description,
-                        barcode: barcode,
-                        price: price,
-                    },
-                    success: function (result) {
-                        if (result.msg == 'success') {
-                            LoadTable()
-                            success('Saved', 'Successfully')
-                            $('#categoryid').val('');
-                            $('#description').val('');
-                            $('#barcode').val('');
-                            $('#price').val('');
-                        }
-    
-                        if (result.msg == 'exist') {
-                            warning('Exist', `${categoryid} already exist!`);
-                        }
-    
-                    },
-                    error: function (err) {
-                        errormsg(err);
-                    }
-                })
+
+            if (result.msg == "exist") {
+              warning("Exist", `${categoryid} already exist!`);
             }
-        })
-     
-        function populatetable(data) {
-            console.log(data);
-            const tableBody = $('#data-table tbody');
-            tableBody.empty();
-    
-            if (data.length === 0) {
-                const tr = $('<tr>').append($('<td>', {
-                    colspan: 9,
-                    class: 'text-center',
-                    text: 'No Data Matched'
-                }));
-                tableBody.append(tr);
-            } else {
-                data.forEach(item => {
-                    let action = '';
-                    if (item.status === 'ACTIVE') {
-                        action = `<button id="editBtn" class="btn btn-outline-primary shadow-sm w-100" name="editBtn" data-toggle="modal" data-target="#accessModal">EDIT</button>
+          },
+          error: function (err) {
+            errormsg(err);
+          },
+        });
+      }
+    });
+
+    function populatetable(data) {
+      console.log(data);
+      const tableBody = $("#data-table tbody");
+      tableBody.empty();
+
+      if (data.length === 0) {
+        const tr = $("<tr>").append(
+          $("<td>", {
+            colspan: 9,
+            class: "text-center",
+            text: "No Data Matched",
+          })
+        );
+        tableBody.append(tr);
+      } else {
+        data.forEach((item) => {
+          let action = "";
+          if (item.status === "ACTIVE") {
+            action = `<button id="editBtn" class="btn btn-outline-primary shadow-sm w-100" name="editBtn" data-toggle="modal" data-target="#accessModal">EDIT</button>
                         <button id="inactiveBtn" class="btn btn-outline-danger shadow-sm w-100 mt-1" name="inactiveBtn">INACTIVE</button>`;
-                    } else if (item.status === 'INACTIVE') {
-                        action = `<button id="editBtn" class="btn btn-outline-primary shadow-sm w-100" name="editBtn" data-toggle="modal" data-target="#accessModal">EDIT</button>
+          } else if (item.status === "INACTIVE") {
+            action = `<button id="editBtn" class="btn btn-outline-primary shadow-sm w-100" name="editBtn" data-toggle="modal" data-target="#accessModal">EDIT</button>
                         <button id="activeBtn" class="btn btn-outline-success shadow-sm w-100 mt-1" name="activeBtn">ACTIVE</button>`;
-                    }
+          }
 
-                    const tr = $('<tr>').append(
-                        $('<td>', { text: item.id, 'data-label': 'ID', class: 'custom-mobile-align' }),
-                        $('<td>', { text: item.categoryid, 'data-label': 'Category', class: 'custom-mobile-align no-wrap' }),
-                        $('<td>', { text: item.description, 'data-label': 'Description', class: 'custom-mobile-align' }),
-                        $('<td>', { text: item.barcode, 'data-label': 'Barcode', class: 'custom-mobile-align' }),
-                        $('<td>', { text: formatCurrency(item.price), 'data-label': 'Price', class: 'custom-mobile-align' }),
-                        $('<td>', { text: item.status, 'data-label': 'Status', class: 'custom-mobile-align' }),
-                        $('<td>', { text: item.createdby, 'data-label': 'Created By', class: 'custom-mobile-align no-wrap' }),
-                        $('<td>', { text: item.createddate, 'data-label': 'Created Date', class: 'custom-mobile-align no-wrap' }),
-                        $('<td>', { html: action, 'data-label': 'Action', class: '' })
-                    );
+          const tr = $("<tr>").append(
+            $("<td>", {
+              text: item.id,
+              "data-label": "ID",
+              class: "custom-mobile-align",
+            }),
+            $("<td>", {
+              text: item.categoryid,
+              "data-label": "Category",
+              class: "custom-mobile-align no-wrap",
+            }),
+            $("<td>", {
+              text: item.description,
+              "data-label": "Description",
+              class: "custom-mobile-align",
+            }),
+            $("<td>", {
+              html: item.image
+                ? `<img src="data:image/png;base64,${item.image}" alt="Product Image" class="product-image" style="max-width: 200px; max-height: 150px;"/>`
+                : "No Image",
+              "data-label": "Product Image",
+            }),
+            $("<td>", {
+              text: item.barcode,
+              "data-label": "Barcode",
+              class: "custom-mobile-align",
+            }),
+            $("<td>", {
+              text: formatCurrency(item.price),
+              "data-label": "Price",
+              class: "custom-mobile-align",
+            }),
+            $("<td>", {
+              text: item.status,
+              "data-label": "Status",
+              class: "custom-mobile-align",
+            }),
+            $("<td>", {
+              text: item.createdby,
+              "data-label": "Created By",
+              class: "custom-mobile-align no-wrap",
+            }),
+            $("<td>", {
+              text: item.createddate,
+              "data-label": "Created Date",
+              class: "custom-mobile-align no-wrap",
+            }),
+            $("<td>", { html: action, "data-label": "Action", class: "" })
+          );
 
-                    tableBody.append(tr);
-                });
-            }
-        }
-    
-        function LoadTable() {
-            $.ajax({
-                url: '/product/load',
-                method: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    if (data.msg === 'success') {
-                        populatetable(data.data);
-                    } else {
-                        console.error(data.msg);
-                    }
-                },
-                error: function (error) {
-                    console.error(error);
-                }
-            });
-        }
-    
-        function LoadList() {
-            $.ajax({
-                type: 'GET',
-                url: '/mastercategory/load',
-                success: function (result) {
-                    var data = result.data;
-                    $.each(data, function (key, item) {
-                        if (item.status == "ACTIVE"){
-                            var options = new Option(item.name, item.id);
-                            $('#categoryid').append(options);
-                        }
-                    });
-                },
-                error: function (err) {
-                    errormsg(err);
-                }
-            })
-        }
-    
-        $(document).on('click', '#activeBtn', function(){
-            console.log(employeeid);
-            console.log(status);
-            $.ajax({
-                type: 'POST',
-                url: '/products/status',
-                data: {
-                    status: status,
-                    employeeid: employeeid,
-                },
-                success: function (result) {
-                    if (result.msg == 'success') {
-                        LoadTable();
-                        success('Saved', 'Successfully')
-                    }
-    
-                    if (result.msg == 'notexist') {
-                        warning(`${employeeid} does not exist!`);
-                    }
-    
-                },
-                error: function (err) {
-                    errormsg(err);
-                }
-            })
+          tableBody.append(tr);
         });
-    
-        $(document).on('click', '#inactiveBtn', function(){
-            console.log(employeeid);
-            console.log(status);
-            $.ajax({
-                type: 'POST',
-                url: '/products/status',
-                data: {
-                    status: status,
-                    employeeid: employeeid,
-                },
-                success: function (result) {
-                    if (result.msg == 'success') {
-                        LoadTable();
-                        success('Saved', 'Successfully')
-                    }
-    
-                    if (result.msg == 'notexist') {
-                        warning(`${employeeid} does not exist!`);
-                    }
-    
-                },
-                error: function (err) {
-                    errormsg(err);
-                }
-            })
+      }
+    }
+
+    function LoadTable() {
+      $.ajax({
+        url: "/product/load",
+        method: "GET",
+        dataType: "json",
+        success: function (data) {
+          if (data.msg === "success") {
+            populatetable(data.data);
+          } else {
+            console.error(data.msg);
+          }
+        },
+        error: function (error) {
+          console.error(error);
+        },
+      });
+    }
+
+    function LoadList() {
+      $.ajax({
+        type: "GET",
+        url: "/mastercategory/load",
+        success: function (result) {
+          var data = result.data;
+          console.log(data);
+          $.each(data, function (key, item) {
+            if (item.status == "ACTIVE") {
+              var options = new Option(item.name, item.id);
+              $("#categoryid").append(options);
+            }
+          });
+        },
+        error: function (err) {
+          errormsg(err);
+        },
+      });
+    }
+
+    $(document).on("click", "#activeBtn", function () {
+      console.log(employeeid);
+      console.log(status);
+      $.ajax({
+        type: "POST",
+        url: "/products/status",
+        data: {
+          status: status,
+          employeeid: employeeid,
+        },
+        success: function (result) {
+          if (result.msg == "success") {
+            LoadTable();
+            success("Saved", "Successfully");
+          }
+
+          if (result.msg == "notexist") {
+            warning(`${employeeid} does not exist!`);
+          }
+        },
+        error: function (err) {
+          errormsg(err);
+        },
+      });
+    });
+
+    $(document).on("click", "#inactiveBtn", function () {
+      console.log(employeeid);
+      console.log(status);
+      $.ajax({
+        type: "POST",
+        url: "/products/status",
+        data: {
+          status: status,
+          employeeid: employeeid,
+        },
+        success: function (result) {
+          if (result.msg == "success") {
+            LoadTable();
+            success("Saved", "Successfully");
+          }
+
+          if (result.msg == "notexist") {
+            warning(`${employeeid} does not exist!`);
+          }
+        },
+        error: function (err) {
+          errormsg(err);
+        },
+      });
+    });
+
+    $(document).on("click", "#updateBtn", function () {
+      let employeeid = $("#employeeidmodal").val();
+      let positionname = $("#positionlist").val();
+      let contactinfo = $("#contactinfomodal").val();
+
+      var message = "";
+
+      if (positionname == "" && contactinfo == "") {
+        message += "Fill up atleast 1 input field before updating";
+      }
+
+      if (message != "") {
+        warning("Required", `${message}`);
+      } else {
+        $.ajax({
+          type: "POST",
+          url: "/products/edit",
+          data: {
+            employeeid: employeeid,
+            positionname: positionname,
+            contactinfo: contactinfo,
+          },
+          success: function (result) {
+            if (result.msg == "success") {
+              LoadTable();
+              $("#employeesModal").modal("hide");
+              $("#positionlist").val("");
+              $("#contactinfomodal").val("");
+              success("Saved", "Successfully");
+            }
+
+            if (result.msg == "exist") {
+              warning("Exist", `${positionname} already exist!`);
+            }
+          },
+          error: function (err) {
+            errormsg(err);
+          },
         });
-    
-        $(document).on('click', '#updateBtn', function () {
-            let employeeid = $('#employeeidmodal').val();
-            let positionname = $('#positionlist').val();
-            let contactinfo = $('#contactinfomodal').val();
-    
-            var message = "";
-    
-            if (positionname == '' && contactinfo == ''){
-                    message += 'Fill up atleast 1 input field before updating'
-                }
-    
-            if (message != '') {
-                warning('Required', `${message}`);
-            }
-            else {
-                $.ajax({
-                    type: 'POST',
-                    url: '/products/edit',
-                    data: {
-                        employeeid: employeeid,
-                        positionname: positionname,
-                        contactinfo: contactinfo,
-                    },
-                    success: function (result) {
-                        if (result.msg == 'success') {
-                            LoadTable();
-                            $('#employeesModal').modal('hide');
-                            $('#positionlist').val('');
-                            $('#contactinfomodal').val('');
-                            success('Saved', 'Successfully')
-                        }
-    
-                        if (result.msg == 'exist') {
-                            warning('Exist', `${positionname} already exist!`);
-                        }
-    
-                    },
-                    error: function (err) {
-                        errormsg(err);
-                    }
-                })
-            }
-        })
-    
-        LoadList()
-    
-    })
+      }
+    });
+
+    LoadList();
+
+    $(document).on("change", "#imageInput", function () {
+      const input = document.getElementById("imageInput");
+      const file = input.files[0];
+
+      const reader = new FileReader();
+      reader.onload = function () {
+        const img = new Image();
+        img.src = reader.result;
+        img.onload = function () {
+          const maxWidth = 300;
+          const maxHeight = 300;
+
+          let width = img.width;
+          let height = img.height;
+
+          if (width > maxWidth) {
+            height *= maxWidth / width;
+            width = maxWidth;
+          }
+
+          if (height > maxHeight) {
+            width *= maxHeight / height;
+            height = maxHeight;
+          }
+
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+          canvas.width = width;
+          canvas.height = height;
+          ctx.drawImage(img, 0, 0, width, height);
+
+          const resizedBase64 = canvas.toDataURL("image/jpeg"); // You can change the format if needed
+
+          const preview = document.getElementById("productimage");
+          preview.src = resizedBase64;
+
+          imageUploaded(resizedBase64);
+        };
+      };
+      reader.readAsDataURL(file);
+    });
+
+    function imageUploaded() {
+      const input = document.getElementById("imageInput");
+      const file = input.files[0];
+
+      var reader = new FileReader();
+      console.log("next");
+
+      reader.onload = function () {
+        base64String = reader.result.replace("data:", "").replace(/^.+,/, "");
+        // alert(imageBase64Stringsep);
+        console.log(base64String);
+      };
+      reader.readAsDataURL(file);
+    }
+  });
 </script>
