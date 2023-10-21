@@ -401,22 +401,6 @@ exports.InsertTable = (tablename, data, callback) => {
     });
   }
 
-  if (tablename == "master_user") {
-    let sql = `INSERT INTO master_user(
-        ms_name,
-        ms_logo,
-        ms_address,
-        ms_contact,
-        ms_message) VALUES ?`;
-
-    this.Insert(sql, data, (err, result) => {
-      if (err) {
-        callback(err, null);
-      }
-      callback(null, result);
-    });
-  }
-
   if (tablename == "product") {
     let sql = `INSERT INTO product(
       p_categoryid,
