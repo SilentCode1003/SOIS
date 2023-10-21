@@ -60,3 +60,22 @@ router.post("/save", (req, res) => {
     });
   }
 });
+
+router.post("/getname", (req, res) => {
+  try {
+    const { id } = req.body;
+    let sql = `select mat_name from master_access_type where mat_id = '${id}'`;
+    Select(sql, "MasterAccessType", (err, result) => {
+      if (err) console.log("Error: ", err);
+      
+      res.json({
+        msg: "success",
+        data: result,
+      });
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});

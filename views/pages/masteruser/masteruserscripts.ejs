@@ -116,29 +116,40 @@
                 tableBody.append(tr);
             } else {
                 data.forEach(item => {
-                    let action = '';
-                    if (item.status === 'ACTIVE') {
-                        action = `<button id="editBtn" class="btn btn-outline-primary shadow-sm w-100" name="editBtn" data-toggle="modal" data-target="#accessModal">EDIT</button>
-                        <button id="inactiveBtn" class="btn btn-outline-danger shadow-sm w-100 mt-1" name="inactiveBtn">INACTIVE</button>`;
-                    } else if (item.status === 'INACTIVE') {
-                        action = `<button id="editBtn" class="btn btn-outline-primary shadow-sm w-100" name="editBtn" data-toggle="modal" data-target="#accessModal">EDIT</button>
-                        <button id="activeBtn" class="btn btn-outline-success shadow-sm w-100 mt-1" name="activeBtn">ACTIVE</button>`;
-                    }
+                    $.ajax({
+                        type: 'POST',
+                        url: '/masteraccess/getname',
+                        data: {
+                            id: item.accessid
+                        },
+                        success: function (result) {
+                            let data = result.data;
+                            accessname = data[0].name;
+                            let action = '';
+                            if (item.status === 'ACTIVE') {
+                                action = `<button id="editBtn" class="btn btn-outline-primary shadow-sm w-100" name="editBtn" data-toggle="modal" data-target="#accessModal">EDIT</button>
+                                <button id="inactiveBtn" class="btn btn-outline-danger shadow-sm w-100 mt-1" name="inactiveBtn">INACTIVE</button>`;
+                            } else if (item.status === 'INACTIVE') {
+                                action = `<button id="editBtn" class="btn btn-outline-primary shadow-sm w-100" name="editBtn" data-toggle="modal" data-target="#accessModal">EDIT</button>
+                                <button id="activeBtn" class="btn btn-outline-success shadow-sm w-100 mt-1" name="activeBtn">ACTIVE</button>`;
+                            }
 
-                    const tr = $('<tr>').append(
-                        $('<td>', { text: item.id, 'data-label': 'Employee ID', class: 'custom-mobile-align' }),
-                        $('<td>', { text: item.employeeid, 'data-label': 'First Name', class: 'custom-mobile-align no-wrap' }),
-                        $('<td>', { text: item.fullname, 'data-label': 'Middle Name', class: 'custom-mobile-align' }),
-                        $('<td>', { text: item.username, 'data-label': 'Last Name', class: 'custom-mobile-align' }),
-                        $('<td>', { text: item.password, 'data-label': 'Position', class: 'custom-mobile-align' }),
-                        $('<td>', { text: item.accessid, 'data-label': 'Access Type', class: 'custom-mobile-align' }),
-                        $('<td>', { text: item.status, 'data-label': 'Status', class: 'custom-mobile-align' }),
-                        $('<td>', { text: item.createdby, 'data-label': 'Created By', class: 'custom-mobile-align no-wrap' }),
-                        $('<td>', { text: item.createddate, 'data-label': 'Created Date', class: 'custom-mobile-align no-wrap' }),
-                        $('<td>', { html: action, 'data-label': 'Action', class: '' })
-                    );
+                            const tr = $('<tr>').append(
+                                $('<td>', { text: item.id, 'data-label': 'Employee ID', class: 'custom-mobile-align' }),
+                                $('<td>', { text: item.employeeid, 'data-label': 'First Name', class: 'custom-mobile-align no-wrap' }),
+                                $('<td>', { text: item.fullname, 'data-label': 'Middle Name', class: 'custom-mobile-align' }),
+                                $('<td>', { text: item.username, 'data-label': 'Last Name', class: 'custom-mobile-align' }),
+                                $('<td>', { text: item.password, 'data-label': 'Position', class: 'custom-mobile-align' }),
+                                $('<td>', { text: accessname, 'data-label': 'Access Type', class: 'custom-mobile-align' }),
+                                $('<td>', { text: item.status, 'data-label': 'Status', class: 'custom-mobile-align' }),
+                                $('<td>', { text: item.createdby, 'data-label': 'Created By', class: 'custom-mobile-align no-wrap' }),
+                                $('<td>', { text: item.createddate, 'data-label': 'Created Date', class: 'custom-mobile-align no-wrap' }),
+                                $('<td>', { html: action, 'data-label': 'Action', class: '' })
+                            );
 
-                    tableBody.append(tr);
+                            tableBody.append(tr);
+                        }
+                    });
                 });
             }
         }
