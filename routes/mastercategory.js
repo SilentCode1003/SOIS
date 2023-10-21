@@ -10,6 +10,7 @@ const {
 
 const helper = require("./repository/customhelper.js");
 const disctionary = require("./repository/dictionary.js");
+const { MasterProductCategory } = require("./model/soismodel.js");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -21,14 +22,22 @@ module.exports = router;
 router.get("/load", (req, res) => {
   try {
     let sql = `select * from master_product_category`;
-    Select(sql,  (err, result) => {
+    Select(sql, (err, result) => {
       if (err) console.log("Error: ", err);
+      if (result.length != 0) {
+        let data = MasterProductCategory(result);
+        console.log(data);
 
-      console.log(result);
-      res.json({
-        msg: "success",
-        data: result,
-      });
+        res.json({
+          msg: "success",
+          data: data,
+        });
+      } else {
+        res.json({
+          msg: "success",
+          data: result,
+        });
+      }
     });
   } catch (error) {
     res.json({
@@ -41,19 +50,24 @@ router.post("/save", (req, res) => {
   try {
     const { name } = req.body;
     let status = disctionary.GetValue(disctionary.ACT());
-    let createdby = req.session.fullname == null ? 'TESTER' : req.session.fullname;
+    let createdby =
+      req.session.fullname == null ? "TESTER" : req.session.fullname;
     let createddate = helper.GetCurrentDatetime();
     let master_product_category = [[name, status, createdby, createddate]];
 
-    InsertTable("master_product_category", master_product_category, (err, result) => {
-      if (err) console.error("Error: ", err);
+    InsertTable(
+      "master_product_category",
+      master_product_category,
+      (err, result) => {
+        if (err) console.error("Error: ", err);
 
-      console.log(result);
+        console.log(result);
 
-      res.json({
-        msg: "success",
-      });
-    });
+        res.json({
+          msg: "success",
+        });
+      }
+    );
   } catch (error) {
     res.json({
       msg: error,
