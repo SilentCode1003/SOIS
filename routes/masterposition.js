@@ -62,3 +62,23 @@ router.post("/save", (req, res) => {
     });
   }
 });
+
+router.post("/getname", (req, res) => {
+  try {
+    const { id } = req.body;
+    let sql = `select mp_name from master_position where mp_id = '${id}'`;
+
+    Select(sql, "MasterPosition", (err, result) => {
+      if (err) console.log("Error: ", err);
+
+      res.json({
+        msg: "success",
+        data: result,
+      });
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
