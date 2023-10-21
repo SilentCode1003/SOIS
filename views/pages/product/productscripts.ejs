@@ -119,7 +119,7 @@
                         $('<td>', { text: item.categoryid, 'data-label': 'Category', class: 'custom-mobile-align no-wrap' }),
                         $('<td>', { text: item.description, 'data-label': 'Description', class: 'custom-mobile-align' }),
                         $('<td>', { text: item.barcode, 'data-label': 'Barcode', class: 'custom-mobile-align' }),
-                        $('<td>', { text: item.price, 'data-label': 'Price', class: 'custom-mobile-align' }),
+                        $('<td>', { text: formatCurrency(item.price), 'data-label': 'Price', class: 'custom-mobile-align' }),
                         $('<td>', { text: item.status, 'data-label': 'Status', class: 'custom-mobile-align' }),
                         $('<td>', { text: item.createdby, 'data-label': 'Created By', class: 'custom-mobile-align no-wrap' }),
                         $('<td>', { text: item.createddate, 'data-label': 'Created Date', class: 'custom-mobile-align no-wrap' }),

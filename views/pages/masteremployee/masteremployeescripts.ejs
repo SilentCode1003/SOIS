@@ -165,29 +165,47 @@
             });
         }
     
-        // function LoadList() {
-        //     $.ajax({
-        //         type: 'GET',
-        //         url: '/position/load',
-        //         success: function (result) {
-        //             var data = result.data;
+        function LoadList() {
+            $.ajax({
+                type: 'GET',
+                url: '/masterposition/load',
+                success: function (result) {
+                    var data = result.data;
     
-        //             $.each(data, function (key, item) {
-        //                 if (item.status == "ACTIVE") {
-        //                     activePositions.push(item.positionname); 
-        //                     var options = new Option(item.positionname, item.positionname);
-        //                     $(options).html(item.positionname);
-        //                     $('#positionlist').append(options);
-        //                 }
-        //             });
-        //             //console.log(activePositions);
-        //             populateCustomDropdown();
-        //         },
-        //         error: function (err) {
-        //             errormsg(err);
-        //         }
-        //     });
-        // }
+                    $.each(data, function (key, item) {
+                        if (item.status == "ACTIVE") {
+                            var options = new Option(item.name, item.id);
+                            $('#position').append(options);
+                        }
+                    });
+                    //console.log(activePositions);
+                    populateCustomDropdown();
+                },
+                error: function (err) {
+                    errormsg(err);
+                }
+            });
+
+            $.ajax({
+                type: 'GET',
+                url: '/masteraccess/load',
+                success: function (result) {
+                    var data = result.data;
+    
+                    $.each(data, function (key, item) {
+                        if (item.status == "ACTIVE") {
+                            var options = new Option(item.name, item.id);
+                            $('#accesstype').append(options);
+                        }
+                    });
+                    //console.log(activePositions);
+                    populateCustomDropdown();
+                },
+                error: function (err) {
+                    errormsg(err);
+                }
+            });
+        }
     
         $(document).on('click', '#activeBtn', function(){
             console.log(employeeid);
@@ -287,7 +305,7 @@
             }
         })
     
-        // LoadList()
+        LoadList()
     
     })
 </script>
