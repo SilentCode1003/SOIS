@@ -1,3 +1,25 @@
+const {
+  MasterUserModel,
+  MasterEmployeeModel,
+  MasterAccessTypeModel,
+  MasterPositionModel,
+  MasterPaymentModel,
+  MasterProductCategoryModel,
+  MasterPOSModel,
+  MasteStoreModel,
+  ProductModel,
+  SalesDetailModel,
+  SalesItemModel,
+  CustomerModel,
+  CustomerOrderModel,
+  RequestOrderModel,
+  CustomerCreditModel,
+  BalanceHistoryModel,
+  ProdcutInventoryModel,
+  InventoryHistoryModel,
+  SalesInventoryModel,
+} = require("./model");
+
 exports.MasterEmployee = (data) => {
   let dataResult = [];
 
@@ -17,7 +39,22 @@ exports.MasterEmployee = (data) => {
     });
   });
 
-  return dataResult;
+  return dataResult.map(
+    (key) =>
+      new MasterEmployeeModel(
+        key["id"],
+        key["firstname"],
+        key["middlename"],
+        key["lastname"],
+        key["position"],
+        key["accesstype"],
+        key["contactno"],
+        key["datehire"],
+        key["status"],
+        key["createdby"],
+        key["createddate"]
+      )
+  );
 };
 
 exports.MasterAccessType = (data) => {
@@ -33,7 +70,16 @@ exports.MasterAccessType = (data) => {
     });
   });
 
-  return dataResult;
+  return dataResult.map(
+    (key) =>
+      new MasterAccessTypeModel(
+        key["id"],
+        key["name"],
+        key["status"],
+        key["createdby"],
+        key["createddate"]
+      )
+  );
 };
 
 exports.MasterPosition = (data) => {
@@ -49,7 +95,16 @@ exports.MasterPosition = (data) => {
     });
   });
 
-  return dataResult;
+  return dataResult.map(
+    (key) =>
+      new MasterPositionModel(
+        key["id"],
+        key["name"],
+        key["status"],
+        key["createdby"],
+        key["createddate"]
+      )
+  );
 };
 
 exports.MasterPayment = (data) => {
@@ -65,7 +120,16 @@ exports.MasterPayment = (data) => {
     });
   });
 
-  return dataResult;
+  return dataResult.map(
+    (key) =>
+      new MasterPaymentModel(
+        key["id"],
+        key["name"],
+        key["status"],
+        key["createdby"],
+        key["createddate"]
+      )
+  );
 };
 
 exports.MasterProductCategory = (data) => {
@@ -81,7 +145,16 @@ exports.MasterProductCategory = (data) => {
     });
   });
 
-  return dataResult;
+  return dataResult.map(
+    (key) =>
+      new MasterProductCategoryModel(
+        key["id"],
+        key["name"],
+        key["status"],
+        key["createdby"],
+        key["createddate"]
+      )
+  );
 };
 
 exports.MasterUser = (data) => {
@@ -101,7 +174,20 @@ exports.MasterUser = (data) => {
     });
   });
 
-  return dataResult;
+  return dataResult.map(
+    (key) =>
+      new MasterUserModel(
+        key["id"],
+        key["employeeid"],
+        key["fullname"],
+        key["username"],
+        key["password"],
+        key["accessid"],
+        key["status"],
+        key["createdby"],
+        key["createddate"]
+      )
+  );
 };
 
 exports.MasterPOS = (data) => {
@@ -118,7 +204,17 @@ exports.MasterPOS = (data) => {
     });
   });
 
-  return dataResult;
+  return dataResult.map(
+    (key) =>
+      new MasterPOSModel(
+        key["id"],
+        key["name"],
+        key["serial"],
+        key["min"],
+        key["ptu"],
+        key["status"]
+      )
+  );
 };
 
 exports.MasterStore = (data) => {
@@ -135,7 +231,17 @@ exports.MasterStore = (data) => {
     });
   });
 
-  return dataResult;
+  return dataResult.map(
+    (key) =>
+      new MasteStoreModel(
+        key["id"],
+        key["name"],
+        key["logo"],
+        key["address"],
+        key["contact"],
+        key["message"]
+      )
+  );
 };
 
 exports.Product = (data) => {
@@ -154,7 +260,19 @@ exports.Product = (data) => {
     });
   });
 
-  return dataResult;
+  return dataResult.map(
+    (key) =>
+      new ProductModel(
+        key["id"],
+        key["categoryid"],
+        key["description"],
+        key["barcode"],
+        key["price"],
+        key["status"],
+        key["createdby"],
+        key["createddate"]
+      )
+  );
 };
 
 exports.SalesDetail = (data) => {
@@ -171,7 +289,17 @@ exports.SalesDetail = (data) => {
     });
   });
 
-  return dataResult;
+  return dataResult.map(
+    (key) =>
+      new SalesDetailModel(
+        key["id"],
+        key["date"],
+        key["cashier"],
+        key["paymenttype"],
+        key["details"],
+        key["total"]
+      )
+  );
 };
 
 exports.SalesItem = (data) => {
@@ -188,7 +316,17 @@ exports.SalesItem = (data) => {
     });
   });
 
-  return dataResult;
+  return dataResult.map(
+    (key) =>
+      new SalesItemModel(
+        key["id"],
+        key["detailid"],
+        key["description"],
+        key["price"],
+        key["quantity"],
+        key["total"]
+      )
+  );
 };
 
 exports.Customer = (data) => {
@@ -207,7 +345,17 @@ exports.Customer = (data) => {
     });
   });
 
-  return dataResult;
+  return dataResult.map(
+    (key) =>
+      new CustomerModel(
+        key["id"],
+        key["detailid"],
+        key["description"],
+        key["price"],
+        key["quantity"],
+        key["total"]
+      )
+  );
 };
 
 exports.CustomerOrder = (data) => {
@@ -225,7 +373,18 @@ exports.CustomerOrder = (data) => {
     });
   });
 
-  return dataResult;
+  return dataResult.map(
+    (key) =>
+      new CustomerOrderModel(
+        key["id"],
+        key["customerid"],
+        key["date"],
+        key["details"],
+        key["total"],
+        key["paymenttype"],
+        key["status"]
+      )
+  );
 };
 
 exports.RequestOrder = (data) => {
@@ -240,7 +399,15 @@ exports.RequestOrder = (data) => {
     });
   });
 
-  return dataResult;
+  return dataResult.map(
+    (key) =>
+      new RequestOrderModel(
+        key["id"],
+        key["customerorderid"],
+        key["date"],
+        key["status"]
+      )
+  );
 };
 
 exports.CustomerCredit = (data) => {
@@ -255,7 +422,15 @@ exports.CustomerCredit = (data) => {
     });
   });
 
-  return dataResult;
+  return dataResult.map(
+    (key) =>
+      new CustomerCreditModel(
+        key["id"],
+        key["customerid"],
+        key["balance"],
+        key["status"]
+      )
+  );
 };
 
 exports.BalanceHistory = (data) => {
@@ -271,7 +446,16 @@ exports.BalanceHistory = (data) => {
     });
   });
 
-  return dataResult;
+  return dataResult.map(
+    (key) =>
+      new BalanceHistoryModel(
+        key["id"],
+        key["creditid"],
+        key["date"],
+        key["amount"],
+        key["type"]
+      )
+  );
 };
 
 exports.ProdcutInventory = (data) => {
@@ -285,7 +469,10 @@ exports.ProdcutInventory = (data) => {
     });
   });
 
-  return dataResult;
+  return dataResult.map(
+    (key) =>
+      new ProdcutInventoryModel(key["id"], key["productid"], key["quantity"])
+  );
 };
 
 exports.InventoryHistory = (data) => {
@@ -302,7 +489,17 @@ exports.InventoryHistory = (data) => {
     });
   });
 
-  return dataResult;
+  return dataResult.map(
+    (key) =>
+      new InventoryHistoryModel(
+        key["id"],
+        key["date"],
+        key["inventoryid"],
+        key["productid"],
+        key["quantity"],
+        key["type"]
+      )
+  );
 };
 
 exports.SalesInventory = (data) => {
@@ -317,5 +514,13 @@ exports.SalesInventory = (data) => {
     });
   });
 
-  return dataResult;
+  return dataResult.map(
+    (key) =>
+      new SalesInventoryModel(
+        key["id"],
+        key["detailid"],
+        key["productid"],
+        key["posid"]
+      )
+  );
 };

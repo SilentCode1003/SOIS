@@ -71,93 +71,32 @@ exports.InsertMultiple = async (stmt, todos) => {
   }
 };
 
-exports.Select = (sql, table, callback) => {
+exports.Select = (sql, callback) => {
   try {
     connection.connect((err) => {
       return err;
     });
     connection.query(sql, (error, results, fields) => {
-      // console.log(results);
-
       if (error) {
-        callback(error, null);
+        return callback(error, null);
       }
 
-      if (table == "MasterEmployee") {
-        callback(null, model.MasterEmployee(results));
-      }
-
-      if (table == "MasterAccessType") {
-        callback(null, model.MasterAccessType(results));
-      }
-
-      if (table == "MasterPosition") {
-        callback(null, model.MasterPosition(results));
-      }
-
-      if (table == "MasterPayment") {
-        callback(null, model.MasterPayment(results));
-      }
-
-      if (table == "MasterProductCategory") {
-        callback(null, model.MasterProductCategory(results));
-      }
-
-      if (table == "MasterUser") {
-        callback(null, model.MasterUser(results));
-      }
-
-      if (table == "MasterPOS") {
-        callback(null, model.MasterPOS(results));
-      }
-
-      if (table == "MasterStore") {
-        callback(null, model.MasterStore(results));
-      }
-
-      if (table == "BalanceHistory") {
-        callback(null, model.BalanceHistory(results));
-      }
-
-      if (table == "Customer") {
-        callback(null, model.Customer(results));
-      }
-
-      if (table == "CustomerCredit") {
-        callback(null, model.CustomerCredit(results));
-      }
-
-      if (table == "CustomerOrder") {
-        callback(null, model.CustomerOrder(results));
-      }
-
-      if (table == "InventoryHistory") {
-        callback(null, model.InventoryHistory(results));
-      }
-
-      if (table == "Product") {
-        callback(null, model.Product(results));
-      }
-
-      if (table == "ProdcutInventory") {
-        callback(null, model.ProdcutInventory(results));
-      }
-
-      if (table == "RequestOrder") {
-        callback(null, model.RequestOrder(results));
-      }
-
-      if (table == "SalesDetail") {
-        callback(null, model.SalesDetail(results));
-      }
-
-      if (table == "SalesItem") {
-        callback(null, model.SalesItem(results));
-      }
+      callback(null, results);
     });
   } catch (error) {
     console.log(error);
   }
+};
+
+exports.SelectParameter = (sql, condition, callback) => {
+  connection.query(sql, [condition], (error, results, fields) => {
+    if (error) {
+      return callback(error, null);
+    }
+    console.log(results);
+
+    callback(null, results);
+  });
 };
 
 exports.StoredProcedure = (sql, data, callback) => {
