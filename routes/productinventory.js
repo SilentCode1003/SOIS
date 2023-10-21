@@ -20,7 +20,7 @@ module.exports = router;
 router.get("/load", (req, res) => {
   try {
     let sql = `select * from product_inventory`;
-    Select(sql, "ProdcutInventory", (err, result) => {
+    Select(sql, (err, result) => {
       if (err) console.log("Error: ", err);
 
       console.log(result);

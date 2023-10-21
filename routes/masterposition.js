@@ -10,6 +10,7 @@ const {
 
 const helper = require("./repository/customhelper.js");
 const disctionary = require("./repository/dictionary.js");
+const { MasterPosition } = require("./model/soismodel.js");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -22,14 +23,22 @@ router.get("/load", (req, res) => {
   try {
     let sql = `select * from master_position`;
 
-    Select(sql, "MasterPosition", (err, result) => {
+    Select(sql, (err, result) => {
       if (err) console.log("Error: ", err);
+      if (result.length != 0) {
+        let data = MasterPosition(result);
+        console.log(data);
 
-      console.log(result);
-      res.json({
-        msg: "success",
-        data: result,
-      });
+        res.json({
+          msg: "success",
+          data: data,
+        });
+      } else {
+        res.json({
+          msg: "success",
+          data: result,
+        });
+      }
     });
   } catch (error) {
     res.json({
@@ -68,12 +77,15 @@ router.post("/getname", (req, res) => {
     const { id } = req.body;
     let sql = `select mp_name from master_position where mp_id = '${id}'`;
 
-    Select(sql, "MasterPosition", (err, result) => {
+    Select(sql, (err, result) => {
       if (err) console.log("Error: ", err);
+      let data = MasterPosition(result);
+
+      console.log(data);
 
       res.json({
         msg: "success",
-        data: result,
+        data: data,
       });
     });
   } catch (error) {
