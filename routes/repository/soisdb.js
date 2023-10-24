@@ -340,6 +340,22 @@ exports.InsertTable = (tablename, data, callback) => {
     });
   }
 
+  if (tablename == "master_store") {
+    let sql = `INSERT INTO master_store(
+      ms_name,
+      ms_logo,
+      ms_address,
+      ms_contact,
+      ms_message) VALUES ?`;
+
+    this.Insert(sql, data, (err, result) => {
+      if (err) {
+        callback(err, null);
+      }
+      callback(null, result);
+    });
+  }
+
   if (tablename == "product") {
     let sql = `INSERT INTO product(
       p_categoryid,
@@ -362,6 +378,7 @@ exports.InsertTable = (tablename, data, callback) => {
   if (tablename == "sales_detail") {
     let sql = `INSERT INTO sales_detail(
       sd_id,
+      sd_posid,
       sd_date,
       sd_cashier,
       sd_paymenttype,
