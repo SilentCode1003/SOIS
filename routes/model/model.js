@@ -193,13 +193,10 @@ class CustomerOrderModel {
 }
 
 class RequestOrderModel {
-  constructor(id, customerid, date, details, total, paymenttype, status) {
+  constructor(id, customerorderid, date, status) {
     this.id = id;
-    this.customerid = customerid;
+    this.customerorderid = customerorderid;
     this.date = date;
-    this.details = details;
-    this.total = total;
-    this.paymenttype = paymenttype;
     this.status = status;
   }
 }
