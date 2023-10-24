@@ -361,6 +361,7 @@ exports.InsertTable = (tablename, data, callback) => {
 
   if (tablename == "sales_detail") {
     let sql = `INSERT INTO sales_detail(
+      sd_id,
       sd_date,
       sd_cashier,
       sd_paymenttype,

@@ -9,6 +9,7 @@ const {
 } = require("./repository/soisdb.js");
 
 const helper = require("./repository/customhelper.js");
+const { ProdcutInventory } = require('./model/soismodel.js');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -23,11 +24,20 @@ router.get("/load", (req, res) => {
     Select(sql, (err, result) => {
       if (err) console.log("Error: ", err);
 
-      console.log(result);
-      res.json({
-        msg: "success",
-        data: result,
-      });
+      if (result.length != 0) {
+        let data = ProdcutInventory(result);
+        console.log(data);
+
+        res.json({
+          msg: "success",
+          data: data,
+        });
+      } else {
+        res.json({
+          msg: "success",
+          data: result,
+        });
+      }
     });
   } catch (error) {
     res.json({
