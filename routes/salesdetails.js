@@ -47,8 +47,10 @@ router.get("/load", (req, res) => {
 
 router.post("/save", (req, res) => {
   try {
-    const { id, date, cashier, paymenttype, details, total } = req.body;
-    let sales_detail = [[id, date, cashier, paymenttype, details, total]];
+    const { id, posid, date, cashier, paymenttype, details, total } = req.body;
+    let sales_detail = [
+      [id, posid, date, cashier, paymenttype, details, total],
+    ];
 
     InsertTable("sales_detail", sales_detail, (err, result) => {
       if (err) console.error("Error: ", err);
@@ -69,7 +71,7 @@ router.post("/save", (req, res) => {
 router.post("/getdetailid", (req, res) => {
   try {
     const { posid } = req.body;
-    let sql = "select * from sales_detail where sd_posid"
+    let sql = "select * from sales_detail where sd_posid";
   } catch (error) {
     res.json({
       msg: error,
