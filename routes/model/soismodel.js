@@ -351,11 +351,13 @@ exports.Customer = (data) => {
     (key) =>
       new CustomerModel(
         key["id"],
-        key["detailid"],
-        key["description"],
-        key["price"],
-        key["quantity"],
-        key["total"]
+        key["firstname"],
+        key["middlename"],
+        key["lastname"],
+        key["contactnumber"],
+        key["gender"],
+        key["address"],
+        key["registereddate"]
       )
   );
 };
