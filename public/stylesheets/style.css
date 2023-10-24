@@ -157,6 +157,11 @@ main {
   align-items: stretch;
 }
 
+.align-center{
+  text-align: center !important;
+  vertical-align: middle!important;
+}
+
 /* ---------------------------------------------------
   MEDIAQUERIES
 ----------------------------------------------------- */
