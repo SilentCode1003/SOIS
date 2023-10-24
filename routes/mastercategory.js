@@ -6,6 +6,7 @@ const {
   Select,
   SelectResult,
   UpdateMultiple,
+  SelectParameter,
 } = require("./repository/soisdb.js");
 
 const helper = require("./repository/customhelper.js");
@@ -68,6 +69,30 @@ router.post("/save", (req, res) => {
         });
       }
     );
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
+
+router.get("/getactive", (req, res) => {
+  try {
+    let status = disctionary.GetValue(disctionary.ACT());
+    let condition = [status];
+    let sql = `select * from master_product_category where mpc_status=?`;
+
+    SelectParameter(sql, condition, (err, result) => {
+      if (err) console.error("Error: ", err);
+
+      let data = MasterProductCategory(result);
+      console.log(data);
+
+      res.json({
+        msg: "success",
+        data: data,
+      });
+    });
   } catch (error) {
     res.json({
       msg: error,

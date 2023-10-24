@@ -10,6 +10,7 @@ const {
 
 const helper = require("./repository/customhelper.js");
 const dictionary = require("./repository/dictionary.js");
+const { CustomerOrder } = require("./model/soismodel.js");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -23,12 +24,20 @@ router.get("/load", (req, res) => {
     let sql = `select * from customer_order`;
     Select(sql, (err, result) => {
       if (err) console.log("Error: ", err);
+      if (result.length != 0) {
+        let data = CustomerOrder(result);
+        console.log(data);
 
-      console.log(result);
-      res.json({
-        msg: "success",
-        data: result,
-      });
+        res.json({
+          msg: "success",
+          data: data,
+        });
+      } else {
+        res.json({
+          msg: "success",
+          data: result,
+        });
+      }
     });
   } catch (error) {
     res.json({

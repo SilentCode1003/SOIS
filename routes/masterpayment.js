@@ -10,6 +10,7 @@ const {
 
 const helper = require("./repository/customhelper.js");
 const disctionary = require("./repository/dictionary.js");
+const { MasterPayment } = require("./model/soismodel.js");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -21,14 +22,23 @@ module.exports = router;
 router.get("/load", (req, res) => {
   try {
     let sql = `select * from master_payment`;
-    Select(sql,  (err, result) => {
+    Select(sql, (err, result) => {
       if (err) console.log("Error: ", err);
 
-      console.log(result);
-      res.json({
-        msg: "success",
-        data: result,
-      });
+      if (result.length != 0) {
+        let data = MasterPayment(result);
+        console.log(data);
+
+        res.json({
+          msg: "success",
+          data: data,
+        });
+      } else {
+        res.json({
+          msg: "success",
+          data: result,
+        });
+      }
     });
   } catch (error) {
     res.json({
@@ -44,7 +54,7 @@ router.post("/save", (req, res) => {
     let createdby =
       req.session.fullname == null ? "TESTER" : req.session.fullname;
     let createddate = helper.GetCurrentDatetime();
-    let master_payment = [[name, createddate, createdby, status,]];
+    let master_payment = [[name, createddate, createdby, status]];
 
     InsertTable("master_payment", master_payment, (err, result) => {
       if (err) console.error("Error: ", err);

@@ -9,6 +9,7 @@ const {
 } = require("./repository/soisdb.js");
 
 const helper = require("./repository/customhelper.js");
+const { SalesDetail } = require("./model/soismodel.js");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -22,12 +23,20 @@ router.get("/load", (req, res) => {
     let sql = `select * from sales_detail`;
     Select(sql, (err, result) => {
       if (err) console.log("Error: ", err);
+      if (result.length != 0) {
+        let data = SalesDetail(result);
+        console.log(data);
 
-      console.log(result);
-      res.json({
-        msg: "success",
-        data: result,
-      });
+        res.json({
+          msg: "success",
+          data: data,
+        });
+      } else {
+        res.json({
+          msg: "success",
+          data: result,
+        });
+      }
     });
   } catch (error) {
     res.json({
@@ -38,8 +47,8 @@ router.get("/load", (req, res) => {
 
 router.post("/save", (req, res) => {
   try {
-    const { date, cashier, paymenttype, details, total } = req.body;
-    let sales_detail = [[date, cashier, paymenttype, details, total]];
+    const { id, date, cashier, paymenttype, details, total } = req.body;
+    let sales_detail = [[id, date, cashier, paymenttype, details, total]];
 
     InsertTable("sales_detail", sales_detail, (err, result) => {
       if (err) console.error("Error: ", err);
@@ -50,6 +59,17 @@ router.post("/save", (req, res) => {
         msg: "success",
       });
     });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
+
+router.post("/getdetailid", (req, res) => {
+  try {
+    const { posid } = req.body;
+    let sql = "select * from sales_detail where sd_posid"
   } catch (error) {
     res.json({
       msg: error,
