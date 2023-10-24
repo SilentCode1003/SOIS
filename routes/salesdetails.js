@@ -47,7 +47,8 @@ router.get("/load", (req, res) => {
 
 router.post("/save", (req, res) => {
   try {
-    const { id, posid, date, cashier, paymenttype, details, total } = req.body;
+    const { id, posid, cashier, paymenttype, details, total } = req.body;
+    let date = helper.GetCurrentDate();
     let sales_detail = [
       [id, posid, date, cashier, paymenttype, details, total],
     ];
