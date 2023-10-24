@@ -8,6 +8,11 @@
 <!-- Core plugin JavaScript-->
 <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
+<!-- DATE RANGE PICKER -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
 <!-- PCreated by level plugins -->
 <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
 <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
@@ -234,5 +239,14 @@
         });
     });
   });
+
+    $('#dateRange').daterangepicker({
+        opens: 'left',
+        locale: {
+            format: 'YYYY-MM-DD',
+            separator: ' to '
+        }
+    });
+    $('#dateRange').val('');
 
 </script>

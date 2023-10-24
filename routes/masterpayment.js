@@ -27,7 +27,6 @@ router.get("/load", (req, res) => {
 
       if (result.length != 0) {
         let data = MasterPayment(result);
-        console.log(data);
 
         res.json({
           msg: "success",

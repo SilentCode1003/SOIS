@@ -141,6 +141,15 @@ td{
   z-index: 1;
 }
 
+.sois-link{
+  color: red !important;
+  cursor: pointer;
+}
+
+.modal-dialog{
+  max-width: 1000px !important;
+}
+
 /* ---------------------------------------------------
   CONTENT STYLE
 ----------------------------------------------------- */
@@ -155,6 +164,11 @@ td{
 main {
   display: flex;
   align-items: stretch;
+}
+
+.align-center{
+  text-align: center !important;
+  vertical-align: middle!important;
 }
 
 /* ---------------------------------------------------

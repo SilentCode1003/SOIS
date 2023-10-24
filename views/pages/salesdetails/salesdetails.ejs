@@ -1,139 +1,94 @@
+<div class="modal fade bd-example-modal-lg" id="sales-details-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header custom-bg">
+              <h5 class="modal-title" id="exampleModalLabel">Sales Items</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="custom-modal-body">
+              <div class="card shadow">
+                  <div class="card-header py-3 header-bg">
+                      <h6 class="m-0 font-weight-bold table-title">Sales Items Data:</h6>
+                  </div>
+                  <div class="card-body">
+                      <div class="table-responsive scrollable-table-container">
+                          <table class="table table-bordered custom-mobile-table" id="category-dataTable" width="100%" cellspacing="10">
+                              <thead class="table-header">
+                                  <tr>
+                                      <th class = "col-1">ID</th>
+                                      <th class = "col-3">Detail ID</th>
+                                      <th class = "col-3">Description</th>
+                                      <th class = "col-2">PRice</th>
+                                      <th class = "col-1">Quantity</th>
+                                      <th class = "col-2">Total</th>               
+                                  </tr>
+                              </thead>          
+                              <tbody>
+                              </tbody>
+                          </table>
+                      </div>
+                      
+                  </div>
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-outline-inventory" data-dismiss="modal">Close</button>
+          </div>
+      </div>
+  </div>
+</div>
+
 <!-- Main Content Area -->
 <div class="page-holder">
-    <!-- ENTRIES CALLER -->
-    <div class="col-12 ml-auto d-flex justify-content-end button-holder">
-      <!-- SHOW ENTRIES -->
-      <button class="btn btn-dark mr-1" id="showButton">Entries</button>
-      <!-- HIDE ENTRIES -->
-      <button class="btn btn-danger" id="hideButton">Close</button>
-    </div>
-    
-    <!-- ENTRIES -->
-    <div class="mt-3" id="targetDiv" style="display: none;">
-        <!-- PAGE TITLE -->
-          <div class="col-sm-12 top-title-bar">
-            <label id="tittle-bar">CONTENT ENTRIES</label>
-          </div>
-
-        <!-- ENTRIES CONTAINER -->
-          <div class="col-md-12 entry-container">
-            <div>
-              <!-- <form class="needs-validation combined-form" novalidate> -->
-                <div class="form-row">
-                  <div class="col-md-4 mb-3">
-                    <label for="c_pagename">Page Title</label>
-                    <input id="c_pagename" name="c_pagename" type="text" class="form-control" id="p_name" placeholder="Product Name" required/>
-                  </div>
-
-                  <div class="col-md-4 mb-3">
-                    <label for="c_pagecontent">Page Content</label>
-                    <input id="c_pagecontent" name="c_pagecontent" type="text" class="form-control" id="p_price" placeholder="Product Price" step="0.01" required/>
-                  </div>
-
-                  <div class="col-md-4 mb-3">
-                    <label for="c_pageclick">Number of Clicks</label>
-                    <input id="c_pageclick" name="c_pageclick" type="text" class="form-control" id="p_price" placeholder="Product Price" step="0.01" required/>
-                  </div>
-
-                  <div class="col-md-4 mb-3">
-                    <label for="c_publishdate">Publish Date</label>
-                    <input id="c_publishdate" name="c_publishdate" type="text" class="form-control" id="p_price" placeholder="Product Price" step="0.01" required/>
-                  </div>
-                </div>
-
-                <button id="addbtncontent" class="btn btn-success" type="submit">+ Add</button>
-              <!-- </form> -->
-            </div>
-          </div>
-        <!-- CONTAINER END -->
-    </div>
-    <!-- END ENTRIES -->
-
-  <!-- TABLE TITLE -->
-  <div class="col-sm-12 mid-title-bar">
-    <label id="tittle-bar">CONTENT TABLE</label>
-  </div>
-    
-  <!-- TABLE -->
-  <div class="col-md-12 table-container">
-      <table id="page-table" class="table">
-        <thead>
-            <th>Page ID</th>
-            <th>Page Title</th>
-            <th>Page Content</th>
-            <th>Page Clicks</th>
-            <th>Content Date</th>
-            <th>Action</th> 
-        </thead>
-        <tbody></tbody>
-      </table>
-  </div>
-
-  <!-- ------------------------------------------------------------------------------------------
-       ------------------------------------------ BLOG ------------------------------------------
-       ------------------------------------------------------------------------------------------ -->
 
   <!-- ENTRIES CALLER -->
-  <div class="col-12 ml-auto mt-3 d-flex justify-content-end button-holder">
+  <div class="col-12 ml-auto mt-3 d-flex justify-content-center button-holder">
     <!-- SHOW ENTRIES -->
-    <button class="btn btn-dark mr-1" id="showButton2">Entries</button>
+    <div class="col-3">
+      <div class="input-group">
+          <div class="input-group-prepend">
+              <span class="input-group-text label-width" id="basic-addon2">Date:</span>
+          </div>
+          <input id="dateRange" name="dateRange" type="text" class="form-control" placeholder="Select Date Range" aria-describedby="basic-addon1">
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="input-group">
+          <div class="input-group-prepend">
+              <span class="input-group-text label-width" id="basic-addon2">POS:</span>
+          </div>
+          <input id="posid" name="posid" type="text" class="form-control" placeholder="Enter POS ID" aria-label="fullname" aria-describedby="basic-addon1">
+      </div>
+    </div>
     <!-- HIDE ENTRIES -->
-    <button class="btn btn-danger" id="hideButton2">Close</button>
+    <button class="btn btn-success" id="filter">Filter</button>
   </div>
 
-    <!-- ENTRIES -->
-    <div class="mt-3" id="targetDiv2" style="display: none;">
-        <!-- PAGE TITLE -->
-          <div class="col-sm-12 top-title-bar">
-            <label id="tittle-bar">BLOG ENTRIES</label>
-          </div>
+  <!-- ENTRIES -->
 
-        <!-- ENTRIES CONTAINER -->
-          <div class="col-md-12 entry-container">
-            <div>
-              <!-- <form class="needs-validation combined-form" novalidate> -->
-                <div class="form-row">
-                  <div class="col-md-4 mb-3">
-                    <label for="b_title">Title</label>
-                    <input id="b_title" name="b_title" type="text" class="form-control" id="p_name" placeholder="Product Name" required/>
-                  </div>
-
-                  <div class="col-md-4 mb-3">
-                    <label for="b_blogcontent">Content</label>
-                    <input id="b_blogcontent" name="b_blogcontent" type="text" class="form-control" id="p_price" placeholder="Product Price" step="0.01" required/>
-                  </div>
-
-                  <div class="col-md-4 mb-3">
-                    <label for="b_publishdate">Publish Date</label>
-                    <input id="b_publishdate" name="b_publishdate" type="datetime-local" class="form-control" id="p_quantity" placeholder="Quantity Stock" required />
-                  </div>
-                </div>
-
-                <button id="addbtnblog" class="btn btn-success" type="submit">+ Add</button>
-              <!-- </form> -->
-            </div>
-          </div>
-        <!-- CONTAINER END -->
-    </div>
-    <!-- END ENTRIES -->
 
   <!-- TABLE TITLE -->
   <div class="col-sm-12 mid-title-bar">
-    <label id="tittle-bar">BLOG TABLE</label>
+    <label id="tittle-bar">Users Table</label>
   </div>
 
   <!-- TABLE -->
-  <div class="col-md-12 table-container">
-      <table id="blog-post-table" class="table">
-        <thead>
-            <th>BlogPost ID</th>
-            <th>BlogPost Title</th>
-            <th>BlogPost Content</th>
-            <th>Publish Date</th>
-            <th>Action</th>
-        </thead>
-        <tbody></tbody>
-      </table>
+  <div class="table-responsive scrollable-table-container-lg">
+    <table id="data-table" class="table custom-mobile-table">
+      <thead class="table-header">
+        <th class="no-wrap">ID</th>
+        <th class="no-wrap">POS ID</th>
+        <th class="no-wrap">Date</th>
+        <th class="no-wrap">Cashier</th>
+        <th class="no-wrap">Payment Type</th>
+        <th class="no-wrap">Details</th>
+        <th class="no-wrap">Total</th>
+      </thead>
+      <tbody></tbody>
+    </table>
   </div>
 
-</div>  
+
+</div>

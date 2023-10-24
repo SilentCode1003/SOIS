@@ -48,6 +48,8 @@ router.post("/save", (req, res) => {
     const { name, logo, address, contact, message } = req.body;
     let master_store = [[name, logo, address, contact, message]];
 
+    console.log(name, logo, address, contact, message);
+
     InsertTable("master_store", master_store, (err, result) => {
       if (err) console.error("Error: ", err);
 
