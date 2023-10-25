@@ -18,6 +18,7 @@ const {
   ProdcutInventoryModel,
   InventoryHistoryModel,
   SalesInventoryModel,
+  ItemsModel,
 } = require("./model");
 
 exports.MasterEmployee = (data) => {
@@ -525,6 +526,28 @@ exports.SalesInventory = (data) => {
         key["detailid"],
         key["productid"],
         key["posid"]
+      )
+  );
+};
+
+exports.Items = (data) => {
+  let dataResult = [];
+
+  data.forEach((key, item) => {
+    dataResult.push({
+      id: key.si_id,
+      detailid: key.si_detailid,
+      productid: key.si_productid,
+      posid: key.si_posid,
+    });
+  });
+
+  return dataResult.map(
+    (key) =>
+      new ItemsModel(
+        key["id"],
+        key["detailid"],
+        key["productid"],
       )
   );
 };

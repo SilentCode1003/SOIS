@@ -6,10 +6,12 @@ const {
   Select,
   SelectResult,
   UpdateMultiple,
+  SelectParameter,
 } = require("./repository/soisdb.js");
 
 const helper = require("./repository/customhelper.js");
 const { SalesDetail } = require("./model/soismodel.js");
+const { ItemsModel } = require("./model/model.js");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -72,7 +74,57 @@ router.post("/save", (req, res) => {
 router.post("/getdetailid", (req, res) => {
   try {
     const { posid } = req.body;
-    let sql = "select * from sales_detail where sd_posid";
+    let sql = "select * from sales_detail where sd_posid = ? order by sd_id desc limit 1";
+    let detailid = `${posid}0000`;
+
+    SelectParameter(sql, [posid], (err, result) => {
+      if (err) console.error("Error: ", err);
+
+      if (result.length != 0) {
+        let data = SalesDetail(result);
+        console.log(data);
+
+        res.json({
+          msg: "success",
+          data: [{ detailid: data[0].id }],
+        });
+      } else {
+        res.json({
+          msg: "success",
+          data: [{ detailid: detailid }],
+        });
+      }
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
+
+router.post("/getdetails", (req, res) => {
+  try {
+    const { id } = req.body;
+    let sql = "select * from sales_detail where sd_id=?";
+
+    SelectParameter(sql, [id], (err, result) => {
+      if (err) console.error("Error: ", err);
+
+      if (result.length != 0) {
+        let data = SalesDetail(result);
+        console.log(data);
+
+        res.json({
+          msg: "success",
+          data: data,
+        });
+      } else {
+        res.json({
+          msg: "success",
+          data: result,
+        });
+      }
+    });
   } catch (error) {
     res.json({
       msg: error,
