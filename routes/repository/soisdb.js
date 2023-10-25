@@ -417,6 +417,8 @@ exports.InsertTable = (tablename, data, callback) => {
       c_contactnumber,
       c_gender,
       c_address,
+      c_username,
+      c_password,
       c_registereddate) VALUES ?`;
 
     this.Insert(sql, data, (err, result) => {

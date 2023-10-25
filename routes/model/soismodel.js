@@ -284,6 +284,7 @@ exports.SalesDetail = (data) => {
   data.forEach((key, item) => {
     dataResult.push({
       id: key.sd_id,
+      posid: key.sd_posid,
       date: key.sd_date,
       cashier: key.sd_cashier,
       paymenttype: key.sd_paymenttype,
@@ -296,6 +297,7 @@ exports.SalesDetail = (data) => {
     (key) =>
       new SalesDetailModel(
         key["id"],
+        key["posid"],
         key["date"],
         key["cashier"],
         key["paymenttype"],
@@ -344,6 +346,8 @@ exports.Customer = (data) => {
       contactnumber: key.c_contactnumber,
       gender: key.c_gender,
       address: key.c_address,
+      username: key.c_username,
+      password: key.c_password,
       registereddate: key.c_registereddate,
     });
   });
@@ -358,6 +362,8 @@ exports.Customer = (data) => {
         key["contactnumber"],
         key["gender"],
         key["address"],
+        key["username"],
+        key["password"],
         key["registereddate"]
       )
   );
@@ -543,11 +549,6 @@ exports.Items = (data) => {
   });
 
   return dataResult.map(
-    (key) =>
-      new ItemsModel(
-        key["id"],
-        key["detailid"],
-        key["productid"],
-      )
+    (key) => new ItemsModel(key["id"], key["detailid"], key["productid"])
   );
 };
