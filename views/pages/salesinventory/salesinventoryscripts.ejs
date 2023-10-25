@@ -1,0 +1,124 @@
+<script>
+    $(document).ready(function () {
+        //Functionality
+        var activePositions = [];
+        let employeeid = "";
+        let status = "";
+    
+        LoadTable();
+    
+        $('#data-table tbody').on('click', 'tr', function () {
+            var dataRow = [];
+            $(this).closest('tr').find('td').each(function () {
+                dataRow.push($(this).text());
+            });
+            console.log(dataRow);
+            employeeid = dataRow[0];
+            status = dataRow[7]
+        }) 
+  
+        function populatetable(data) {
+            console.log(data);
+            const tableBody = $('#data-table tbody');
+            tableBody.empty();
+    
+            if (data.length === 0) {
+                const tr = $('<tr>').append($('<td>', {
+                    colspan: 4,
+                    class: 'text-center',
+                    text: 'No Data Matched'
+                }));
+                tableBody.append(tr);
+            } else {
+                data.forEach(item => {
+                    let action = '';
+                    if (item.status === 'PENDING') {
+                        action = `<button id="approveBtn" class="btn btn-outline-success shadow-sm w-100 mt-1" name="approveBtn">APPROVE</button>
+                        <button id="cancelBtn" class="btn btn-outline-danger shadow-sm w-100 mt-1" name="cancelBtn">CANCEL</button>`;
+                    } 
+                    const tr = $('<tr>').append(
+                        $('<td>', { text: item.id, 'data-label': 'ID', class: 'custom-mobile-align' }),
+                        $('<td>', { text: item.detailid, 'data-label': 'Detail ID', class: 'custom-mobile-align' }),
+                        $('<td>', { text: item.productid, 'data-label': 'Product ID', class: 'custom-mobile-align' }),
+                        $('<td>', { text: item.posid, 'data-label': 'POS ID', class: 'custom-mobile-align' }),
+                    );
+
+                    tableBody.append(tr);
+                });
+            }
+        }
+    
+        function LoadTable() {
+            $.ajax({
+                url: '/salesinventory/load',
+                method: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.msg === 'success') {
+                        populatetable(data.data);
+                    } else {
+                        console.error(data.msg);
+                    }
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            });
+        }
+    
+        $(document).on('click', '#activeBtn', function(){
+            console.log(employeeid);
+            console.log(status);
+            $.ajax({
+                type: 'POST',
+                url: '/salesinventory/status',
+                data: {
+                    status: status,
+                    employeeid: employeeid,
+                },
+                success: function (result) {
+                    if (result.msg == 'success') {
+                        LoadTable();
+                        success('Saved', 'Successfully')
+                    }
+    
+                    if (result.msg == 'notexist') {
+                        warning(`${employeeid} does not exist!`);
+                    }
+    
+                },
+                error: function (err) {
+                    errormsg(err);
+                }
+            })
+        });
+    
+        $(document).on('click', '#cancelBtn', function(){
+            console.log(employeeid);
+            console.log(status);
+            $.ajax({
+                type: 'POST',
+                url: '/salesinventory/status',
+                data: {
+                    status: status,
+                    employeeid: employeeid,
+                },
+                success: function (result) {
+                    if (result.msg == 'success') {
+                        LoadTable();
+                        success('Saved', 'Successfully')
+                    }
+    
+                    if (result.msg == 'notexist') {
+                        warning(`${employeeid} does not exist!`);
+                    }
+    
+                },
+                error: function (err) {
+                    errormsg(err);
+                }
+            })
+        });
+    
+    })
+</script>

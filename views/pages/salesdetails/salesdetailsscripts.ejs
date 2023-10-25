@@ -108,8 +108,7 @@
             const tableBody = $('#data-table tbody');
             tableBody.empty();
     
-            dummydata =[{id:"Sample", date: 'sample data', cashier: 'sample cashier', paymenttype: 'cash', details: 'something details', totlal: 99999}]
-            if (dummydata.length === 0) {
+            if (data.length === 0) {
                 const tr = $('<tr>').append($('<td>', {
                     colspan: 9,
                     class: 'text-center',
@@ -117,7 +116,7 @@
                 }));
                 tableBody.append(tr);
             } else {
-                dummydata.forEach(item => {
+                data.forEach(item => {
                     const tr = $('<tr>').append(
                         $('<td>', { text: item.id, 'data-label': 'Employee ID', class: 'custom-mobile-align sois-link', 'data-toggle': 'modal', 'data-target': '#sales-details-modal' }),
                         $('<td>', { text: item.date, 'data-label': 'First Name', class: 'custom-mobile-align no-wrap' }),
