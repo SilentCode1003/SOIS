@@ -105,8 +105,8 @@
      
         function populatetable(data) {
             console.log(data);
-            const tableBody = $('#data-table tbody');
-            tableBody.empty();
+            const tableBody = document.querySelector('#data-table tbody');
+            tableBody.innerHTML = '';
     
             if (data.length === 0) {
                 const tr = $('<tr>').append($('<td>', {
@@ -117,16 +117,23 @@
                 tableBody.append(tr);
             } else {
                 data.forEach(item => {
-                    const tr = $('<tr>').append(
-                        $('<td>', { text: item.id, 'data-label': 'Employee ID', class: 'custom-mobile-align sois-link', 'data-toggle': 'modal', 'data-target': '#sales-details-modal' }),
-                        $('<td>', { text: item.date, 'data-label': 'First Name', class: 'custom-mobile-align no-wrap' }),
-                        $('<td>', { text: item.cashier, 'data-label': 'Middle Name', class: 'custom-mobile-align' }),
-                        $('<td>', { text: item.paymenttype, 'data-label': 'Last Name', class: 'custom-mobile-align' }),
-                        $('<td>', { text: item.details, 'data-label': 'Position', class: 'custom-mobile-align' }),
-                        $('<td>', { text: item.total, 'data-label': 'Access Type', class: 'custom-mobile-align' }),
-                    );
 
-                    tableBody.append(tr);
+                    const descriptionArray = JSON.parse(item.details);
+                    const newDescription = descriptionArray
+                        .map(item => `Name: ${item.name}, Quantity: ${item.quantity}, Price: ₱${item.price}`)
+                        .join('<br>');
+ 
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td class="custom-mobile-align sois-link" data-toggle="modal" data-target="#sales-details-modal" data-label="ID">${item.id}</td>
+                        <td class="custom-mobile-align responsive-wrap" data-label="POS ID">${item.posid}</td>
+                        <td class="custom-mobile-align" data-label="Date">${item.date}</td>
+                        <td class="custom-mobile-align" data-label="Cashier">${item.cashier}</td>
+                        <td class="custom-mobile-align" data-label="Payment Type">${item.paymenttype}</td>
+                        <td class="responsive-wrap">${newDescription}</td>
+                        <td class="custom-mobile-align" data-label="Total">${formatCurrency(item.total)}</td>
+                    `;
+                    tableBody.appendChild(tr);
                 });
             }
         }
