@@ -14,13 +14,21 @@
             });
             console.log(dataRow);
             employeeid = dataRow[0];
-            status = dataRow[7]
+            firstname = dataRow[1];
+            middlename = dataRow[2];
+            lastname = dataRow[3];
+            contactnumber = dataRow[6];
+            status = dataRow[8];
         }) 
     
-        // $(document).on('click', '#editBtn', function(){
-        //     $('#employeeidmodal').val(employeeid);
-        //     $('#employeesModal').modal('show');
-        // })
+        $(document).on('click', '#editBtn', function(){
+            $('#employeeidmodal').val(employeeid);
+            $('#firstnamemodal').val(firstname);
+            $('#middlenamemodal').val(middlename);
+            $('#lastnamemodal').val(lastname);
+            $('#contactnomodal').val(contactnumber);
+            $('#employeesModal').modal('show');
+        })
     
         // $(document).on('click', '#closeBtn', function(){
         //     $('#positionlist').val('');
@@ -144,18 +152,18 @@
                                     positionname = data[0].name;
                                     let action = '';
                                     if (item.status === 'ACTIVE') {
-                                        action = `<button id="editBtn" class="btn btn-outline-primary shadow-sm w-100" name="editBtn" data-toggle="modal" data-target="#accessModal">EDIT</button>
+                                        action = `<button id="editBtn" class="btn btn-outline-primary shadow-sm w-100" name="editBtn" data-toggle="modal" data-target="#employeesModal">EDIT</button>
                                         <button id="inactiveBtn" class="btn btn-outline-danger shadow-sm w-100 mt-1" name="inactiveBtn">INACTIVE</button>`;
                                     } else if (item.status === 'INACTIVE') {
-                                        action = `<button id="editBtn" class="btn btn-outline-primary shadow-sm w-100" name="editBtn" data-toggle="modal" data-target="#accessModal">EDIT</button>
+                                        action = `<button id="editBtn" class="btn btn-outline-primary shadow-sm w-100" name="editBtn" data-toggle="modal" data-target="#employeesModal">EDIT</button>
                                         <button id="activeBtn" class="btn btn-outline-success shadow-sm w-100 mt-1" name="activeBtn">ACTIVE</button>`;
                                     }
 
                                     const tr = $('<tr>').append(
                                         $('<td>', { text: item.id, 'data-label': 'Employee ID', class: 'custom-mobile-align' }),
                                         $('<td>', { text: item.firstname, 'data-label': 'First Name', class: 'custom-mobile-align no-wrap' }),
-                                        $('<td>', { text: item.middlename, 'data-label': 'Middle Name', class: 'custom-mobile-align' }),
-                                        $('<td>', { text: item.lastname, 'data-label': 'Last Name', class: 'custom-mobile-align' }),
+                                        $('<td>', { text: item.middlename, 'data-label': 'Middle Name', class: 'custom-mobile-align no-wrap' }),
+                                        $('<td>', { text: item.lastname, 'data-label': 'Last Name', class: 'custom-mobile-align no-wrap' }),
                                         $('<td>', { text: positionname, 'data-label': 'Position', class: 'custom-mobile-align' }),
                                         $('<td>', { text: accessname, 'data-label': 'Access Type', class: 'custom-mobile-align' }),
                                         $('<td>', { text: item.contactno, 'data-label': 'Contact Number', class: 'custom-mobile-align' }),
@@ -207,6 +215,13 @@
                             $('#position').append(options);
                         }
                     });
+
+                    $.each(data, function (key, item) {
+                        if (item.status == "ACTIVE") {
+                            var options = new Option(item.name, item.id);
+                            $('#positionlistmodal').append(options);
+                        }
+                    });
                 },
                 error: function (err) {
                     errormsg(err);
@@ -225,6 +240,13 @@
                             $('#accesstype').append(options);
                         }
                     });
+
+                    $.each(data, function (key, item) {
+                        if (item.status == "ACTIVE") {
+                            var options = new Option(item.name, item.id);
+                            $('#accesslistmodal').append(options);
+                        }
+                    });
                 },
                 error: function (err) {
                     errormsg(err);
@@ -237,7 +259,7 @@
             console.log(status);
             $.ajax({
                 type: 'POST',
-                url: '/employees/status',
+                url: '/masteremployee/status',
                 data: {
                     status: status,
                     employeeid: employeeid,
@@ -264,7 +286,7 @@
             console.log(status);
             $.ajax({
                 type: 'POST',
-                url: '/employees/status',
+                url: '/masteremployee/status',
                 data: {
                     status: status,
                     employeeid: employeeid,
@@ -288,12 +310,16 @@
     
         $(document).on('click', '#updateBtn', function () {
             let employeeid = $('#employeeidmodal').val();
-            let positionname = $('#positionlist').val();
-            let contactinfo = $('#contactinfomodal').val();
+            let firstname = $('#firstnamemodal').val();
+            let middlename = $('#middlenamemodal').val();
+            let lastname = $('#lastnamemodal').val();
+            let position = $('#positionlistmodal').val();
+            let accesstype = $('#accesslistmodal').val();
+            let contactno = $('#contactnomodal').val();
     
             var message = "";
     
-            if (positionname == '' && contactinfo == ''){
+            if (position == '' && contactno == '' &&  middlename == '0' && firstname == '' && lastname == '' &&  access == '0'){
                     message += 'Fill up atleast 1 input field before updating'
                 }
     
@@ -303,23 +329,28 @@
             else {
                 $.ajax({
                     type: 'POST',
-                    url: '/employees/edit',
+                    url: '/mastermeployee/edit',
                     data: {
                         employeeid: employeeid,
-                        positionname: positionname,
-                        contactinfo: contactinfo,
+                        firstname: firstname,
+                        middlename: middlename,
+                        lastname: lastname,
+                        position: position,
+                        accesstype: accesstype,
+                        contactno: contactno,
                     },
                     success: function (result) {
                         if (result.msg == 'success') {
                             LoadTable();
                             $('#employeesModal').modal('hide');
-                            $('#positionlist').val('');
-                            $('#contactinfomodal').val('');
+                            $('#employeeidmodal').val('');
+                            $('#firstnamemodal').val('');
+                            $('#middlenamemodal').val('');
+                            $('#lastnamemodal').val('');
+                            $('#positionlistmodal').val('');
+                            $('#accesslistmodal').val('');
+                            $('#contactnomodal').val('');
                             success('Saved', 'Successfully')
-                        }
-    
-                        if (result.msg == 'exist') {
-                            warning('Exist', `${positionname} already exist!`);
                         }
     
                     },
