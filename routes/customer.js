@@ -10,6 +10,7 @@ const {
 
 const helper = require("./repository/customhelper.js");
 const { Customer } = require("./model/soismodel.js");
+const { Encrypter } = require("./repository/cryptography.js");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -47,28 +48,42 @@ router.get("/load", (req, res) => {
 
 router.post("/save", (req, res) => {
   try {
-    const { firstname, middlename, lastname, contactnumber, gender, address } =
-      req.body;
+    const {
+      firstname,
+      middlename,
+      lastname,
+      contactnumber,
+      gender,
+      address,
+      username,
+      password,
+    } = req.body;
     let registereddate = helper.GetCurrentDatetime();
-    let customer = [
-      [
-        firstname,
-        middlename,
-        lastname,
-        contactnumber,
-        gender,
-        address,
-        registereddate,
-      ],
-    ];
-
-    InsertTable("customer", customer, (err, result) => {
+    Encrypter(password, (err, encrypted) => {
       if (err) console.error("Error: ", err);
 
-      console.log(result);
+      let customer = [
+        [
+          firstname,
+          middlename,
+          lastname,
+          contactnumber,
+          gender,
+          address,
+          username,
+          encrypted,
+          registereddate,
+        ],
+      ];
 
-      res.json({
-        msg: "success",
+      InsertTable("customer", customer, (err, result) => {
+        if (err) console.error("Error: ", err);
+
+        console.log(result);
+
+        res.json({
+          msg: "success",
+        });
       });
     });
   } catch (error) {

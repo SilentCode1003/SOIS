@@ -137,8 +137,9 @@ class ProductModel {
 }
 
 class SalesDetailModel {
-  constructor(id, date, cashier, paymenttype, details, total) {
+  constructor(id, posid, date, cashier, paymenttype, details, total) {
     this.id = id;
+    this.posid = posid;
     this.date = date;
     this.cashier = cashier;
     this.paymenttype = paymenttype;
@@ -167,6 +168,8 @@ class CustomerModel {
     contactnumber,
     gender,
     address,
+    username,
+    password,
     registereddate
   ) {
     this.id = id;
@@ -176,6 +179,8 @@ class CustomerModel {
     this.contactnumber = contactnumber;
     this.gender = gender;
     this.address = address;
+    this.username = username;
+    this.password = password;
     this.registereddate = registereddate;
   }
 }
@@ -276,5 +281,5 @@ module.exports = {
   ProdcutInventoryModel,
   InventoryHistoryModel,
   SalesInventoryModel,
-  ItemsModel
+  ItemsModel,
 };
