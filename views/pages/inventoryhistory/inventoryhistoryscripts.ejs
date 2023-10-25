@@ -1,0 +1,68 @@
+<script>
+    $(document).ready(function () {
+        //Functionality
+        var activePositions = [];
+        let employeeid = "";
+        let status = "";
+    
+        LoadTable();
+    
+        $('#data-table tbody').on('click', 'tr', function () {
+            var dataRow = [];
+            $(this).closest('tr').find('td').each(function () {
+                dataRow.push($(this).text());
+            });
+            console.log(dataRow);
+            employeeid = dataRow[0];
+            status = dataRow[7]
+        }) 
+     
+        function populatetable(data) {
+            console.log(data);
+            const tableBody = $('#data-table tbody');
+            tableBody.empty();
+    
+            if (data.length === 0) {
+                const tr = $('<tr>').append($('<td>', {
+                    colspan: 6,
+                    class: 'text-center',
+                    text: 'No Data Matched'
+                }));
+                tableBody.append(tr);
+            } else {
+                data.forEach(item => {
+
+                    const tr = $('<tr>').append(
+                        $('<td>', { text: item.id, 'data-label': 'ID', class: 'custom-mobile-align' }),
+                        $('<td>', { text: item.date, 'data-label': 'Date', class: 'custom-mobile-align' }),
+                        $('<td>', { text: item.inventoryid, 'data-label': 'Inventory ID', class: 'custom-mobile-align' }),
+                        $('<td>', { text: item.productid, 'data-label': 'Product ID', class: 'custom-mobile-align' }),
+                        $('<td>', { text: item.quantity, 'data-label': 'Quantity', class: 'custom-mobile-align' }),
+                        $('<td>', { text: item.type, 'data-label': 'Type', class: 'custom-mobile-align no-wrap' }),
+                    );
+
+                    tableBody.append(tr);
+                });
+            }
+        }
+    
+        function LoadTable() {
+            $.ajax({
+                url: '/inventoryhistory/load',
+                method: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.msg === 'success') {
+                        populatetable(data.data);
+                    } else {
+                        console.error(data.msg);
+                    }
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            });
+        }
+    
+    })
+</script>

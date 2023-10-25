@@ -468,8 +468,8 @@ exports.ProdcutInventory = (data) => {
   data.forEach((key, item) => {
     dataResult.push({
       id: key.pi_id,
-      productid: key.ppi_productid,
-      quantity: key.ppi_quantity,
+      productid: key.pi_productid,
+      quantity: key.pi_quantity,
     });
   });
 
