@@ -248,6 +248,14 @@ class SalesInventoryModel {
   }
 }
 
+class ItemsModel {
+  constructor(name, price, quantity) {
+    this.name = name;
+    this.price = price;
+    this.quantity = quantity;
+  }
+}
+
 module.exports = {
   MasterUserModel,
   MasterEmployeeModel,
@@ -268,4 +276,5 @@ module.exports = {
   ProdcutInventoryModel,
   InventoryHistoryModel,
   SalesInventoryModel,
+  ItemsModel
 };

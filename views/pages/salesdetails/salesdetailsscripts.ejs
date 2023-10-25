@@ -203,9 +203,9 @@
                     $('#category-dataTable tbody').empty();
 
                     $.each(data, function (key, item) {
-                        var detailsId = item.ornumber;
-                        var date = item.ordate;
-                        var items = JSON.parse(item.ordescription);
+                        var detailsId = item.id;
+                        var date = item.date;
+                        var items = JSON.parse(item.details);
 
                         $.each(items, function (index, itemData) {
                             var itemName = itemData.name;
@@ -337,7 +337,7 @@
             console.log("Clicked")
         });
     
-        LoadList()
+        // LoadList()
     
     })
 </script>
