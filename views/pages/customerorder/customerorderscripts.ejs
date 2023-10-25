@@ -1,0 +1,213 @@
+<script>
+    $(document).ready(function () {
+        //Functionality
+        var activePositions = [];
+        let employeeid = "";
+        let status = "";
+    
+        LoadTable();
+    
+        $('#data-table tbody').on('click', 'tr', function () {
+            var dataRow = [];
+            $(this).closest('tr').find('td').each(function () {
+                dataRow.push($(this).text());
+            });
+            console.log(dataRow);
+            employeeid = dataRow[0];
+            status = dataRow[7]
+        }) 
+    
+        // $(document).on('click', '#editBtn', function(){
+        //     $('#employeeidmodal').val(employeeid);
+        //     $('#employeesModal').modal('show');
+        // })
+    
+        // $(document).on('click', '#closeBtn', function(){
+        //     $('#positionlist').val('');
+        //     $('#contactinfomodal').val('');
+        // })
+    
+        // $(document).on('click', '#deleteBtn', function(){
+        //     $('#employeeidmodal2').val(employeeid);
+        //     $('#deleteModal').modal('show');
+        // })
+        
+        // $('#confirm').on('input', function() {
+        //     const confirmValue = $(this).val().trim().toUpperCase();
+        //     const deleteBtnModal = $('#deleteBtnModal');
+    
+        //     // Enable the 'DELETE' button if the input value is 'CONFIRM', otherwise disable it
+        //     if (confirmValue === 'CONFIRM') {
+        //         deleteBtnModal.prop('disabled', false);
+        //     } else {
+        //         deleteBtnModal.prop('disabled', true);
+        //     }
+        // });
+        $(document).on('change', '#employeeid', function() {
+            var selectedEmployeeId = $(this).val();
+            var selectedEmployeeFullName = $('#employeeid option:selected').data('fullname');
+            
+            $('#fullname').val(selectedEmployeeFullName);
+        });
+    
+        $(document).on('click', '#addBtn', function () {
+            let employeeid = $('#employeeid').val();
+            let fullname = $('#fullname').val();
+            let username = $('#username').val();
+            let password = $('#password').val();
+            let accessid = $('#accessid').val();
+
+            var message = "";
+            if (employeeid == '') { message += 'Employee ID, ' }
+            if (fullname == '') { message += 'Full Name, ' }
+            if (username == '') { message += 'User Name, ' }
+            if (password == '') { message += 'Password, ' }
+            if (accessid == '') { message += 'Access Type, ' }
+    
+            if (message != '') {
+                warning('Required', `Please fill up ${message}`);
+            }
+            else {
+                console.log(employeeid, fullname, username, password, accessid,)
+                $.ajax({
+                    type: 'POST',
+                    url: '/masteruser/save',
+                    data: {
+                        employeeid: employeeid,
+                        fullname: fullname,
+                        username: username,
+                        password: password,
+                        accessid: accessid,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable()
+                            success('Saved', 'Successfully')
+                            $('#employeeid').val('');
+                            $('#fullname').val('');
+                            $('#username').val('');
+                            $('#password').val('');
+                            $('#accesstype').val('');
+                        }
+    
+                        if (result.msg == 'exist') {
+                            warning('Exist', `${employeeid} already exist!`);
+                        }
+    
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+            }
+        })
+     
+        function populatetable(data) {
+            console.log(data);
+            const tableBody = $('#data-table tbody');
+            tableBody.empty();
+    
+            if (data.length === 0) {
+                const tr = $('<tr>').append($('<td>', {
+                    colspan: 9,
+                    class: 'text-center',
+                    text: 'No Data Matched'
+                }));
+                tableBody.append(tr);
+            } else {
+                data.forEach(item => {
+                    let action = '';
+                    if (item.status === 'PENDING') {
+                        action = `<button id="approveBtn" class="btn btn-outline-success shadow-sm w-100 mt-1" name="approveBtn">APPROVE</button>
+                        <button id="cancelBtn" class="btn btn-outline-danger shadow-sm w-100 mt-1" name="cancelBtn">CANCEL</button>`;
+                    } 
+                    const tr = $('<tr>').append(
+                        $('<td>', { text: item.id, 'data-label': 'Employee ID', class: 'custom-mobile-align' }),
+                        $('<td>', { text: item.customerid, 'data-label': 'Middle Name', class: 'custom-mobile-align' }),
+                        $('<td>', { text: item.date, 'data-label': 'Last Name', class: 'custom-mobile-align' }),
+                        $('<td>', { text: item.details, 'data-label': 'Position', class: 'custom-mobile-align' }),
+                        $('<td>', { text: item.total, 'data-label': 'Access Type', class: 'custom-mobile-align' }),
+                        $('<td>', { text: item.paymenttype, 'data-label': 'Status', class: 'custom-mobile-align' }),
+                        $('<td>', { text: item.status, 'data-label': 'Created By', class: 'custom-mobile-align no-wrap' }),
+                        $('<td>', { html: action, 'data-label': 'Action', class: '' })
+                    );
+
+                    tableBody.append(tr);
+                });
+            }
+        }
+    
+        function LoadTable() {
+            $.ajax({
+                url: '/customerorder/load',
+                method: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.msg === 'success') {
+                        populatetable(data.data);
+                    } else {
+                        console.error(data.msg);
+                    }
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            });
+        }
+    
+        $(document).on('click', '#activeBtn', function(){
+            console.log(employeeid);
+            console.log(status);
+            $.ajax({
+                type: 'POST',
+                url: '/employees/status',
+                data: {
+                    status: status,
+                    employeeid: employeeid,
+                },
+                success: function (result) {
+                    if (result.msg == 'success') {
+                        LoadTable();
+                        success('Saved', 'Successfully')
+                    }
+    
+                    if (result.msg == 'notexist') {
+                        warning(`${employeeid} does not exist!`);
+                    }
+    
+                },
+                error: function (err) {
+                    errormsg(err);
+                }
+            })
+        });
+    
+        $(document).on('click', '#cancelBtn', function(){
+            console.log(employeeid);
+            console.log(status);
+            $.ajax({
+                type: 'POST',
+                url: '/employees/status',
+                data: {
+                    status: status,
+                    employeeid: employeeid,
+                },
+                success: function (result) {
+                    if (result.msg == 'success') {
+                        LoadTable();
+                        success('Saved', 'Successfully')
+                    }
+    
+                    if (result.msg == 'notexist') {
+                        warning(`${employeeid} does not exist!`);
+                    }
+    
+                },
+                error: function (err) {
+                    errormsg(err);
+                }
+            })
+        });
+    
+    })
+</script>
