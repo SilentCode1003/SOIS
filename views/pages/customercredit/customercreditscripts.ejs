@@ -2,10 +2,11 @@
     $(document).ready(function () {
         //Functionality
         var activePositions = [];
-        let employeeid = "";
+        let id = "";
         let status = "";
     
         LoadTable();
+        LoadList();
     
         $('#data-table tbody').on('click', 'tr', function () {
             var dataRow = [];
@@ -13,94 +14,48 @@
                 dataRow.push($(this).text());
             });
             console.log(dataRow);
-            employeeid = dataRow[0];
-            status = dataRow[7]
+            id = dataRow[0];
+            status = dataRow[3]
         }) 
     
-        // $(document).on('click', '#editBtn', function(){
-        //     $('#employeeidmodal').val(employeeid);
-        //     $('#customercreditModal').modal('show');
-        // })
-    
-        // $(document).on('click', '#closeBtn', function(){
-        //     $('#positionlist').val('');
-        //     $('#contactinfomodal').val('');
-        // })
-    
-        // $(document).on('click', '#deleteBtn', function(){
-        //     $('#employeeidmodal2').val(employeeid);
-        //     $('#deleteModal').modal('show');
-        // })
-        
-        // $('#confirm').on('input', function() {
-        //     const confirmValue = $(this).val().trim().toUpperCase();
-        //     const deleteBtnModal = $('#deleteBtnModal');
-    
-        //     // Enable the 'DELETE' button if the input value is 'CONFIRM', otherwise disable it
-        //     if (confirmValue === 'CONFIRM') {
-        //         deleteBtnModal.prop('disabled', false);
-        //     } else {
-        //         deleteBtnModal.prop('disabled', true);
-        //     }
-        // });
-        // $(document).on('change', '#employeeid', function() {
-        //     var selectedEmployeeId = $(this).val();
-        //     var selectedEmployeeFullName = $('#employeeid option:selected').data('fullname');
-            
-        //     $('#fullname').val(selectedEmployeeFullName);
-        // });
-    
-        // $(document).on('click', '#addBtn', function () {
-        //     let employeeid = $('#employeeid').val();
-        //     let fullname = $('#fullname').val();
-        //     let username = $('#username').val();
-        //     let password = $('#password').val();
-        //     let accessid = $('#accessid').val();
+        $(document).on('click', '#addBtn', function () {
+            let customerid = $('#customerid').val();
+            let balance = $('#balance').val();
 
-        //     var message = "";
-        //     if (employeeid == '') { message += 'Employee ID, ' }
-        //     if (fullname == '') { message += 'Full Name, ' }
-        //     if (username == '') { message += 'User Name, ' }
-        //     if (password == '') { message += 'Password, ' }
-        //     if (accessid == '') { message += 'Access Type, ' }
+            var message = "";
+            if (customerid == '') { message += 'Customer ID, ' }
+            if (balance == '') { message += 'Balance, ' }
+            if (message != '') {
+                warning('Required', `Please fill up ${message}`);
+            }
+            else {
+                console.log(customerid, balance)
+                $.ajax({
+                    type: 'POST',
+                    url: '/customercredit/save',
+                    data: {
+                        customerid: customerid,
+                        balance: balance,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable()
+                            success('Saved', 'Successfully')
+                            $('#customerid').val('');
+                            $('#balance').val('');
+                        }
     
-        //     if (message != '') {
-        //         warning('Required', `Please fill up ${message}`);
-        //     }
-        //     else {
-        //         console.log(employeeid, fullname, username, password, accessid,)
-        //         $.ajax({
-        //             type: 'POST',
-        //             url: '/masteruser/save',
-        //             data: {
-        //                 employeeid: employeeid,
-        //                 fullname: fullname,
-        //                 username: username,
-        //                 password: password,
-        //                 accessid: accessid,
-        //             },
-        //             success: function (result) {
-        //                 if (result.msg == 'success') {
-        //                     LoadTable()
-        //                     success('Saved', 'Successfully')
-        //                     $('#employeeid').val('');
-        //                     $('#fullname').val('');
-        //                     $('#username').val('');
-        //                     $('#password').val('');
-        //                     $('#accesstype').val('');
-        //                 }
+                        if (result.msg == 'exist') {
+                            warning('Not Exist', `${customerid} does not exist!`);
+                        }
     
-        //                 if (result.msg == 'exist') {
-        //                     warning('Exist', `${employeeid} already exist!`);
-        //                 }
-    
-        //             },
-        //             error: function (err) {
-        //                 errormsg(err);
-        //             }
-        //         })
-        //     }
-        // })
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+            }
+        })
      
         function populatetable(data) {
             console.log(data);
@@ -152,16 +107,33 @@
                 }
             });
         }
+
+        function LoadList() {
+            $.ajax({
+                type: 'GET',
+                url: '/customer/load',
+                success: function (result) {
+                    var data = result.data;
+                    $.each(data, function (key, item) {
+                        var options = new Option(item.firstname + " " + item.middlename + " " + item.lastname , item.id);
+                        $('#customerid').append(options);
+                    });
+                },
+                error: function (err) {
+                    errormsg(err);
+                }
+            });
+        }
     
-        $(document).on('click', '#activeBtn', function(){
-            console.log(employeeid);
+        $(document).on('click', '#inactiveBtn', function(){
+            console.log(id);
             console.log(status);
             $.ajax({
                 type: 'POST',
                 url: '/customercredit/status',
                 data: {
                     status: status,
-                    employeeid: employeeid,
+                    id: id,
                 },
                 success: function (result) {
                     if (result.msg == 'success') {
@@ -170,7 +142,7 @@
                     }
     
                     if (result.msg == 'notexist') {
-                        warning(`${employeeid} does not exist!`);
+                        warning(`${id} does not exist!`);
                     }
     
                 },
@@ -180,15 +152,15 @@
             })
         });
     
-        $(document).on('click', '#cancelBtn', function(){
-            console.log(employeeid);
+        $(document).on('click', '#activeBtn', function(){
+            console.log(id);
             console.log(status);
             $.ajax({
                 type: 'POST',
                 url: '/customercredit/status',
                 data: {
                     status: status,
-                    employeeid: employeeid,
+                    id: id,
                 },
                 success: function (result) {
                     if (result.msg == 'success') {
@@ -197,7 +169,7 @@
                     }
     
                     if (result.msg == 'notexist') {
-                        warning(`${employeeid} does not exist!`);
+                        warning(`${id} does not exist!`);
                     }
     
                 },
