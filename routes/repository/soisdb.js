@@ -93,7 +93,7 @@ exports.SelectParameter = (sql, condition, callback) => {
     if (error) {
       return callback(error, null);
     }
-    console.log(results);
+    // console.log(results);
 
     callback(null, results);
   });

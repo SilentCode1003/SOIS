@@ -43,6 +43,8 @@ router.post("/login", (req, res) => {
         if (result.length != 0) {
           let data = MasterUser(result);
 
+          console.log(result);
+
           return res.json({
             msg: "success",
             data: data,

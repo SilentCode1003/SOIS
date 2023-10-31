@@ -6,6 +6,7 @@ const {
   Select,
   SelectResult,
   UpdateMultiple,
+  SelectParameter,
 } = require("./repository/soisdb.js");
 const { MasterStore } = require("./model/soismodel.js");
 
@@ -19,7 +20,7 @@ module.exports = router;
 router.get("/load", (req, res) => {
   try {
     let sql = `select * from master_store`;
-    Select(sql,  (err, result) => {
+    Select(sql, (err, result) => {
       if (err) console.log("Error: ", err);
       if (result.length != 0) {
         let data = MasterStore(result);
@@ -58,6 +59,35 @@ router.post("/save", (req, res) => {
       res.json({
         msg: "success",
       });
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
+
+router.post("/getstore", (req, res) => {
+  try {
+    const { storeid } = req.body;
+    let sql = "select * from master_store where ms_id=?";
+
+    SelectParameter(sql, [storeid], (err, result) => {
+      if (err) console.error("Error: ", err);
+      if (result.length != 0) {
+        let data = MasterStore(result);
+        console.log(data);
+
+        res.json({
+          msg: "success",
+          data: data,
+        });
+      } else {
+        res.json({
+          msg: "success",
+          data: result,
+        });
+      }
     });
   } catch (error) {
     res.json({
