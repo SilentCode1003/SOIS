@@ -6,6 +6,7 @@ const {
   Select,
   SelectResult,
   UpdateMultiple,
+  SelectParameter,
 } = require("./repository/soisdb.js");
 
 const helper = require("./repository/customhelper.js");
@@ -22,7 +23,7 @@ module.exports = router;
 router.get("/load", (req, res) => {
   try {
     let sql = `select * from master_pos`;
-    Select(sql,  (err, result) => {
+    Select(sql, (err, result) => {
       if (err) console.log("Error: ", err);
       if (result.length != 0) {
         let data = MasterPOS(result);
@@ -60,6 +61,36 @@ router.post("/save", (req, res) => {
       res.json({
         msg: "success",
       });
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
+
+router.post("/getpos", (req, res) => {
+  try {
+    const { posid } = req.body;
+    let sql = "select * from master_pos where mp_id=?";
+
+    SelectParameter(sql, [posid], (err, result) => {
+      if (err) console.error("Error: ", err);
+
+      if (result.length != 0) {
+        let data = MasterPOS(result);
+        console.log(data);
+
+        res.json({
+          msg: "success",
+          data: data,
+        });
+      } else {
+        res.json({
+          msg: "success",
+          data: result,
+        });
+      }
     });
   } catch (error) {
     res.json({
