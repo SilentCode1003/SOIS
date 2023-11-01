@@ -53,6 +53,16 @@ a:focus {
   white-space: nowrap;
 }
 
+.btn-outline-sois{
+  color: white !important;
+  border-color: white !important;
+}
+
+.btn-outline-sois:hover{
+  color: black !important;
+  background-color: white !important;
+}
+
 .user-dropbox {
   max-height: auto;
   overflow-y: auto;
