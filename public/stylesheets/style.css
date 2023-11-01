@@ -53,11 +53,52 @@ a:focus {
   white-space: nowrap;
 }
 
+.user-dropbox {
+  max-height: auto;
+  overflow-y: auto;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+.bg-container{
+  background-color: white !important;
+}
+
+.display-custom{
+  border-radius: 50%;
+}
+
+@media (max-width: 990px) {
+  .display-custom{
+    display: none !important;
+  }
+}
+
+/* --- LOG IN PAGE ---*/
+.login-height{
+  height: 100%;
+}
+
+.custom-login-container{
+  display: flex;
+  flex-direction: column;
+  place-content: center;
+  height: 100vh;
+  position: relative;
+  z-index: 1;
+  background-color: #ffedce;
+}
+
+.row{
+  margin-right: 0px !important;
+  margin-left:0px !important;
+}
+
 /* ---------------------------------------------------
   MOBILE RESPONSIVE TABLE
 ----------------------------------------------------- */
 @media (max-width: 767px) {
-
   .custom-mobile-table thead{
     display: none;
   }
