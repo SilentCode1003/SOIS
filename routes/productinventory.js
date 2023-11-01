@@ -1,4 +1,4 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 
 const {
@@ -9,11 +9,12 @@ const {
 } = require("./repository/soisdb.js");
 
 const helper = require("./repository/customhelper.js");
-const { ProdcutInventory } = require('./model/soismodel.js');
+const { ProdcutInventory } = require("./model/soismodel.js");
+const { Validator } = require("./controller/middleware.js");
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('productinventory', { title: 'Express' });
+router.get("/", function (req, res, next) {
+  Validator(req, res, "productinventory");
 });
 
 module.exports = router;

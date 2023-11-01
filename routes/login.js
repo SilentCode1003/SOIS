@@ -9,12 +9,12 @@ const {
 
 const { SelectStatement } = require("./repository/customhelper.js");
 
-const { MasterUserModel } = require("./model/model.js");
+const { MasterUserModel, UserLoginModel } = require("./model/model.js");
 
 const helper = require("./repository/customhelper.js");
 const disctionary = require("./repository/dictionary.js");
 const crypto = require("./repository/cryptography.js");
-const { MasterUser } = require("./model/soismodel.js");
+const { MasterUser, UserLogin } = require("./model/soismodel.js");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -34,16 +34,31 @@ router.post("/login", (req, res) => {
 
       let condition = [username, encrypted];
       let statement = SelectStatement(
-        "select * from master_user where mu_username=? and mu_password=?",
+        `select 
+        mu_employeeid as employeeid,
+        mu_fullname as fullname,
+        mat_name as accesstype,
+        mp_name as position
+        from master_user
+        inner join master_access_type on mu_accessid = mat_id
+        left join master_employee on mu_employeeid = me_id
+        left join master_position on me_position = mp_id where mu_username=? and mu_password=?`,
         condition
       );
 
       SelectParameter(statement, condition, (err, result) => {
         if (err) console.error("Error: ", err);
         if (result.length != 0) {
-          let data = MasterUser(result);
+          let data = UserLogin(result);
 
           console.log(result);
+
+          data.forEach((user) => {
+            req.session.userid = user.employeeid;
+            req.session.fullname = user.fullname;
+            req.session.accesstype = user.accesstype;
+            req.session.position = user.position;
+          });
 
           return res.json({
             msg: "success",
@@ -51,8 +66,7 @@ router.post("/login", (req, res) => {
           });
         } else {
           return res.json({
-            msg: "success",
-            data: result,
+            msg: "incorrect",
           });
         }
       });
@@ -62,4 +76,19 @@ router.post("/login", (req, res) => {
       msg: error,
     });
   }
+});
+
+
+router.post("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      res.json({
+        msg: err,
+      });
+    }
+
+    res.json({
+      msg: "success",
+    });
+  });
 });

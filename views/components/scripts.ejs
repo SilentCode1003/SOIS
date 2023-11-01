@@ -1,26 +1,37 @@
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Select "Logout" below if you are ready to end your current session.
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">
-                    Cancel
-                </button>
-                <button name="logoutBtn" id="logoutBtn" class="btn btn-primary">
-                    Logout
-                </button>
-            </div>
-        </div>
+<div
+  class="modal fade"
+  id="logoutModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+        <button
+          class="close"
+          type="button"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Select "Logout" below if you are ready to end your current session.
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">
+          Cancel
+        </button>
+        <button name="logoutBtn" id="logoutBtn" class="btn btn-primary">
+          Logout
+        </button>
+      </div>
     </div>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -34,9 +45,19 @@
 <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
 <!-- DATE RANGE PICKER -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<script
+  type="text/javascript"
+  src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"
+></script>
+<script
+  type="text/javascript"
+  src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"
+></script>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"
+/>
 
 <!-- PCreated by level plugins -->
 <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
@@ -48,230 +69,244 @@
 <script src="/javascripts/toastr.min.js"></script>
 
 <script>
-    function formatCurrency(value) {
-        if (!value) {
-            return '₱0.00';
-        }
-        var formattedValue = parseFloat(value).toFixed(2);
-        return '₱' + formattedValue.replace(/\d(?=(\d{3})+\.)/g, '$&,');
+  function formatCurrency(value) {
+    if (!value) {
+      return "₱0.00";
     }
+    var formattedValue = parseFloat(value).toFixed(2);
+    return "₱" + formattedValue.replace(/\d(?=(\d{3})+\.)/g, "$&,");
+  }
 
-    
-    function success(title, text) {
-        toastr.success(text, title, {
-            "closeButton": false,
-            "debug": false,
-            "newestOnTop": true,
-            "progressBar": true,
-            "positionClass": "toast-top-right",
-            "preventDuplicates": false,
-            "onclick": null,
-            "showDuration": "300",
-            "hideDuration": "1000",
-            "timeOut": "5000",
-            "extendedTimeOut": "1000",
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut"
-        })
-    }
+  function success(title, text) {
+    toastr.success(text, title, {
+      closeButton: false,
+      debug: false,
+      newestOnTop: true,
+      progressBar: true,
+      positionClass: "toast-top-right",
+      preventDuplicates: false,
+      onclick: null,
+      showDuration: "300",
+      hideDuration: "1000",
+      timeOut: "5000",
+      extendedTimeOut: "1000",
+      showEasing: "swing",
+      hideEasing: "linear",
+      showMethod: "fadeIn",
+      hideMethod: "fadeOut",
+    });
+  }
 
-    function warning(title, text) {
-        toastr.warning(text, title, {
-            "closeButton": false,
-            "debug": false,
-            "newestOnTop": true,
-            "progressBar": true,
-            "positionClass": "toast-top-right",
-            "preventDuplicates": false,
-            "onclick": null,
-            "showDuration": "300",
-            "hideDuration": "1000",
-            "timeOut": "5000",
-            "extendedTimeOut": "1000",
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut"
-        });
-    }
+  function warning(title, text) {
+    toastr.warning(text, title, {
+      closeButton: false,
+      debug: false,
+      newestOnTop: true,
+      progressBar: true,
+      positionClass: "toast-top-right",
+      preventDuplicates: false,
+      onclick: null,
+      showDuration: "300",
+      hideDuration: "1000",
+      timeOut: "5000",
+      extendedTimeOut: "1000",
+      showEasing: "swing",
+      hideEasing: "linear",
+      showMethod: "fadeIn",
+      hideMethod: "fadeOut",
+    });
+  }
 
-    function info(title, text) {
-        toastr.info(text, title, {
-            "closeButton": false,
-            "debug": false,
-            "newestOnTop": true,
-            "progressBar": true,
-            "positionClass": "toast-top-right",
-            "preventDuplicates": false,
-            "onclick": null,
-            "showDuration": "300",
-            "hideDuration": "1000",
-            "timeOut": "5000",
-            "extendedTimeOut": "1000",
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut"
-        });
-    }
+  function info(title, text) {
+    toastr.info(text, title, {
+      closeButton: false,
+      debug: false,
+      newestOnTop: true,
+      progressBar: true,
+      positionClass: "toast-top-right",
+      preventDuplicates: false,
+      onclick: null,
+      showDuration: "300",
+      hideDuration: "1000",
+      timeOut: "5000",
+      extendedTimeOut: "1000",
+      showEasing: "swing",
+      hideEasing: "linear",
+      showMethod: "fadeIn",
+      hideMethod: "fadeOut",
+    });
+  }
 
-    function errormsg(err) {
-        toastr.error(err, "Error!", {
-            "closeButton": false,
-            "debug": false,
-            "newestOnTop": true,
-            "progressBar": true,
-            "positionClass": "toast-top-right",
-            "preventDuplicates": false,
-            "onclick": null,
-            "showDuration": "300",
-            "hideDuration": "1000",
-            "timeOut": "5000",
-            "extendedTimeOut": "1000",
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut"
-        });
-    }
-    function success(title, text) {
-        toastr.success(text, title, {
-            "closeButton": false,
-            "debug": false,
-            "newestOnTop": true,
-            "progressBar": true,
-            "positionClass": "toast-top-right",
-            "preventDuplicates": false,
-            "onclick": null,
-            "showDuration": "300",
-            "hideDuration": "1000",
-            "timeOut": "5000",
-            "extendedTimeOut": "1000",
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut"
-        });
-    }
+  function errormsg(err) {
+    toastr.error(err, "Error!", {
+      closeButton: false,
+      debug: false,
+      newestOnTop: true,
+      progressBar: true,
+      positionClass: "toast-top-right",
+      preventDuplicates: false,
+      onclick: null,
+      showDuration: "300",
+      hideDuration: "1000",
+      timeOut: "5000",
+      extendedTimeOut: "1000",
+      showEasing: "swing",
+      hideEasing: "linear",
+      showMethod: "fadeIn",
+      hideMethod: "fadeOut",
+    });
+  }
+  function success(title, text) {
+    toastr.success(text, title, {
+      closeButton: false,
+      debug: false,
+      newestOnTop: true,
+      progressBar: true,
+      positionClass: "toast-top-right",
+      preventDuplicates: false,
+      onclick: null,
+      showDuration: "300",
+      hideDuration: "1000",
+      timeOut: "5000",
+      extendedTimeOut: "1000",
+      showEasing: "swing",
+      hideEasing: "linear",
+      showMethod: "fadeIn",
+      hideMethod: "fadeOut",
+    });
+  }
 
-    function warning(title, text) {
-        toastr.warning(text, title, {
-            "closeButton": false,
-            "debug": false,
-            "newestOnTop": true,
-            "progressBar": true,
-            "positionClass": "toast-top-right",
-            "preventDuplicates": false,
-            "onclick": null,
-            "showDuration": "300",
-            "hideDuration": "1000",
-            "timeOut": "5000",
-            "extendedTimeOut": "1000",
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut"
-        });
-    }
+  function warning(title, text) {
+    toastr.warning(text, title, {
+      closeButton: false,
+      debug: false,
+      newestOnTop: true,
+      progressBar: true,
+      positionClass: "toast-top-right",
+      preventDuplicates: false,
+      onclick: null,
+      showDuration: "300",
+      hideDuration: "1000",
+      timeOut: "5000",
+      extendedTimeOut: "1000",
+      showEasing: "swing",
+      hideEasing: "linear",
+      showMethod: "fadeIn",
+      hideMethod: "fadeOut",
+    });
+  }
 
-    function info(title, text) {
-        toastr.info(text, title, {
-            "closeButton": false,
-            "debug": false,
-            "newestOnTop": true,
-            "progressBar": true,
-            "positionClass": "toast-top-right",
-            "preventDuplicates": false,
-            "onclick": null,
-            "showDuration": "300",
-            "hideDuration": "1000",
-            "timeOut": "5000",
-            "extendedTimeOut": "1000",
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut"
-        });
-    }
+  function info(title, text) {
+    toastr.info(text, title, {
+      closeButton: false,
+      debug: false,
+      newestOnTop: true,
+      progressBar: true,
+      positionClass: "toast-top-right",
+      preventDuplicates: false,
+      onclick: null,
+      showDuration: "300",
+      hideDuration: "1000",
+      timeOut: "5000",
+      extendedTimeOut: "1000",
+      showEasing: "swing",
+      hideEasing: "linear",
+      showMethod: "fadeIn",
+      hideMethod: "fadeOut",
+    });
+  }
 
-    function errormsg(err) {
-        toastr.error(err, "Error!", {
-            "closeButton": false,
-            "debug": false,
-            "newestOnTop": true,
-            "progressBar": true,
-            "positionClass": "toast-top-right",
-            "preventDuplicates": false,
-            "onclick": null,
-            "showDuration": "300",
-            "hideDuration": "1000",
-            "timeOut": "5000",
-            "extendedTimeOut": "1000",
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut"
-        });
-    }
-
+  function errormsg(err) {
+    toastr.error(err, "Error!", {
+      closeButton: false,
+      debug: false,
+      newestOnTop: true,
+      progressBar: true,
+      positionClass: "toast-top-right",
+      preventDuplicates: false,
+      onclick: null,
+      showDuration: "300",
+      hideDuration: "1000",
+      timeOut: "5000",
+      extendedTimeOut: "1000",
+      showEasing: "swing",
+      hideEasing: "linear",
+      showMethod: "fadeIn",
+      hideMethod: "fadeOut",
+    });
+  }
 </script>
 
 <script>
-  $(document).ready(function(){
+  $(document).ready(function () {
     $(document).ready(function () {
-        if ($('.collapse-item.active').length > 0) {
-            $('.collapse-item.active').closest('.collapse').addClass('show');
+      if ($(".collapse-item.active").length > 0) {
+        $(".collapse-item.active").closest(".collapse").addClass("show");
+      }
+
+      $(".collapse-item").click(function () {
+        $(".collapse-item").removeClass("active");
+        $(this).addClass("active");
+      });
+
+      var path = window.location.pathname;
+
+      $(".collapse-item").each(function () {
+        var href = $(this).attr("href");
+        if (path === href) {
+          $(this).addClass("active");
+          $(this).closest(".collapse").addClass("show");
         }
+      });
 
-        $('.collapse-item').click(function () {
-            $('.collapse-item').removeClass('active');
-            $(this).addClass('active');
-        });
-
-        var path = window.location.pathname;
-
-        $('.collapse-item').each(function () {
-            var href = $(this).attr('href');
-            if (path === href) {
-                $(this).addClass('active');
-                $(this).closest('.collapse').addClass('show');
-            }
-        });
-
-        function adjustCollapse() {
-            if ($(window).width() <= 767) {
-                $('.collapse').removeClass('show');
-                $('.row.d-flex.justify-content-center.align-items-center').removeClass('login-height');
-            } else {
-                $('.collapse-item.active').closest('.collapse').addClass('show');
-            }
+      function adjustCollapse() {
+        if ($(window).width() <= 767) {
+          $(".collapse").removeClass("show");
+          $(
+            ".row.d-flex.justify-content-center.align-items-center"
+          ).removeClass("login-height");
+        } else {
+          $(".collapse-item.active").closest(".collapse").addClass("show");
         }
+      }
+      adjustCollapse();
+
+      $(window).resize(function () {
         adjustCollapse();
+      });
 
-        $(window).resize(function () {
-            adjustCollapse();
-        });
-
-        $(document).on('click', function (event) {
-            if ($(window).width() <= 767) {
-                if (!$(event.target).closest('.collapse').length) {
-                    $('.collapse').removeClass('show');
-                }
-            }
-
-        });
+      $(document).on("click", function (event) {
+        if ($(window).width() <= 767) {
+          if (!$(event.target).closest(".collapse").length) {
+            $(".collapse").removeClass("show");
+          }
+        }
+      });
     });
   });
 
-    $('#dateRange').daterangepicker({
-        opens: 'left',
-        locale: {
-            format: 'YYYY-MM-DD',
-            separator: ' to '
-        }
-    });
-    $('#dateRange').val('');
+  $("#dateRange").daterangepicker({
+    opens: "left",
+    locale: {
+      format: "YYYY-MM-DD",
+      separator: " to ",
+    },
+  });
+  $("#dateRange").val("");
+</script>
 
+<script>
+  $(document).on("click", "#logoutBtn", function () {
+    $.ajax({
+      type: "POST",
+      url: "/login/logout",
+      success: function (result) {
+        success("Logout", "Successfully");
+        location.replace("/");
+      },
+      error: function (err) {
+        errormsg(err);
+      },
+    });
+  });
 </script>

@@ -12,10 +12,11 @@ const {
 const helper = require("./repository/customhelper.js");
 const disctionary = require("./repository/dictionary.js");
 const { MasterProductCategory } = require("./model/soismodel.js");
+const { Validator } = require("./controller/middleware.js");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
-  res.render("mastercategory", { title: "Express" });
+  Validator(req, res, "mastercategory");
 });
 
 module.exports = router;

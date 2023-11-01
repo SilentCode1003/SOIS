@@ -11,10 +11,11 @@ const {
 const helper = require("./repository/customhelper.js");
 const dictionary = require("./repository/dictionary.js");
 const { CustomerCredit } = require("./model/soismodel.js");
+const { Validator } = require("./controller/middleware.js");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
-  res.render("customercredit", { title: "Express" });
+  Validator(req, res, "customercredit");
 });
 
 module.exports = router;
