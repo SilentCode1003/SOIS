@@ -20,10 +20,10 @@
       status = dataRow[5];
     });
 
-    // $(document).on('click', '#editBtn', function(){
-    //     $('#employeeidmodal').val(employeeid);
-    //     $('#employeesModal').modal('show');
-    // })
+    $(document).on('click', '#editBtn', function(){
+        $('#idmodal').val(id);
+        $('#editModal').modal('show');
+    })
 
     // $(document).on('click', '#closeBtn', function(){
     //     $('#positionlist').val('');
@@ -31,7 +31,7 @@
     // })
 
     // $(document).on('click', '#deleteBtn', function(){
-    //     $('#employeeidmodal2').val(employeeid);
+    //     $('#idmodal2').val(id);
     //     $('#deleteModal').modal('show');
     // })
 
@@ -222,14 +222,14 @@
     }
 
     $(document).on("click", "#activeBtn", function () {
-      console.log(employeeid);
+      console.log(id);
       console.log(status);
       $.ajax({
         type: "POST",
         url: "/products/status",
         data: {
           status: status,
-          employeeid: employeeid,
+          id: id,
         },
         success: function (result) {
           if (result.msg == "success") {
@@ -238,7 +238,7 @@
           }
 
           if (result.msg == "notexist") {
-            warning(`${employeeid} does not exist!`);
+            warning(`${id} does not exist!`);
           }
         },
         error: function (err) {
@@ -248,14 +248,14 @@
     });
 
     $(document).on("click", "#inactiveBtn", function () {
-      console.log(employeeid);
+      console.log(id);
       console.log(status);
       $.ajax({
         type: "POST",
         url: "/products/status",
         data: {
           status: status,
-          employeeid: employeeid,
+          id: id,
         },
         success: function (result) {
           if (result.msg == "success") {
@@ -264,7 +264,7 @@
           }
 
           if (result.msg == "notexist") {
-            warning(`${employeeid} does not exist!`);
+            warning(`${id} does not exist!`);
           }
         },
         error: function (err) {
@@ -274,14 +274,13 @@
     });
 
     $(document).on("click", "#updateBtn", function () {
-      let employeeid = $("#employeeidmodal").val();
-      let positionname = $("#positionlist").val();
-      let contactinfo = $("#contactinfomodal").val();
+      let id = $("#idmodal").val();
+      let price = $("#pricemodal").val();
 
       var message = "";
 
-      if (positionname == "" && contactinfo == "") {
-        message += "Fill up atleast 1 input field before updating";
+      if (price == "") {
+        message += "Price cannot be empty";
       }
 
       if (message != "") {
@@ -291,22 +290,20 @@
           type: "POST",
           url: "/products/edit",
           data: {
-            employeeid: employeeid,
-            positionname: positionname,
-            contactinfo: contactinfo,
+            id: id,
+            price: price
           },
           success: function (result) {
             if (result.msg == "success") {
               LoadTable();
-              $("#employeesModal").modal("hide");
-              $("#positionlist").val("");
-              $("#contactinfomodal").val("");
+              $("#idmodal").modal("hide");
+              $("#pricelist").val("");
               success("Saved", "Successfully");
             }
 
-            if (result.msg == "exist") {
-              warning("Exist", `${positionname} already exist!`);
-            }
+            // if (result.msg == "exist") {
+            //   warning("Exist", `${price} already exist!`);
+            // }
           },
           error: function (err) {
             errormsg(err);

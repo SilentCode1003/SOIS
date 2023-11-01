@@ -1,0 +1,55 @@
+<script>
+    $(document).ready(function () {
+        LoadTable();
+        function populatetable(data) {
+            console.log(data);
+            const tableBody = document.querySelector('#data-table tbody');
+            tableBody.innerHTML = '';
+    
+            if (data.length === 0) {
+                const tr = $('<tr>').append($('<td>', {
+                    colspan: 9,
+                    class: 'text-center',
+                    text: 'No Data Matched'
+                }));
+                tableBody.append(tr);
+            } else {
+                data.forEach(item => {
+
+                    const descriptionArray = JSON.parse(item.details);
+                    const newDescription = descriptionArray
+                        .map(item => `Name: ${item.name}, Quantity: ${item.quantity}, Price: ₱${item.price}`)
+                        .join('<br>');
+ 
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td class="custom-mobile-align" data-label="Date">${item.date}</td>
+                        <td class="custom-mobile-align" data-label="Payment Type">${item.paymenttype}</td>
+                        <td class="responsive-wrap">${newDescription}</td>
+                        <td class="custom-mobile-align" data-label="Total">${formatCurrency(item.total)}</td>
+                        <td class="custom-mobile-align" data-label="Cashier">${item.cashier}</td>
+                    `;
+                    tableBody.appendChild(tr);
+                });
+            }
+        }
+    
+        function LoadTable() {
+            $.ajax({
+                url: '/salesdetails/load',
+                method: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.msg === 'success') {
+                        populatetable(data.data);
+                    } else {
+                        console.error(data.msg);
+                    }
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            });
+        }
+    });
+</script>
