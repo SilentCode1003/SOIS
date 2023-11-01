@@ -19,17 +19,17 @@ const connection = mysql.createConnection({
   database: process.env._DATABASE,
 });
 
-crypt.Encrypter("1234SantosRalph", (err, result) => {
+// crypt.Encrypter("1234SantosRalph", (err, result) => {
+//   if (err) console.error("Error: ", err);
+
+//   console.log(result);
+// });
+
+crypt.Decrypter("086f3728d355ff21ee4d07d7bf48c3e2", (err, result) => {
   if (err) console.error("Error: ", err);
 
-  console.log(result);
+  console.log(`${result}`);
 });
-
-// crypt.Decrypter('f6a3287039d0d75cb83cb29d35b3dfcb', (err, result) => {
-//     if (err) console.error('Error: ', err);
-
-//     console.log(${result});
-// });
 
 exports.CheckConnection = () => {
   connection.connect((err) => {
