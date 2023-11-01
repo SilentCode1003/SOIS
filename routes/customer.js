@@ -6,6 +6,7 @@ const {
   Select,
   SelectResult,
   UpdateMultiple,
+  SelectParameter,
 } = require("./repository/soisdb.js");
 
 const helper = require("./repository/customhelper.js");
@@ -84,6 +85,42 @@ router.post("/save", (req, res) => {
         res.json({
           msg: "success",
         });
+      });
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
+
+router.post("/login", (req, res) => {
+  try {
+    const { username, password } = req.body;
+    let sql = "select * from customer where c_username=? and c_password=?";
+
+    Encrypter(password, (err, encrytped) => {
+      if (err) console.error("Error: ", err);
+
+      console.log(encrytped);
+      let data = [username, encrytped];
+      Select(helper.SelectStatement(sql, data), (err, result) => {
+        if (err) console.error("Error: ", err);
+
+        if (result.length != 0) {
+          let data = Customer(result);
+          console.log(data);
+
+          res.json({
+            msg: "success",
+            data: data,
+          });
+        } else {
+          res.json({
+            msg: "success",
+            data: result,
+          });
+        }
       });
     });
   } catch (error) {
