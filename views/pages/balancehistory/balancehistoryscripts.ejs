@@ -16,6 +16,35 @@
             employeeid = dataRow[0];
             status = dataRow[7]
         }) 
+        
+        $("#search").on("keyup", function () {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("search");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("data-table");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1];
+                if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+                }
+            }
+        });
+
+        document.getElementById('exportBtn').addEventListener('click', function () {
+            const table = document.getElementById('data-table');
+            const ws = XLSX.utils.table_to_sheet(table);
+
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+            XLSX.writeFile(wb, 'exported_data.xlsx');
+        });
     
         // $(document).on('click', '#editBtn', function(){
         //     $('#employeeidmodal').val(employeeid);
