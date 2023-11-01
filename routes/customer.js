@@ -9,11 +9,14 @@ const {
   SelectParameter,
 } = require("./repository/soisdb.js");
 
-const helper = require("./repository/customhelper.js");
+const {
+  GetCurrentDatetime,
+  SelectStatement,
+} = require("./repository/customhelper.js");
 const { Customer } = require("./model/soismodel.js");
 const { Encrypter } = require("./repository/cryptography.js");
 const { Validator } = require("./controller/middleware.js");
-const { GetValue, ACT } = require("./repository/dictionary.js");
+const { GetValue, ACT, CRT } = require("./repository/dictionary.js");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -61,10 +64,11 @@ router.post("/save", (req, res) => {
       username,
       password,
     } = req.body;
-    let registereddate = helper.GetCurrentDatetime();
+    let registereddate = GetCurrentDatetime();
+    console.log(registereddate);
     Encrypter(password, (err, encrypted) => {
       if (err) console.error("Error: ", err);
-
+      console.log(encrypted);
       let customer = [
         [
           firstname,
@@ -88,6 +92,7 @@ router.post("/save", (req, res) => {
               msg: "exist",
             });
           } else {
+            console.log(result);
             InsertTable("customer", customer, (err, result) => {
               if (err) console.error("Error: ", err);
 
@@ -100,6 +105,20 @@ router.post("/save", (req, res) => {
               CustomerCredit_Create(customer_credit)
                 .then((result) => {
                   console.log(result);
+
+                  let balance_history = [
+                    [result[0].id, GetCurrentDatetime(), 0, GetValue(CRT())],
+                  ];
+
+                  BalanceHistory_Create(balance_history)
+                    .then((result) => {
+                      console.log(result);
+                    })
+                    .catch((error) => {
+                      res.json({
+                        msg: error,
+                      });
+                    });
                 })
                 .catch((error) => {
                   res.json({
@@ -136,7 +155,7 @@ router.post("/login", (req, res) => {
 
       console.log(encrytped);
       let data = [username, encrytped];
-      Select(helper.SelectStatement(sql, data), (err, result) => {
+      Select(SelectStatement(sql, data), (err, result) => {
         if (err) console.error("Error: ", err);
 
         if (result.length != 0) {
@@ -167,7 +186,7 @@ function Customer_Check(data) {
   return new Promise((resolve, reject) => {
     let sql =
       "select * from customer where c_firstname=? and c_middlename=? and c_lastname=? or c_username=?";
-    let command = helper.SelectStatement(sql, data);
+    let command = SelectStatement(sql, data);
     console.log(command);
 
     SelectParameter(command, data, (err, result) => {
@@ -185,6 +204,20 @@ function CustomerCredit_Create(data) {
       if (err) reject(err);
       console.log(result);
 
+      resolve(result);
+    });
+  });
+}
+
+function BalanceHistory_Create(data) {
+  return new Promise((resolve, reject) => {
+    InsertTable("balance_history", data, (err, result) => {
+      if (err) {
+        console.error(err);
+        reject(err);
+      }
+
+      console.log(result);
       resolve(result);
     });
   });

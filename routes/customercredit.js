@@ -6,11 +6,13 @@ const {
   Select,
   SelectResult,
   UpdateMultiple,
+  SelectParameter,
+  Update,
 } = require("./repository/soisdb.js");
 
 const helper = require("./repository/customhelper.js");
-const dictionary = require("./repository/dictionary.js");
-const { CustomerCredit } = require("./model/soismodel.js");
+const { GetValue, ACT, AFND } = require("./repository/dictionary.js");
+const { CustomerCredit, BalanceHistory } = require("./model/soismodel.js");
 const { Validator } = require("./controller/middleware.js");
 
 /* GET home page. */
@@ -50,18 +52,45 @@ router.get("/load", (req, res) => {
 router.post("/save", (req, res) => {
   try {
     const { customerid, balance } = req.body;
-    let status = dictionary.GetValue(dictionary.ACT());
+    let status = GetValue(ACT());
     let customer_credit = [[customerid, balance, status]];
 
-    InsertTable("customer_credit", customer_credit, (err, result) => {
-      if (err) console.error("Error: ", err);
+    CustomerCredit_Check(customerid)
+      .then((result) => {
+        let credit = parseFloat(result[0].balance) + parseFloat(balance);
+        let customer_credit_update = [credit, customerid];
+        let sql_update =
+          "update customer_credit set cc_balance=? where cc_customerid=?";
+        let creditid = result[0].id;
 
-      console.log(result);
+        UpdateMultiple(sql_update, customer_credit_update, (err, result) => {
+          if (err) console.error("Error: ", err);
 
-      res.json({
-        msg: "success",
+          let balance_history = [
+            [creditid, helper.GetCurrentDatetime(), balance, GetValue(AFND())],
+          ];
+
+          console.log(balance_history);
+          BalanceHistory_Create(balance_history)
+            .then((result) => {
+              console.log(result);
+            })
+            .catch((error) => {
+              res.json({
+                msg: error,
+              });
+            });
+
+          res.json({
+            msg: "success",
+          });
+        });
+      })
+      .catch((error) => {
+        res.json({
+          msg: error,
+        });
       });
-    });
   } catch (error) {
     res.json({
       msg: error,
@@ -69,3 +98,32 @@ router.post("/save", (req, res) => {
   }
 });
 
+//#region
+function CustomerCredit_Check(data) {
+  return new Promise((resolve, reject) => {
+    let sql = "select * from customer_credit where cc_customerid=?";
+    SelectParameter(sql, [data], (err, result) => {
+      if (err) reject(err);
+
+      console.log(result);
+
+      let data = CustomerCredit(result);
+      resolve(data);
+    });
+  });
+}
+
+function BalanceHistory_Create(data) {
+  return new Promise((resolve, reject) => {
+    InsertTable("balance_history", data, (err, result) => {
+      if (err) {
+        console.error(err);
+        reject(err);
+      }
+
+      console.log(result);
+      resolve(result);
+    });
+  });
+}
+//#endregion
