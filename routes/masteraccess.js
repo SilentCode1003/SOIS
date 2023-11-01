@@ -12,10 +12,11 @@ const {
 const helper = require("./repository/customhelper.js");
 const disctionary = require("./repository/dictionary.js");
 const { MasterAccessType } = require("./model/soismodel.js");
+const { Validator } = require("./controller/middleware.js");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
-  res.render("masteraccess", { title: "Express" });
+  Validator(req, res, "masteraccess");
 });
 
 module.exports = router;

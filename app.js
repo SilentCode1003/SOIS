@@ -3,6 +3,7 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+const { SetMongo } = require("./routes/controller/mongoose");
 
 var dashboardRouter = require("./routes/dashboard");
 var masterEmployeeRouter = require("./routes/masteremployee");
@@ -27,31 +28,7 @@ var loginRouter = require("./routes/login");
 
 var app = express();
 
-const session = require("express-session");
-const mongoose = require("mongoose");
-const MongoDBSession = require("connect-mongodb-session")(session);
-
-const mysql = require("./routes/repository/soisdb");
-
-//mongodb
-mongoose.connect("mongodb://localhost:27017/SOIS").then((res) => {
-  console.log("MongoDB Connected!");
-});
-
-const store = new MongoDBSession({
-  uri: "mongodb://localhost:27017/SOIS",
-  collection: "SOISSessions",
-});
-
-//Session
-app.use(
-  session({
-    secret: "5L Secret Key",
-    resave: false,
-    saveUninitialized: false,
-    store: store,
-  })
-);
+SetMongo(app);
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));

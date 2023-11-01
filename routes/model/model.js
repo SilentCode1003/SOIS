@@ -1,3 +1,4 @@
+//#region Master & Transaction Model
 class MasterUserModel {
   constructor(
     id,
@@ -261,6 +262,19 @@ class ItemsModel {
   }
 }
 
+//#endregion
+
+//#region
+class UserLoginModel {
+  constructor(employeeid, fullname, accesstype, position) {
+    this.employeeid = employeeid;
+    this.fullname = fullname;
+    this.accesstype = accesstype;
+    this.position = position;
+  }
+}
+//#endregion
+
 module.exports = {
   MasterUserModel,
   MasterEmployeeModel,
@@ -282,4 +296,5 @@ module.exports = {
   InventoryHistoryModel,
   SalesInventoryModel,
   ItemsModel,
+  UserLoginModel,
 };

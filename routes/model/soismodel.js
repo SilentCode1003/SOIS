@@ -19,8 +19,9 @@ const {
   InventoryHistoryModel,
   SalesInventoryModel,
   ItemsModel,
+  UserLoginModel,
 } = require("./model");
-
+//#region Masters & Transactions Models
 exports.MasterEmployee = (data) => {
   let dataResult = [];
 
@@ -552,3 +553,30 @@ exports.Items = (data) => {
     (key) => new ItemsModel(key["id"], key["detailid"], key["productid"])
   );
 };
+//#endregion
+
+//#region Custom Models
+
+exports.UserLogin = (data) => {
+  let dataResult = [];
+
+  data.forEach((key, item) => {
+    dataResult.push({
+      employeeid: key.employeeid,
+      fullname: key.fullname,
+      accesstype: key.accesstype,
+      position: key.position,
+    });
+  });
+
+  return dataResult.map(
+    (key) =>
+      new UserLoginModel(
+        key["employeeid"],
+        key["fullname"],
+        key["accesstype"],
+        key["position"]
+      )
+  );
+};
+//#endregion
