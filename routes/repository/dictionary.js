@@ -41,7 +41,9 @@ exports.GetValue = (abr) => {
   if (abr == "INSD") return "INSERT DATA";
   if (abr == "UPDT") return "UPDATE DATA";
   if (abr == "CMP") return "COMPLETED";
-
+  if (abr == "CRT") return "CREATE";
+  if (abr == "AFND") return "LOAD";
+  if (abr == "ONPS") return "ONLINE PURCHASE";
 };
 
 //#region STATUS CODE
@@ -210,6 +212,18 @@ exports.INSD = () => {
 };
 
 exports.UPDT = () => {
-    return "UPDT";
-  };
+  return "UPDT";
+};
+
+exports.CRT = () => {
+  return "CRT";
+};
+
+exports.ONPS = () => {
+  return "ONPS";
+};
+
+exports.AFND = () => {
+  return "AFND";
+};
 //#endregion

@@ -148,7 +148,14 @@ exports.UpdateMultiple = async (sql, data, callback) => {
       }
       console.log("Rows affected:", results.affectedRows);
 
-      callback(null, `Rows affected: ${results.affectedRows}`);
+      let data = [
+        {
+          rows: results.affectedRows,
+          id: results.insertId,
+        },
+      ];
+
+      callback(null, data);
     });
   } catch (error) {
     console.log(error);
