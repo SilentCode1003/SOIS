@@ -13,6 +13,7 @@ const helper = require("./repository/customhelper.js");
 const { Customer } = require("./model/soismodel.js");
 const { Encrypter } = require("./repository/cryptography.js");
 const { Validator } = require("./controller/middleware.js");
+const { GetValue, ACT } = require("./repository/dictionary.js");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -78,15 +79,45 @@ router.post("/save", (req, res) => {
         ],
       ];
 
-      InsertTable("customer", customer, (err, result) => {
-        if (err) console.error("Error: ", err);
+      let data = [firstname, middlename, lastname, username];
 
-        console.log(result);
+      Customer_Check(data)
+        .then((result) => {
+          if (result.length != 0) {
+            return res.json({
+              msg: "exist",
+            });
+          } else {
+            InsertTable("customer", customer, (err, result) => {
+              if (err) console.error("Error: ", err);
 
-        res.json({
-          msg: "success",
+              console.log(result);
+
+              let customer_credit = [[result[0].id, 0, GetValue(ACT())]];
+
+              console.log(customer_credit);
+
+              CustomerCredit_Create(customer_credit)
+                .then((result) => {
+                  console.log(result);
+                })
+                .catch((error) => {
+                  res.json({
+                    msg: error,
+                  });
+                });
+
+              res.json({
+                msg: "success",
+              });
+            });
+          }
+        })
+        .catch((error) => {
+          res.json({
+            msg: error,
+          });
         });
-      });
     });
   } catch (error) {
     res.json({
@@ -130,3 +161,32 @@ router.post("/login", (req, res) => {
     });
   }
 });
+
+//#region
+function Customer_Check(data) {
+  return new Promise((resolve, reject) => {
+    let sql =
+      "select * from customer where c_firstname=? and c_middlename=? and c_lastname=? or c_username=?";
+    let command = helper.SelectStatement(sql, data);
+    console.log(command);
+
+    SelectParameter(command, data, (err, result) => {
+      if (err) reject(result);
+
+      console.log(result);
+      resolve(result);
+    });
+  });
+}
+
+function CustomerCredit_Create(data) {
+  return new Promise((resolve, reject) => {
+    InsertTable("customer_credit", data, (err, result) => {
+      if (err) reject(err);
+      console.log(result);
+
+      resolve(result);
+    });
+  });
+}
+//#endregion
