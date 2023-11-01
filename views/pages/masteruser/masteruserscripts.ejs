@@ -14,35 +14,15 @@
             });
             console.log(dataRow);
             employeeid = dataRow[0];
-            status = dataRow[7]
+            status = dataRow[6]
         }) 
+
+        $(document).on('click', '#editBtn', function(){
+            $('#employeeidmodal').val(employeeid);
+            $('#editModal').modal('show');
+        })
     
-        // $(document).on('click', '#editBtn', function(){
-        //     $('#employeeidmodal').val(employeeid);
-        //     $('#employeesModal').modal('show');
-        // })
-    
-        // $(document).on('click', '#closeBtn', function(){
-        //     $('#positionlist').val('');
-        //     $('#contactinfomodal').val('');
-        // })
-    
-        // $(document).on('click', '#deleteBtn', function(){
-        //     $('#employeeidmodal2').val(employeeid);
-        //     $('#deleteModal').modal('show');
-        // })
-        
-        // $('#confirm').on('input', function() {
-        //     const confirmValue = $(this).val().trim().toUpperCase();
-        //     const deleteBtnModal = $('#deleteBtnModal');
-    
-        //     // Enable the 'DELETE' button if the input value is 'CONFIRM', otherwise disable it
-        //     if (confirmValue === 'CONFIRM') {
-        //         deleteBtnModal.prop('disabled', false);
-        //     } else {
-        //         deleteBtnModal.prop('disabled', true);
-        //     }
-        // });
+
         $(document).on('change', '#employeeid', function() {
             var selectedEmployeeId = $(this).val();
             var selectedEmployeeFullName = $('#employeeid option:selected').data('fullname');
@@ -205,6 +185,13 @@
                             $('#accessid').append(options);
                         }
                     });
+
+                    $.each(data, function (key, item) {
+                        if (item.status == "ACTIVE") {
+                            var options = new Option(item.name, item.id); 
+                            $('#accessidmodal').append(options);
+                        }
+                    });
                 },
                 error: function (err) {
                     errormsg(err);
@@ -214,14 +201,14 @@
 
     
         $(document).on('click', '#activeBtn', function(){
-            console.log(employeeid);
+            console.log(id);
             console.log(status);
             $.ajax({
                 type: 'POST',
-                url: '/employees/status',
+                url: '/masteruser/status',
                 data: {
                     status: status,
-                    employeeid: employeeid,
+                    id: id,
                 },
                 success: function (result) {
                     if (result.msg == 'success') {
@@ -230,7 +217,7 @@
                     }
     
                     if (result.msg == 'notexist') {
-                        warning(`${employeeid} does not exist!`);
+                        warning(`${id} does not exist!`);
                     }
     
                 },
@@ -241,14 +228,14 @@
         });
     
         $(document).on('click', '#inactiveBtn', function(){
-            console.log(employeeid);
+            console.log(id);
             console.log(status);
             $.ajax({
                 type: 'POST',
-                url: '/employees/status',
+                url: '/masteruser/status',
                 data: {
                     status: status,
-                    employeeid: employeeid,
+                    id: id,
                 },
                 success: function (result) {
                     if (result.msg == 'success') {
@@ -257,7 +244,7 @@
                     }
     
                     if (result.msg == 'notexist') {
-                        warning(`${employeeid} does not exist!`);
+                        warning(`${id} does not exist!`);
                     }
     
                 },
@@ -269,12 +256,13 @@
     
         $(document).on('click', '#updateBtn', function () {
             let employeeid = $('#employeeidmodal').val();
-            let positionname = $('#positionlist').val();
-            let contactinfo = $('#contactinfomodal').val();
+            let username = $('#usernamemodal').val();
+            let password = $('#passwordmodal').val();
+            let accessid = $('#accessidmodal').val();
     
             var message = "";
     
-            if (positionname == '' && contactinfo == ''){
+            if (username == '' && password == '' && accessid == ''){
                     message += 'Fill up atleast 1 input field before updating'
                 }
     
@@ -284,23 +272,26 @@
             else {
                 $.ajax({
                     type: 'POST',
-                    url: '/employees/edit',
+                    url: '/masteruser/edit',
                     data: {
                         employeeid: employeeid,
-                        positionname: positionname,
-                        contactinfo: contactinfo,
+                        username: username,
+                        password: password,
+                        accessid: accessid,
                     },
                     success: function (result) {
                         if (result.msg == 'success') {
                             LoadTable();
-                            $('#employeesModal').modal('hide');
+                            $('#editModal').modal('hide');
                             $('#positionlist').val('');
-                            $('#contactinfomodal').val('');
+                            $('#passwordmodal').val('');
+                            $('#accessidmodal').val('');
+                            $('#employeeidmodal').val('');
                             success('Saved', 'Successfully')
                         }
     
                         if (result.msg == 'exist') {
-                            warning('Exist', `${positionname} already exist!`);
+                            warning('Exist', `${username} already exist!`);
                         }
     
                     },
