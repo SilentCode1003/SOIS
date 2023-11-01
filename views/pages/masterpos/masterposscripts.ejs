@@ -13,35 +13,13 @@
             });
             console.log(dataRow);
             id = dataRow[0];
-            status = dataRow[2]
+            status = dataRow[5]
         }) 
     
-        // $(document).on('click', '#editBtn', function(){
-        //     $('#employeeidmodal').val(employeeid);
-        //     $('#employeesModal').modal('show');
-        // })
-    
-        // $(document).on('click', '#closeBtn', function(){
-        //     $('#positionlist').val('');
-        //     $('#contactinfomodal').val('');
-        // })
-    
-        // $(document).on('click', '#deleteBtn', function(){
-        //     $('#employeeidmodal2').val(employeeid);
-        //     $('#deleteModal').modal('show');
-        // })
-        
-        // $('#confirm').on('input', function() {
-        //     const confirmValue = $(this).val().trim().toUpperCase();
-        //     const deleteBtnModal = $('#deleteBtnModal');
-    
-        //     // Enable the 'DELETE' button if the input value is 'CONFIRM', otherwise disable it
-        //     if (confirmValue === 'CONFIRM') {
-        //         deleteBtnModal.prop('disabled', false);
-        //     } else {
-        //         deleteBtnModal.prop('disabled', true);
-        //     }
-        // });
+        $(document).on('click', '#editBtn', function(){
+            $('#posidmodal').val(id);
+            $('#editModal').modal('show');
+        })
     
         $(document).on('click', '#addBtn', function () {
             let name = $('#name').val();
@@ -144,129 +122,107 @@
             });
         }
     
-        // function LoadList() {
-        //     $.ajax({
-        //         type: 'GET',
-        //         url: '/position/load',
-        //         success: function (result) {
-        //             var data = result.data;
+        $(document).on('click', '#updateBtn', function () {
+            let posid = $('#posidmodal').val();
+            let serial = $('#serialmodal').val();
+            let min = $('#minmodal').val();
+            let ptu = $('#ptumodal').val();
     
-        //             $.each(data, function (key, item) {
-        //                 if (item.status == "ACTIVE") {
-        //                     activePositions.push(item.positionname); 
-        //                     var options = new Option(item.positionname, item.positionname);
-        //                     $(options).html(item.positionname);
-        //                     $('#positionlist').append(options);
-        //                 }
-        //             });
-        //             //console.log(activePositions);
-        //             populateCustomDropdown();
-        //         },
-        //         error: function (err) {
-        //             errormsg(err);
-        //         }
-        //     });
-        // }
+            var message = "";
     
-        // $(document).on('click', '#activeBtn', function(){
-        //     console.log(employeeid);
-        //     console.log(status);
-        //     $.ajax({
-        //         type: 'POST',
-        //         url: '/employees/status',
-        //         data: {
-        //             status: status,
-        //             employeeid: employeeid,
-        //         },
-        //         success: function (result) {
-        //             if (result.msg == 'success') {
-        //                 LoadTable();
-        //                 success('Saved', 'Successfully')
-        //             }
+            if (serial == '' && min == '' && ptu == ''){
+                    message += 'Fill up atleast 1 input field before updating'
+                }
     
-        //             if (result.msg == 'notexist') {
-        //                 warning(`${employeeid} does not exist!`);
-        //             }
+            if (message != '') {
+                warning('Required', `${message}`);
+            }
+            else {
+                $.ajax({
+                    type: 'POST',
+                    url: '/masterpos/edit',
+                    data: {
+                        posid: posid,
+                        serial: serial,
+                        min: min,
+                        ptu: ptu,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            $('#posidmodal').modal('hide');
+                            $('#serialmodal').val('');
+                            $('#minmodal').val('');
+                            $('#ptumodal').val('');
+                            success('Saved', 'Successfully')
+                        }
     
-        //         },
-        //         error: function (err) {
-        //             errormsg(err);
-        //         }
-        //     })
-        // });
+                        if (result.msg == 'exist') {
+                            warning('Exist', `${serial} already exist!`);
+                        }
     
-        // $(document).on('click', '#inactiveBtn', function(){
-        //     console.log(employeeid);
-        //     console.log(status);
-        //     $.ajax({
-        //         type: 'POST',
-        //         url: '/employees/status',
-        //         data: {
-        //             status: status,
-        //             employeeid: employeeid,
-        //         },
-        //         success: function (result) {
-        //             if (result.msg == 'success') {
-        //                 LoadTable();
-        //                 success('Saved', 'Successfully')
-        //             }
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+            }
+        })
+
+            
+        $(document).on('click', '#activeBtn', function(){
+            console.log(id);
+            console.log(status);
+            $.ajax({
+                type: 'POST',
+                url: '/masterpos/status',
+                data: {
+                    status: status,
+                    id: id,
+                },
+                success: function (result) {
+                    if (result.msg == 'success') {
+                        LoadTable();
+                        success('Saved', 'Successfully')
+                    }
     
-        //             if (result.msg == 'notexist') {
-        //                 warning(`${employeeid} does not exist!`);
-        //             }
+                    if (result.msg == 'notexist') {
+                        warning(`${id} does not exist!`);
+                    }
     
-        //         },
-        //         error: function (err) {
-        //             errormsg(err);
-        //         }
-        //     })
-        // });
+                },
+                error: function (err) {
+                    errormsg(err);
+                }
+            })
+        });
     
-        // $(document).on('click', '#updateBtn', function () {
-        //     let employeeid = $('#employeeidmodal').val();
-        //     let positionname = $('#positionlist').val();
-        //     let contactinfo = $('#contactinfomodal').val();
+        $(document).on('click', '#inactiveBtn', function(){
+            console.log(id);
+            console.log(status);
+            $.ajax({
+                type: 'POST',
+                url: '/masterpos/status',
+                data: {
+                    status: status,
+                    id: id,
+                },
+                success: function (result) {
+                    if (result.msg == 'success') {
+                        LoadTable();
+                        success('Saved', 'Successfully')
+                    }
     
-        //     var message = "";
+                    if (result.msg == 'notexist') {
+                        warning(`${id} does not exist!`);
+                    }
     
-        //     if (positionname == '' && contactinfo == ''){
-        //             message += 'Fill up atleast 1 input field before updating'
-        //         }
-    
-        //     if (message != '') {
-        //         warning('Required', `${message}`);
-        //     }
-        //     else {
-        //         $.ajax({
-        //             type: 'POST',
-        //             url: '/employees/edit',
-        //             data: {
-        //                 employeeid: employeeid,
-        //                 positionname: positionname,
-        //                 contactinfo: contactinfo,
-        //             },
-        //             success: function (result) {
-        //                 if (result.msg == 'success') {
-        //                     LoadTable();
-        //                     $('#employeesModal').modal('hide');
-        //                     $('#positionlist').val('');
-        //                     $('#contactinfomodal').val('');
-        //                     success('Saved', 'Successfully')
-        //                 }
-    
-        //                 if (result.msg == 'exist') {
-        //                     warning('Exist', `${positionname} already exist!`);
-        //                 }
-    
-        //             },
-        //             error: function (err) {
-        //                 errormsg(err);
-        //             }
-        //         })
-        //     }
-        // })
-    
-        // LoadList()
+                },
+                error: function (err) {
+                    errormsg(err);
+                }
+            })
+        });
     
     })
 </script>

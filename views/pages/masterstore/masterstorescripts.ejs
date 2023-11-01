@@ -17,32 +17,10 @@
             status = dataRow[2]
         }) 
     
-        // $(document).on('click', '#editBtn', function(){
-        //     $('#employeeidmodal').val(employeeid);
-        //     $('#employeesModal').modal('show');
-        // })
-    
-        // $(document).on('click', '#closeBtn', function(){
-        //     $('#positionlist').val('');
-        //     $('#contactinfomodal').val('');
-        // })
-    
-        // $(document).on('click', '#deleteBtn', function(){
-        //     $('#employeeidmodal2').val(employeeid);
-        //     $('#deleteModal').modal('show');
-        // })
-        
-        // $('#confirm').on('input', function() {
-        //     const confirmValue = $(this).val().trim().toUpperCase();
-        //     const deleteBtnModal = $('#deleteBtnModal');
-    
-        //     // Enable the 'DELETE' button if the input value is 'CONFIRM', otherwise disable it
-        //     if (confirmValue === 'CONFIRM') {
-        //         deleteBtnModal.prop('disabled', false);
-        //     } else {
-        //         deleteBtnModal.prop('disabled', true);
-        //     }
-        // });
+        $(document).on('click', '#editBtn', function(){
+            $('#idmodal').val(id);
+            $('#editModal').modal('show');
+        })
     
         $(document).on('click', '#addBtn', function () {
             let name = $('#name').val();
@@ -107,13 +85,7 @@
             } else {
                 data.forEach(item => {
                     let action = '';
-                    if (item.status === 'ACTIVE') {
-                        action = `<button id="editBtn" class="btn btn-outline-primary shadow-sm w-100" name="editBtn" data-toggle="modal" data-target="#accessModal">EDIT</button>
-                        <button id="inactiveBtn" class="btn btn-outline-danger shadow-sm w-100 mt-1" name="inactiveBtn">INACTIVE</button>`;
-                    } else if (item.status === 'INACTIVE') {
-                        action = `<button id="editBtn" class="btn btn-outline-primary shadow-sm w-100" name="editBtn" data-toggle="modal" data-target="#accessModal">EDIT</button>
-                        <button id="activeBtn" class="btn btn-outline-success shadow-sm w-100 mt-1" name="activeBtn">ACTIVE</button>`;
-                    }
+                    action = `<button id="editBtn" class="btn btn-outline-primary shadow-sm w-100" name="editBtn" data-toggle="modal" data-target="#editModal">EDIT</button>`;
 
                     const tr = $('<tr>').append(
                         $('<td>', { text: item.id, 'data-label': 'ID', class: 'custom-mobile-align' }),
@@ -152,129 +124,52 @@
             });
         }
     
-        // function LoadList() {
-        //     $.ajax({
-        //         type: 'GET',
-        //         url: '/position/load',
-        //         success: function (result) {
-        //             var data = result.data;
+        $(document).on('click', '#updateBtn', function () {
+            let id = $('#idmodal').val();
+            let address = $('#addressmodal').val();
+            let contact = $('#contactmodal').val();
+            let messages = $('#messagesmodal').val();
     
-        //             $.each(data, function (key, item) {
-        //                 if (item.status == "ACTIVE") {
-        //                     activePositions.push(item.positionname); 
-        //                     var options = new Option(item.positionname, item.positionname);
-        //                     $(options).html(item.positionname);
-        //                     $('#positionlist').append(options);
-        //                 }
-        //             });
-        //             //console.log(activePositions);
-        //             populateCustomDropdown();
-        //         },
-        //         error: function (err) {
-        //             errormsg(err);
-        //         }
-        //     });
-        // }
+            var message = "";
     
-        // $(document).on('click', '#activeBtn', function(){
-        //     console.log(employeeid);
-        //     console.log(status);
-        //     $.ajax({
-        //         type: 'POST',
-        //         url: '/employees/status',
-        //         data: {
-        //             status: status,
-        //             employeeid: employeeid,
-        //         },
-        //         success: function (result) {
-        //             if (result.msg == 'success') {
-        //                 LoadTable();
-        //                 success('Saved', 'Successfully')
-        //             }
+            if (address == '' && contact == '' && messages == ''){
+                    message += 'Fill up atleast 1 input field before updating'
+                }
     
-        //             if (result.msg == 'notexist') {
-        //                 warning(`${employeeid} does not exist!`);
-        //             }
+            if (message != '') {
+                warning('Required', `${message}`);
+            }
+            else {
+                $.ajax({
+                    type: 'POST',
+                    url: '/masterstore/edit',
+                    data: {
+                        id: id,
+                        address: address,
+                        contact: contact,
+                        messages: messages
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            $('#masterstoreModal').modal('hide');
+                            $('#addressmodal').val('');
+                            $('#contactmodal').val('');
+                            $('#messagesmodal').val('');
+                            success('Saved', 'Successfully')
+                        }
     
-        //         },
-        //         error: function (err) {
-        //             errormsg(err);
-        //         }
-        //     })
-        // });
+                        if (result.msg == 'exist') {
+                            warning('Exist', `${address} already exist!`);
+                        }
     
-        // $(document).on('click', '#inactiveBtn', function(){
-        //     console.log(employeeid);
-        //     console.log(status);
-        //     $.ajax({
-        //         type: 'POST',
-        //         url: '/employees/status',
-        //         data: {
-        //             status: status,
-        //             employeeid: employeeid,
-        //         },
-        //         success: function (result) {
-        //             if (result.msg == 'success') {
-        //                 LoadTable();
-        //                 success('Saved', 'Successfully')
-        //             }
-    
-        //             if (result.msg == 'notexist') {
-        //                 warning(`${employeeid} does not exist!`);
-        //             }
-    
-        //         },
-        //         error: function (err) {
-        //             errormsg(err);
-        //         }
-        //     })
-        // });
-    
-        // $(document).on('click', '#updateBtn', function () {
-        //     let employeeid = $('#employeeidmodal').val();
-        //     let positionname = $('#positionlist').val();
-        //     let contactinfo = $('#contactinfomodal').val();
-    
-        //     var message = "";
-    
-        //     if (positionname == '' && contactinfo == ''){
-        //             message += 'Fill up atleast 1 input field before updating'
-        //         }
-    
-        //     if (message != '') {
-        //         warning('Required', `${message}`);
-        //     }
-        //     else {
-        //         $.ajax({
-        //             type: 'POST',
-        //             url: '/employees/edit',
-        //             data: {
-        //                 employeeid: employeeid,
-        //                 positionname: positionname,
-        //                 contactinfo: contactinfo,
-        //             },
-        //             success: function (result) {
-        //                 if (result.msg == 'success') {
-        //                     LoadTable();
-        //                     $('#employeesModal').modal('hide');
-        //                     $('#positionlist').val('');
-        //                     $('#contactinfomodal').val('');
-        //                     success('Saved', 'Successfully')
-        //                 }
-    
-        //                 if (result.msg == 'exist') {
-        //                     warning('Exist', `${positionname} already exist!`);
-        //                 }
-    
-        //             },
-        //             error: function (err) {
-        //                 errormsg(err);
-        //             }
-        //         })
-        //     }
-        // })
-    
-        // LoadList()
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+            }
+        })
 
         $(document).on("change", "#imageInput", function () {
       const input = document.getElementById("imageInput");
