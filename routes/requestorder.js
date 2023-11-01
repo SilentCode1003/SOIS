@@ -11,10 +11,11 @@ const {
 const helper = require("./repository/customhelper.js");
 const disctionary = require("./repository/dictionary.js");
 const { RequestOrder } = require("./model/soismodel.js");
+const { Validator } = require("./controller/middleware.js");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
-  res.render("requestorder", { title: "Express" });
+  Validator(req, res, "requestorder");
 });
 
 module.exports = router;
@@ -22,7 +23,7 @@ module.exports = router;
 router.get("/load", (req, res) => {
   try {
     let sql = `select * from request_order`;
-    Select(sql,  (err, result) => {
+    Select(sql, (err, result) => {
       if (err) console.log("Error: ", err);
       if (result.length != 0) {
         let data = RequestOrder(result);

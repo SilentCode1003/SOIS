@@ -10,7 +10,11 @@
 
   <ul class="list-unstyled components">
     <li>
-      <button class="btn btn-dark sidebar-menu" type="button" id="sidebarCollapse">
+      <button
+        class="btn btn-dark sidebar-menu"
+        type="button"
+        id="sidebarCollapse"
+      >
         <i class="fa-solid fa-list" style="color: #ffffff"></i>
       </button>
     </li>
@@ -20,8 +24,14 @@
         Dashboard
       </a>
     </li>
+    <% if (accesstype === 'Administrator') { %>
     <li>
-      <a href="#mastersmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+      <a
+        href="#mastersmenu"
+        data-toggle="collapse"
+        aria-expanded="false"
+        class="dropdown-toggle"
+      >
         <i class="fas fa-cogs sidebar-icons"></i>
         Masters
       </a>
@@ -76,8 +86,14 @@
         </li>
       </ul>
     </li>
+    <% } %>
     <li>
-      <a href="#transactionlists" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+      <a
+        href="#transactionlists"
+        data-toggle="collapse"
+        aria-expanded="false"
+        class="dropdown-toggle"
+      >
         <i class="fas fa-shopping-cart sidebar-icons"></i>
         Transaction
       </a>
@@ -97,7 +113,12 @@
       </ul>
     </li>
     <li>
-      <a href="#orderlists" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+      <a
+        href="#orderlists"
+        data-toggle="collapse"
+        aria-expanded="false"
+        class="dropdown-toggle"
+      >
         <i class="fas fa-dolly-flatbed sidebar-icons"></i>
         Ordering
       </a>
@@ -135,7 +156,12 @@
       </ul>
     </li>
     <li>
-      <a href="#inventorylist" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+      <a
+        href="#inventorylist"
+        data-toggle="collapse"
+        aria-expanded="false"
+        class="dropdown-toggle"
+      >
         <i class="fas fa-boxes sidebar-icons"></i>
         Inventory
       </a>
@@ -161,5 +187,4 @@
       </ul>
     </li>
   </ul>
-
 </nav>

@@ -9,10 +9,11 @@ const {
   SelectParameter,
 } = require("./repository/soisdb.js");
 const { MasterStore } = require("./model/soismodel.js");
+const { Validator } = require("./controller/middleware.js");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
-  res.render("masterstore", { title: "Express" });
+  Validator(req, res, "masterstore");
 });
 
 module.exports = router;

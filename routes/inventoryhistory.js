@@ -10,10 +10,11 @@ const {
 
 const helper = require("./repository/customhelper.js");
 const { InventoryHistory } = require("./model/soismodel.js");
+const { Validator } = require("./controller/middleware.js");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
-  res.render("inventoryhistory", { title: "Express" });
+  Validator(req, res, "inventoryhistory");
 });
 
 module.exports = router;

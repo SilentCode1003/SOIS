@@ -1,4 +1,4 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 
 const {
@@ -9,10 +9,11 @@ const {
 } = require("./repository/soisdb.js");
 
 const helper = require("./repository/customhelper.js");
+const { Validator } = require("./controller/middleware.js");
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('dashboard', { title: 'Express' });
+router.get("/", function (req, res, next) {
+  Validator(req, res, "dashboard");
 });
 
 module.exports = router;
