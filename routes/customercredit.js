@@ -98,6 +98,37 @@ router.post("/save", (req, res) => {
   }
 });
 
+router.post("/getcredit", (req, res) => {
+  try {
+    const { customerid } = req.body;
+    let sql = "select * from customer_credit where cc_customerid=?";
+
+    console.log(customerid);
+
+    SelectParameter(sql, [customerid], (err, result) => {
+      if (err) console.error("Error: ", err);
+      if (result.length != 0) {
+        let data = CustomerCredit(result);
+        console.log(data);
+
+        res.json({
+          msg: "success",
+          data: data,
+        });
+      } else {
+        res.json({
+          msg: "success",
+          data: result,
+        });
+      }
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
+
 //#region
 function CustomerCredit_Check(data) {
   return new Promise((resolve, reject) => {
