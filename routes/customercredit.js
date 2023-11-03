@@ -14,6 +14,7 @@ const helper = require("./repository/customhelper.js");
 const { GetValue, ACT, AFND } = require("./repository/dictionary.js");
 const { CustomerCredit, BalanceHistory } = require("./model/soismodel.js");
 const { Validator } = require("./controller/middleware.js");
+const { BalanceHistory_Create, CustomerCredit_Check } = require("./repository/credit.js");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -128,33 +129,3 @@ router.post("/getcredit", (req, res) => {
     });
   }
 });
-
-//#region
-function CustomerCredit_Check(data) {
-  return new Promise((resolve, reject) => {
-    let sql = "select * from customer_credit where cc_customerid=?";
-    SelectParameter(sql, [data], (err, result) => {
-      if (err) reject(err);
-
-      console.log(result);
-
-      let data = CustomerCredit(result);
-      resolve(data);
-    });
-  });
-}
-
-function BalanceHistory_Create(data) {
-  return new Promise((resolve, reject) => {
-    InsertTable("balance_history", data, (err, result) => {
-      if (err) {
-        console.error(err);
-        reject(err);
-      }
-
-      console.log(result);
-      resolve(result);
-    });
-  });
-}
-//#endregion
