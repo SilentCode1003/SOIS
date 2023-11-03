@@ -104,8 +104,8 @@
      
         function populatetable(data) {
             console.log(data);
-            const tableBody = $('#data-table tbody');
-            tableBody.empty();
+            const tableBody = document.querySelector('#data-table tbody');
+            tableBody.innerHTML = '';
     
             if (data.length === 0) {
                 const tr = $('<tr>').append($('<td>', {
@@ -121,18 +121,26 @@
                         action = `<button id="approveBtn" class="btn btn-outline-success shadow-sm w-100 mt-1" name="approveBtn">APPROVE</button>
                         <button id="cancelBtn" class="btn btn-outline-danger shadow-sm w-100 mt-1" name="cancelBtn">CANCEL</button>`;
                     } 
-                    const tr = $('<tr>').append(
-                        $('<td>', { text: item.id, 'data-label': 'Employee ID', class: 'custom-mobile-align' }),
-                        $('<td>', { text: item.customerid, 'data-label': 'Middle Name', class: 'custom-mobile-align' }),
-                        $('<td>', { text: item.date, 'data-label': 'Last Name', class: 'custom-mobile-align' }),
-                        $('<td>', { text: item.details, 'data-label': 'Position', class: 'custom-mobile-align' }),
-                        $('<td>', { text: item.total, 'data-label': 'Access Type', class: 'custom-mobile-align' }),
-                        $('<td>', { text: item.paymenttype, 'data-label': 'Status', class: 'custom-mobile-align' }),
-                        $('<td>', { text: item.status, 'data-label': 'Created By', class: 'custom-mobile-align no-wrap' }),
-                        $('<td>', { html: action, 'data-label': 'Action', class: '' })
-                    );
 
-                    tableBody.append(tr);
+                    const descriptionArray = JSON.parse(item.details);
+                    console.log(descriptionArray)
+                    const newDescription = descriptionArray[0].items
+                        .map(item => `Name: ${item.name}, Quantity: ${item.quantity}, Price: ₱${item.price}`)
+                        .join('<br>');
+                    console.log(newDescription)
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td class="custom-mobile-align" data-label="Employee ID">${item.id}</td>
+                        <td class="custom-mobile-align" data-label="Customer ID">${item.customerid}</td>
+                        <td class="custom-mobile-align no-wrap" data-label="Date">${item.date}</td>
+                        <td class="no-wrap">${newDescription}<br>Address: ${descriptionArray[0].address}<br>Latitude: ${descriptionArray[0].latitude}<br>Longitude: ${descriptionArray[0].longitude}</td>
+                        <td class="custom-mobile-align" data-label="Total">${formatCurrency(item.total)}</td>
+                        <td class="custom-mobile-align" data-label="Payment Type">${item.paymenttype}</td>
+                        <td class="custom-mobile-align" data-label="Status">${item.status}</td>
+                        <td class="custom-mobile-align">${action}</td>
+                    `;
+                    tableBody.appendChild(tr);
                 });
             }
         }
