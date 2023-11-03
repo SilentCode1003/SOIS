@@ -469,7 +469,7 @@ exports.getNetwork = () => {
 
 //#endregion
 
-//#region Select Parameter Query
+//#region Select Parameter Query data=[1,2,3]
 exports.SelectStatement = (str, data) => {
   let statement = "";
   let found = 0;

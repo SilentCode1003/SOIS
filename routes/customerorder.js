@@ -49,10 +49,10 @@ router.get("/load", (req, res) => {
 
 router.post("/save", (req, res) => {
   try {
-    const { customerid, date, details, total, paymenttype } = req.body;
+    const { customerid, details, total, paymenttype } = req.body;
     let status = dictionary.GetValue(dictionary.ACT());
-    let customer_credit = [
-      [customerid, date, details, total, paymenttype, status],
+    let customer_order = [
+      [customerid, helper.GetCurrentDatetime(), details, total, paymenttype, status],
     ];
 
     InsertTable("customer_order", customer_order, (err, result) => {
