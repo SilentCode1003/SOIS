@@ -1,134 +1,164 @@
 <script>
-    $(document).ready(function () {
-        //Functionality
-        var activePositions = [];
-        let id = "";
-        let status = "";
-    
-        LoadTable();
-    
-        $('#data-table tbody').on('click', 'tr', function () {
-            var dataRow = [];
-            $(this).closest('tr').find('td').each(function () {
-                dataRow.push($(this).text());
-            });
-            console.log(dataRow);
-            id = dataRow[0];
-            status = dataRow[6]
-        }) 
-    
-        function populatetable(data) {
-            console.log(data);
-            const tableBody = document.querySelector('#data-table tbody');
-            tableBody.innerHTML = '';
-    
-            if (data.length === 0) {
-                const tr = $('<tr>').append($('<td>', {
-                    colspan: 9,
-                    class: 'text-center',
-                    text: 'No Data Matched'
-                }));
-                tableBody.append(tr);
-            } else {
-                data.forEach(item => {
-                    let action = '';
-                    if (item.status === 'PENDING') {
-                        action = `<button id="approveBtn" class="btn btn-outline-success shadow-sm w-100 mt-1" name="approveBtn">APPROVE</button>
+  $(document).ready(function () {
+    //Functionality
+    var activePositions = [];
+    let id = "";
+    let status = "";
+
+    LoadTable();
+
+    $("#data-table tbody").on("click", "tr", function () {
+      var dataRow = [];
+      $(this)
+        .closest("tr")
+        .find("td")
+        .each(function () {
+          dataRow.push($(this).text());
+        });
+      console.log(dataRow);
+      id = dataRow[0];
+      status = dataRow[6];
+    });
+
+    function populatetable(data) {
+      console.log(data);
+      const tableBody = document.querySelector("#data-table tbody");
+      tableBody.innerHTML = "";
+
+      if (data.length === 0) {
+        const tr = $("<tr>").append(
+          $("<td>", {
+            colspan: 9,
+            class: "text-center",
+            text: "No Data Matched",
+          })
+        );
+        tableBody.append(tr);
+      } else {
+        data.forEach((item) => {
+          let action = "";
+          if (item.status === "PENDING") {
+            action = `<button id="approveBtn" class="btn btn-outline-success shadow-sm w-100 mt-1" name="approveBtn">APPROVE</button>
                         <button id="cancelBtn" class="btn btn-outline-danger shadow-sm w-100 mt-1" name="cancelBtn">CANCEL</button>`;
-                    } 
+          }
 
-                    const descriptionArray = JSON.parse(item.details);
-                    const newDescription = descriptionArray[0].items
-                        .map(item => `Name: ${item.name}, Quantity: ${item.quantity}, Price: ₱${item.price}`)
-                        .join('<br>');
+          const descriptionArray = JSON.parse(item.details);
+          const newDescription = descriptionArray[0].items
+            .map(
+              (item) =>
+                `Name: ${item.name}, Quantity: ${item.quantity}, Price: ₱${item.price}`
+            )
+            .join("<br>");
 
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td class="custom-mobile-align" data-label="Employee ID">${item.id}</td>
-                        <td class="custom-mobile-align" data-label="Customer ID">${item.customerid}</td>
-                        <td class="custom-mobile-align no-wrap" data-label="Date">${item.date}</td>
-                        <td class="no-wrap">${newDescription}<br>Address: ${descriptionArray[0].address}<br>Latitude: ${descriptionArray[0].latitude}<br>Longitude: ${descriptionArray[0].longitude}</td>
-                        <td class="custom-mobile-align" data-label="Total">${formatCurrency(item.total)}</td>
-                        <td class="custom-mobile-align" data-label="Payment Type">${item.paymenttype}</td>
-                        <td class="custom-mobile-align" data-label="Status">${item.status}</td>
+          const tr = document.createElement("tr");
+          var additional = "";
+          if (item.paymenttype == "UH POINTS") {
+            additional += `<br>Points: ${descriptionArray[0].points}`;
+          } else {
+            if (item.paymenttype != "COD") {
+              additional += `<br>Reference: ${descriptionArray[0].reference}`;
+            }
+          }
+
+          tr.innerHTML = `
+                        <td class="custom-mobile-align" data-label="Employee ID">${
+                          item.id
+                        }</td>
+                        <td class="custom-mobile-align" data-label="Customer ID">${
+                          item.customerid
+                        }</td>
+                        <td class="custom-mobile-align no-wrap" data-label="Date">${
+                          item.date
+                        }</td>
+                        <td class="no-wrap">${newDescription}<br>Address: ${
+            descriptionArray[0].address
+          }<br>Latitude: ${descriptionArray[0].latitude}<br>Longitude: ${
+            descriptionArray[0].longitude
+          } ${additional}</td>
+                        <td class="custom-mobile-align" data-label="Total">${formatCurrency(
+                          item.total
+                        )}</td>
+                        <td class="custom-mobile-align" data-label="Payment Type">${
+                          item.paymenttype
+                        }</td>
+                        <td class="custom-mobile-align" data-label="Status">${
+                          item.status
+                        }</td>
                         <td class="custom-mobile-align">${action}</td>
                     `;
-                    tableBody.appendChild(tr);
-                });
-            }
-        }
-    
-        function LoadTable() {
-            $.ajax({
-                url: '/customerorder/load',
-                method: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    if (data.msg === 'success') {
-                        populatetable(data.data);
-                    } else {
-                        console.error(data.msg);
-                    }
-                },
-                error: function (error) {
-                    console.error(error);
-                }
-            });
-        }
-    
-        $(document).on('click', '#approveBtn', function(){
-            console.log(id);
-            console.log(status);
-            $.ajax({
-                type: 'POST',
-                url: '/customerorder/approve',
-                data: {
-                    status: status,
-                    id: id,
-                },
-                success: function (result) {
-                    if (result.msg == 'success') {
-                        LoadTable();
-                        success('Saved', 'Successfully')
-                    }
-    
-                    if (result.msg == 'notexist') {
-                        warning(`${id} does not exist!`);
-                    }
-    
-                },
-                error: function (err) {
-                    errormsg(err);
-                }
-            })
+          tableBody.appendChild(tr);
         });
-    
-        $(document).on('click', '#cancelBtn', function(){
-            console.log(id);
-            console.log(status);
-            $.ajax({
-                type: 'POST',
-                url: '/customerorder/cancel',
-                data: {
-                    status: status,
-                    id: id,
-                },
-                success: function (result) {
-                    if (result.msg == 'success') {
-                        LoadTable();
-                        success('Saved', 'Successfully')
-                    }
-    
-                    if (result.msg == 'notexist') {
-                        warning(`${id} does not exist!`);
-                    }
-    
-                },
-                error: function (err) {
-                    errormsg(err);
-                }
-            })
-        });
-    
-    })
+      }
+    }
+
+    function LoadTable() {
+      $.ajax({
+        url: "/customerorder/load",
+        method: "GET",
+        dataType: "json",
+        success: function (data) {
+          if (data.msg === "success") {
+            populatetable(data.data);
+          } else {
+            console.error(data.msg);
+          }
+        },
+        error: function (error) {
+          console.error(error);
+        },
+      });
+    }
+
+    $(document).on("click", "#approveBtn", function () {
+      console.log(id);
+      console.log(status);
+      $.ajax({
+        type: "POST",
+        url: "/customerorder/approve",
+        data: {
+          status: status,
+          id: id,
+        },
+        success: function (result) {
+          if (result.msg == "success") {
+            LoadTable();
+            success("Saved", "Successfully");
+          }
+
+          if (result.msg == "notexist") {
+            warning(`${id} does not exist!`);
+          }
+        },
+        error: function (err) {
+          errormsg(err);
+        },
+      });
+    });
+
+    $(document).on("click", "#cancelBtn", function () {
+      console.log(id);
+      console.log(status);
+      $.ajax({
+        type: "POST",
+        url: "/customerorder/cancel",
+        data: {
+          status: status,
+          id: id,
+        },
+        success: function (result) {
+          if (result.msg == "success") {
+            LoadTable();
+            success("Saved", "Successfully");
+          }
+
+          if (result.msg == "notexist") {
+            warning(`${id} does not exist!`);
+          }
+        },
+        error: function (err) {
+          errormsg(err);
+        },
+      });
+    });
+  });
 </script>
