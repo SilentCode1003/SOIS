@@ -161,3 +161,29 @@ router.post("/getorderhistory", (req, res) => {
     });
   }
 });
+
+router.post("/getactiveorder", (req, res) => {
+  try {
+    const { customerid } = req.body;
+    let data = [customerid, dictionary.GetValue(dictionary.CMP())];
+    let sql =
+      "select * from customer_order where co_customerid=? and not co_status=?";
+    let sql_active_customer_order = helper.SelectStatement(sql, data);
+
+    Select(sql_active_customer_order, (err, result) => {
+      if (err) console.error("Error: ", err);
+
+      console.log(result);
+
+      let data = CustomerOrder(result);
+      res.json({
+        msg: "success",
+        data: data,
+      });
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
