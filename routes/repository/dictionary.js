@@ -44,6 +44,7 @@ exports.GetValue = (abr) => {
   if (abr == "CRT") return "CREATE";
   if (abr == "AFND") return "LOAD";
   if (abr == "ONPS") return "ONLINE PURCHASE";
+  if (abr == "PUEWLT") return "PAID W/ E-WALLET";
 };
 
 //#region STATUS CODE
@@ -225,5 +226,9 @@ exports.ONPS = () => {
 
 exports.AFND = () => {
   return "AFND";
+};
+
+exports.PUEWLT = () => {
+  return "PUEWLT";
 };
 //#endregion
