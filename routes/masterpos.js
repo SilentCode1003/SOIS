@@ -10,7 +10,7 @@ const {
 } = require("./repository/soisdb.js");
 
 const helper = require("./repository/customhelper.js");
-const disctionary = require("./repository/dictionary.js");
+const dictionary = require("./repository/dictionary.js");
 const { MasterPOS } = require("./model/soismodel.js");
 const { Validator } = require("./controller/middleware.js");
 
@@ -51,7 +51,7 @@ router.get("/load", (req, res) => {
 router.post("/save", (req, res) => {
   try {
     const { name, serial, min, ptu } = req.body;
-    let status = disctionary.GetValue(disctionary.ACT());
+    let status = dictionary.GetValue(dictionary.ACT());
     let master_pos = [[name, serial, min, ptu, status]];
 
     InsertTable("master_pos", master_pos, (err, result) => {
@@ -92,6 +92,35 @@ router.post("/getpos", (req, res) => {
           data: result,
         });
       }
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
+
+
+router.post("/status", (req, res) => {
+  try {
+    const { id } = req.body;
+    let status =
+      req.body.status == dictionary.GetValue(dictionary.ACT())
+        ? dictionary.GetValue(dictionary.INACT())
+        : dictionary.GetValue(dictionary.ACT());
+    let data = [status, id];
+    console.log(data);
+
+    let sql = `update master_pos 
+                       set mp_status = ?
+                       where mp_id = ?`;
+
+    UpdateMultiple(sql, data, (err, result) => {
+      if (err) console.error("Error: ", err);
+      console.log(result);
+      res.json({
+        msg: "success",
+      });
     });
   } catch (error) {
     res.json({
