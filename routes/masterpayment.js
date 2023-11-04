@@ -6,6 +6,7 @@ const {
   Select,
   SelectResult,
   UpdateMultiple,
+  SelectParameter,
 } = require("./repository/soisdb.js");
 
 const helper = require("./repository/customhelper.js");
@@ -125,6 +126,34 @@ router.post("/edit", (req, res) => {
 
     res.json({
       msg: "success",
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
+
+router.get("/getorderingpayment", (req, res) => {
+  try {
+    let status = dictionary.GetValue(dictionary.ACT());
+    let sql = `select * from master_payment where mp_status=?`;
+    SelectParameter(sql, [status], (err, result) => {
+      if (err) console.log("Error: ", err);
+
+      if (result.length != 0) {
+        let data = MasterPayment(result);
+
+        res.json({
+          msg: "success",
+          data: data,
+        });
+      } else {
+        res.json({
+          msg: "success",
+          data: result,
+        });
+      }
     });
   } catch (error) {
     res.json({
