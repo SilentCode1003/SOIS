@@ -529,7 +529,8 @@ exports.InsertTable = (tablename, data, callback) => {
     let sql = `INSERT INTO sales_inventory(
       si_detailid,
       si_productid,
-      si_posid) VALUES ?`;
+      si_posid,
+      si_quantity) VALUES ?`;
 
     this.Insert(sql, data, (err, result) => {
       if (err) {
