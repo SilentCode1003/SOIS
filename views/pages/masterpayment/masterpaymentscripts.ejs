@@ -100,7 +100,7 @@
                     },
                     success: function (result) {
                         if (result.msg == 'success') {
-                            reloadTableData();
+                            LoadTable();
                             $('#idmodal').modal('hide');
                             $('#paymentmodal').val('');
                             success('Saved', 'Successfully')

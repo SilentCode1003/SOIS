@@ -20,6 +20,7 @@ const {
   SalesInventoryModel,
   ItemsModel,
   UserLoginModel,
+  SalesProductInventoryModel,
 } = require("./model");
 //#region Masters & Transactions Models
 exports.MasterEmployee = (data) => {
@@ -523,6 +524,7 @@ exports.SalesInventory = (data) => {
       detailid: key.si_detailid,
       productid: key.si_productid,
       posid: key.si_posid,
+      quantity: key.si_quantity,
     });
   });
 
@@ -532,7 +534,8 @@ exports.SalesInventory = (data) => {
         key["id"],
         key["detailid"],
         key["productid"],
-        key["posid"]
+        key["posid"],
+        key["quantity"]
       )
   );
 };
@@ -576,6 +579,31 @@ exports.UserLogin = (data) => {
         key["fullname"],
         key["accesstype"],
         key["position"]
+      )
+  );
+};
+
+exports.SalesProductInventory = (data) => {
+  let dataResult = [];
+
+  data.forEach((key, item) => {
+    dataResult.push({
+      salesid: key.salesid,
+      detailid: key.detailid,
+      productname: key.productname,
+      posid: key.posid,
+      quantity: key.quantity,
+    });
+  });
+
+  return dataResult.map(
+    (key) =>
+      new SalesProductInventoryModel(
+        key["salesid"],
+        key["detailid"],
+        key["productname"],
+        key["posid"],
+        key["quantity"]
       )
   );
 };

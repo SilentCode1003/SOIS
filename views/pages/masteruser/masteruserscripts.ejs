@@ -201,14 +201,14 @@
 
     
         $(document).on('click', '#activeBtn', function(){
-            console.log(id);
+            console.log(employeeid);
             console.log(status);
             $.ajax({
                 type: 'POST',
                 url: '/masteruser/status',
                 data: {
                     status: status,
-                    id: id,
+                    id: employeeid,
                 },
                 success: function (result) {
                     if (result.msg == 'success') {
@@ -217,7 +217,7 @@
                     }
     
                     if (result.msg == 'notexist') {
-                        warning(`${id} does not exist!`);
+                        warning(`${employeeid} does not exist!`);
                     }
     
                 },
@@ -228,14 +228,14 @@
         });
     
         $(document).on('click', '#inactiveBtn', function(){
-            console.log(id);
+            console.log(employeeid);
             console.log(status);
             $.ajax({
                 type: 'POST',
                 url: '/masteruser/status',
                 data: {
                     status: status,
-                    id: id,
+                    id: employeeid,
                 },
                 success: function (result) {
                     if (result.msg == 'success') {
@@ -244,7 +244,7 @@
                     }
     
                     if (result.msg == 'notexist') {
-                        warning(`${id} does not exist!`);
+                        warning(`${employeeid} does not exist!`);
                     }
     
                 },

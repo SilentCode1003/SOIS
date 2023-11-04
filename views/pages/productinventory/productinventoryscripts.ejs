@@ -1,128 +1,144 @@
 <script>
-    $(document).ready(function () {
-        //Functionality
-        var activePositions = [];
-        let id = "";
-    
-        LoadTable();
-        LoadList();
+  $(document).ready(function () {
+    //Functionality
+    var activePositions = [];
+    let id = "";
 
-    
-        $('#data-table tbody').on('click', 'tr', function () {
-            var dataRow = [];
-            $(this).closest('tr').find('td').each(function () {
-                dataRow.push($(this).text());
-            });
-            console.log(dataRow);
-            id = dataRow[0];
-        }) 
+    LoadTable();
+    LoadList();
 
-        $(document).on('click', '#addBtn', function () {
-            let productid = $('#productid').val();
-            let quantity = $('#quantity').val();
+    $("#data-table tbody").on("click", "tr", function () {
+      var dataRow = [];
+      $(this)
+        .closest("tr")
+        .find("td")
+        .each(function () {
+          dataRow.push($(this).text());
+        });
+      console.log(dataRow);
+      id = dataRow[0];
+    });
 
-            var message = "";
-            if (productid == '') { message += 'Product ID, ' }
-            if (quantity == '') { message += 'Quantity, ' }
-            if (message != '') {
-                warning('Required', `Please fill up ${message}`);
+    $(document).on("click", "#addBtn", function () {
+      let productid = $("#productid").val();
+      let quantity = $("#quantity").val();
+
+      var message = "";
+      if (productid == "") {
+        message += "Product ID, ";
+      }
+      if (quantity == "") {
+        message += "Quantity, ";
+      }
+      if (message != "") {
+        warning("Required", `Please fill up ${message}`);
+      } else {
+        console.log(productid, quantity);
+        $.ajax({
+          type: "POST",
+          url: "/productinventory/save",
+          data: {
+            productid: productid,
+            quantity: quantity,
+          },
+          success: function (result) {
+            if (result.msg == "success") {
+              LoadTable();
+              success("Saved", "Successfully");
+              $("#productid").val("");
+              $("#quantity").val("");
             }
-            else {
-                console.log(productid, quantity)
-                $.ajax({
-                    type: 'POST',
-                    url: '/customercredit/save',
-                    data: {
-                        productid: productid,
-                        quantity: quantity,
-                    },
-                    success: function (result) {
-                        if (result.msg == 'success') {
-                            LoadTable()
-                            success('Saved', 'Successfully')
-                            $('#productid').val('');
-                            $('#quantity').val('');
-                        }
-    
-                        if (result.msg == 'exist') {
-                            warning('Not Exist', `${productid} does not exist!`);
-                        }
-    
-                    },
-                    error: function (err) {
-                        errormsg(err);
-                    }
-                })
+
+            if (result.msg == "exist") {
+              warning("Not Exist", `${productid} does not exist!`);
             }
-        })
-  
-        function populatetable(data) {
-            console.log(data);
-            const tableBody = $('#data-table tbody');
-            tableBody.empty();
-    
-            if (data.length === 0) {
-                const tr = $('<tr>').append($('<td>', {
-                    colspan: 3,
-                    class: 'text-center',
-                    text: 'No Data Matched'
-                }));
-                tableBody.append(tr);
-            } else {
-                data.forEach(item => {
-                    let action = '';
-                    if (item.status === 'PENDING') {
-                        action = `<button id="approveBtn" class="btn btn-outline-success shadow-sm w-100 mt-1" name="approveBtn">APPROVE</button>
+          },
+          error: function (err) {
+            errormsg(err);
+          },
+        });
+      }
+    });
+
+    function populatetable(data) {
+      console.log(data);
+      const tableBody = $("#data-table tbody");
+      tableBody.empty();
+
+      if (data.length === 0) {
+        const tr = $("<tr>").append(
+          $("<td>", {
+            colspan: 3,
+            class: "text-center",
+            text: "No Data Matched",
+          })
+        );
+        tableBody.append(tr);
+      } else {
+        data.forEach((item) => {
+          let action = "";
+          if (item.status === "PENDING") {
+            action = `<button id="approveBtn" class="btn btn-outline-success shadow-sm w-100 mt-1" name="approveBtn">APPROVE</button>
                         <button id="cancelBtn" class="btn btn-outline-danger shadow-sm w-100 mt-1" name="cancelBtn">CANCEL</button>`;
-                    } 
-                    const tr = $('<tr>').append(
-                        $('<td>', { text: item.id, 'data-label': 'ID', class: 'custom-mobile-align' }),
-                        $('<td>', { text: item.productid, 'data-label': 'Product ID', class: 'custom-mobile-align' }),
-                        $('<td>', { text: item.quantity, 'data-label': 'Quantity', class: 'custom-mobile-align' }),
-                    );
+          }
+          const tr = $("<tr>").append(
+            $("<td>", {
+              text: item.id,
+              "data-label": "ID",
+              class: "custom-mobile-align",
+            }),
+            $("<td>", {
+              text: item.productid,
+              "data-label": "Product ID",
+              class: "custom-mobile-align",
+            }),
+            $("<td>", {
+              text: item.quantity,
+              "data-label": "Quantity",
+              class: "custom-mobile-align",
+            })
+          );
 
-                    tableBody.append(tr);
-                });
+          tableBody.append(tr);
+        });
+      }
+    }
+
+    function LoadTable() {
+      $.ajax({
+        url: "/productinventory/load",
+        method: "GET",
+        dataType: "json",
+        success: function (data) {
+          if (data.msg === "success") {
+            populatetable(data.data);
+          } else {
+            console.error(data.msg);
+          }
+        },
+        error: function (error) {
+          console.error(error);
+        },
+      });
+    }
+
+    function LoadList() {
+      $.ajax({
+        type: "GET",
+        url: "/product/load",
+        success: function (result) {
+          var data = result.data;
+          $.each(data, function (key, item) {
+            if (item.status == "ACTIVE") {
+              var options = new Option(item.description, item.id);
+              $("#productid").append(options);
             }
-        }
-    
-        function LoadTable() {
-            $.ajax({
-                url: '/productinventory/load',
-                method: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    if (data.msg === 'success') {
-                        populatetable(data.data);
-                    } else {
-                        console.error(data.msg);
-                    }
-                },
-                error: function (error) {
-                    console.error(error);
-                }
-            });
-        }
-
-        function LoadList() {
-            $.ajax({
-                type: 'GET',
-                url: '/product/load',
-                success: function (result) {
-                    var data = result.data;
-                    $.each(data, function (key, item) {
-                        if(item.status == "ACTIVE"){
-                            var options = new Option(item.description, item.id);
-                            $('#productid').append(options);
-                        }
-                    });
-                  
-                },
-                error: function (err) {
-                    errormsg(err);
-                }
-            });
-        }
-    
-    })
+          });
+        },
+        error: function (err) {
+          errormsg(err);
+        },
+      });
+    }
+  });
 </script>
