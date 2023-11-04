@@ -11,10 +11,13 @@ const {
 } = require("./repository/soisdb.js");
 
 const helper = require("./repository/customhelper.js");
-const { GetValue, ACT, AFND } = require("./repository/dictionary.js");
+const { GetValue, ACT, AFND, INACT } = require("./repository/dictionary.js");
 const { CustomerCredit, BalanceHistory } = require("./model/soismodel.js");
 const { Validator } = require("./controller/middleware.js");
-const { BalanceHistory_Create, CustomerCredit_Check } = require("./repository/credit.js");
+const {
+  BalanceHistory_Create,
+  CustomerCredit_Check,
+} = require("./repository/credit.js");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -122,6 +125,32 @@ router.post("/getcredit", (req, res) => {
           data: result,
         });
       }
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
+
+router.post("/status", (req, res) => {
+  try {
+    const { id } = req.body;
+    let status =
+      req.body.status == GetValue(ACT()) ? GetValue(INACT()) : GetValue(ACT());
+    let data = [status, id];
+    console.log(data);
+
+    let sql = `update customer_credit 
+                       set cc_status = ?
+                       where cc_id = ?`;
+
+    UpdateMultiple(sql, data, (err, result) => {
+      if (err) console.error("Error: ", err);
+      console.log(result);
+      res.json({
+        msg: "success",
+      });
     });
   } catch (error) {
     res.json({

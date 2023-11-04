@@ -246,11 +246,12 @@ class InventoryHistoryModel {
 }
 
 class SalesInventoryModel {
-  constructor(id, detailid, productid, posid) {
+  constructor(id, detailid, productid, posid, quantity) {
     this.id = id;
     this.productid = productid;
     this.detailid = detailid;
     this.posid = posid;
+    this.quantity = quantity;
   }
 }
 
@@ -271,6 +272,16 @@ class UserLoginModel {
     this.fullname = fullname;
     this.accesstype = accesstype;
     this.position = position;
+  }
+}
+
+class SalesProductInventoryModel {
+  constructor(salesid, detailid, productname, posid, quantity) {
+    this.salesid = salesid;
+    this.detailid = detailid;
+    this.productname = productname;
+    this.posid = posid;
+    this.quantity = quantity;
   }
 }
 //#endregion
@@ -297,4 +308,5 @@ module.exports = {
   SalesInventoryModel,
   ItemsModel,
   UserLoginModel,
+  SalesProductInventoryModel,
 };

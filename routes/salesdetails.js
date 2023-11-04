@@ -10,7 +10,7 @@ const {
 } = require("./repository/soisdb.js");
 
 const helper = require("./repository/customhelper.js");
-const { SalesDetail } = require("./model/soismodel.js");
+const { SalesDetail, Product } = require("./model/soismodel.js");
 const { ItemsModel } = require("./model/model.js");
 const { Validator } = require("./controller/middleware.js");
 
@@ -60,6 +60,44 @@ router.post("/save", (req, res) => {
       if (err) console.error("Error: ", err);
 
       console.log(result);
+      Get_DetailID(posid)
+        .then((result) => {
+          let data = SalesDetail(result);
+          let detailid = data[0].id;
+          let items = JSON.parse(details);
+
+          items.forEach((item) => {
+            console.log(`${item.name} x ${item.quantity}`);
+
+            Get_Product(item.name)
+              .then((result) => {
+                let data = Product(result);
+                let sales_inventory = [
+                  [detailid, data[0].id, posid, item.quantity],
+                ];
+
+                InsertTable(
+                  "sales_inventory",
+                  sales_inventory,
+                  (err, result) => {
+                    if (err) console.error("Error: ", err);
+
+                    console.log(result);
+                  }
+                );
+              })
+              .catch((error) => {
+                return res.json({
+                  msg: error,
+                });
+              });
+          });
+        })
+        .catch((error) => {
+          return res.json({
+            msg: error,
+          });
+        });
 
       res.json({
         msg: "success",
@@ -133,3 +171,32 @@ router.post("/getdetails", (req, res) => {
     });
   }
 });
+
+//#region Functions
+function Get_Product(name) {
+  return new Promise((resolve, reject) => {
+    let sql = "select * from product where p_description=?";
+
+    SelectParameter(sql, [name], (err, result) => {
+      if (err) reject(err);
+
+      console.log(result);
+
+      resolve(result);
+    });
+  });
+}
+
+function Get_DetailID(posid) {
+  return new Promise((resolve, reject) => {
+    let sql =
+      "select * from sales_detail where sd_posid = ? order by sd_id desc limit 1";
+    SelectParameter(sql, [posid], (err, result) => {
+      if (err) reject(err);
+
+      console.log(result);
+      resolve(result);
+    });
+  });
+}
+//#endregion

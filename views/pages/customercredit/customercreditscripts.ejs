@@ -75,7 +75,7 @@
                     if (item.status === 'ACTIVE') {
                         action = `<button id="inactiveBtn" class="btn btn-outline-danger shadow-sm w-100 mt-1" name="inactiveBtn">INACTIVE</button>`;
                     } else if(item.status === 'INACTIVE'){
-                        action = `<button id="activeBtn" class="btn btn-outline-danger shadow-sm w-100 mt-1" name="activeBtn">ACTIVE</button>`;
+                        action = `<button id="activeBtn" class="btn btn-outline-success shadow-sm w-100 mt-1" name="activeBtn">ACTIVE</button>`;
                     }
                     const tr = $('<tr>').append(
                         $('<td>', { text: item.id, 'data-label': 'ID', class: 'custom-mobile-align' }),
