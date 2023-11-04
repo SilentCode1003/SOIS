@@ -187,3 +187,33 @@ router.post("/getactiveorder", (req, res) => {
     });
   }
 });
+
+router.post("/getorderdetail", (req, res) => {
+  try {
+    const { orderid } = req.body;
+    let sql = "select * from customer_order where co_id=?";
+
+    SelectParameter(sql, [orderid], (err, result) => {
+      if (err) console.error("Error: ", err);
+
+      if (result.length != 0) {
+        let data = CustomerOrder(result);
+        console.log(data);
+
+        res.json({
+          msg: "success",
+          data: data,
+        });
+      } else {
+        res.json({
+          msg: "success",
+          data: result,
+        });
+      }
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
