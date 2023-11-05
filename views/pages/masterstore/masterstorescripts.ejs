@@ -1,177 +1,217 @@
 <script>
-    $(document).ready(function () {
-        //Functionality
-        let id = "";
-        let status = "";
-        let base64String = "";
-    
-        LoadTable();
-    
-        $('#data-table tbody').on('click', 'tr', function () {
-            var dataRow = [];
-            $(this).closest('tr').find('td').each(function () {
-                dataRow.push($(this).text());
-            });
-            console.log(dataRow);
-            id = dataRow[0];
-            status = dataRow[2]
-        }) 
-    
-        $(document).on('click', '#editBtn', function(){
-            $('#idmodal').val(id);
-            $('#editModal').modal('show');
-        })
-    
-        $(document).on('click', '#addBtn', function () {
-            let name = $('#name').val();
-            let address = $('#address').val();
-            let contact = $('#contact').val();
-            let messages = $('#messages').val();
-            let logo = base64String;
+  $(document).ready(function () {
+    //Functionality
+    let id = "";
+    let status = "";
+    let base64String = "";
+    let address = "";
+    let contact = "";
+    let message = "";
 
-            var message = "";
-            if (name == '') { message += 'Store Name, ' }
-            if (address == '') { message += 'address, ' }
-            if (contact == '') { message += 'contact, ' }
-            if (logo == '') { message += 'Logo, ' }
-            if (messages == '') { message += 'Message, ' }
-    
-            if (message != '') {
-                warning('Required', `Please fill up ${message}`);
-            }
-            else {
-                console.log(name)
-                $.ajax({
-                    type: 'POST',
-                    url: '/masterstore/save',
-                    data: {
-                        name: name,
-                        logo: logo,
-                        address: address,
-                        contact: contact,
-                        message: messages
-                    },
-                    success: function (result) {
-                        if (result.msg == 'success') {
-                            LoadTable()
-                            success('Saved', 'Successfully')
-                            $('#name').val('');
-                        }
-    
-                        if (result.msg == 'exist') {
-                            warning('Exist', `${name} already exist!`);
-                        }
-    
-                    },
-                    error: function (err) {
-                        errormsg(err);
-                    }
-                })
-            }
-        })
-     
-        function populatetable(data) {
-            console.log(data);
-            const tableBody = $('#data-table tbody');
-            tableBody.empty();
-    
-            if (data.length === 0) {
-                const tr = $('<tr>').append($('<td>', {
-                    colspan: 9,
-                    class: 'text-center',
-                    text: 'No Data Matched'
-                }));
-                tableBody.append(tr);
-            } else {
-                data.forEach(item => {
-                    let action = '';
-                    action = `<button id="editBtn" class="btn btn-outline-primary shadow-sm w-100" name="editBtn" data-toggle="modal" data-target="#editModal">EDIT</button>`;
+    LoadTable();
 
-                    const tr = $('<tr>').append(
-                        $('<td>', { text: item.id, 'data-label': 'ID', class: 'custom-mobile-align' }),
-                        $('<td>', { text: item.name, 'data-label': 'Store Name', class: 'custom-mobile-align no-wrap' }),
-                        $("<td>", {html: item.logo
-                            ? `<img src="data:image/png;base64,${item.logo}" alt="Product Image" style="max-width: 200px; max-height: 150px;"/>`
-                            : "No Image",
-                            "data-label": "Logo",
-                        }),
-                        $('<td>', { text: item.address, 'data-label': 'Address', class: 'custom-mobile-align no-wrap' }),
-                        $('<td>', { text: item.contact, 'data-label': 'Contact Number', class: 'custom-mobile-align no-wrap' }),
-                        $('<td>', { text: item.message, 'data-label': 'Message', class: 'custom-mobile-align' }),
-                        $('<td>', { html: action, 'data-label': 'Action', class: '' })
-                    );
+    $("#data-table tbody").on("click", "tr", function () {
+      var dataRow = [];
+      $(this)
+        .closest("tr")
+        .find("td")
+        .each(function () {
+          dataRow.push($(this).text());
+        });
+      console.log(dataRow);
+      id = dataRow[0];
+      address = dataRow[3];
+      contact = dataRow[4];
+      message = dataRow[5];
+    });
 
-                    tableBody.append(tr);
-                });
-            }
-        }
-    
-        function LoadTable() {
-            $.ajax({
-                url: '/masterstore/load',
-                method: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    if (data.msg === 'success') {
-                        populatetable(data.data);
-                    } else {
-                        console.error(data.msg);
-                    }
-                },
-                error: function (error) {
-                    console.error(error);
-                }
-            });
-        }
-    
-        $(document).on('click', '#updateBtn', function () {
-            let id = $('#idmodal').val();
-            let address = $('#addressmodal').val();
-            let contact = $('#contactmodal').val();
-            let messages = $('#messagesmodal').val();
-    
-            var message = "";
-    
-            if (address == '' && contact == '' && messages == ''){
-                    message += 'Fill up atleast 1 input field before updating'
-                }
-    
-            if (message != '') {
-                warning('Required', `${message}`);
-            }
-            else {
-                $.ajax({
-                    type: 'POST',
-                    url: '/masterstore/edit',
-                    data: {
-                        id: id,
-                        address: address,
-                        contact: contact,
-                        messages: messages
-                    },
-                    success: function (result) {
-                        if (result.msg == 'success') {
-                            LoadTable();
-                            $('#masterstoreModal').modal('hide');
-                            $('#addressmodal').val('');
-                            $('#contactmodal').val('');
-                            $('#messagesmodal').val('');
-                            success('Saved', 'Successfully')
-                        }
-    
-                        if (result.msg == 'exist') {
-                            warning('Exist', `${address} already exist!`);
-                        }
-    
-                    },
-                    error: function (err) {
-                        errormsg(err);
-                    }
-                })
-            }
-        })
+    $(document).on("click", "#editBtn", function () {
+      $("#idmodal").val(id);
+      $("#addressmodal").val(address);
+      $("#contactmodal").val(contact);
+      $("#messagemodal").val(message);
+      $("#editModal").modal("show");
+    });
 
-        $(document).on("change", "#imageInput", function () {
+    $(document).on("click", "#addBtn", function () {
+      let name = $("#name").val();
+      let address = $("#address").val();
+      let contact = $("#contact").val();
+      let messages = $("#messages").val();
+      let logo = base64String;
+
+      var message = "";
+      if (name == "") {
+        message += "Store Name, ";
+      }
+      if (address == "") {
+        message += "address, ";
+      }
+      if (contact == "") {
+        message += "contact, ";
+      }
+      if (logo == "") {
+        message += "Logo, ";
+      }
+      if (messages == "") {
+        message += "Message, ";
+      }
+
+      if (message != "") {
+        warning("Required", `Please fill up ${message}`);
+      } else {
+        console.log(name);
+        $.ajax({
+          type: "POST",
+          url: "/masterstore/save",
+          data: {
+            name: name,
+            logo: logo,
+            address: address,
+            contact: contact,
+            message: messages,
+          },
+          success: function (result) {
+            if (result.msg == "success") {
+              LoadTable();
+              success("Saved", "Successfully");
+              $("#name").val("");
+            }
+
+            if (result.msg == "exist") {
+              warning("Exist", `${name} already exist!`);
+            }
+          },
+          error: function (err) {
+            errormsg(err);
+          },
+        });
+      }
+    });
+
+    function populatetable(data) {
+      console.log(data);
+      const tableBody = $("#data-table tbody");
+      tableBody.empty();
+
+      if (data.length === 0) {
+        const tr = $("<tr>").append(
+          $("<td>", {
+            colspan: 9,
+            class: "text-center",
+            text: "No Data Matched",
+          })
+        );
+        tableBody.append(tr);
+      } else {
+        data.forEach((item) => {
+          let action = "";
+          action = `<button id="editBtn" class="btn btn-outline-primary shadow-sm w-100" name="editBtn" data-toggle="modal" data-target="#editModal">EDIT</button>`;
+
+          const tr = $("<tr>").append(
+            $("<td>", {
+              text: item.id,
+              "data-label": "ID",
+              class: "custom-mobile-align",
+            }),
+            $("<td>", {
+              text: item.name,
+              "data-label": "Store Name",
+              class: "custom-mobile-align no-wrap",
+            }),
+            $("<td>", {
+              html: item.logo
+                ? `<img src="data:image/png;base64,${item.logo}" alt="Product Image" style="max-width: 200px; max-height: 150px;"/>`
+                : "No Image",
+              "data-label": "Logo",
+            }),
+            $("<td>", {
+              text: item.address,
+              "data-label": "Address",
+              class: "custom-mobile-align no-wrap",
+            }),
+            $("<td>", {
+              text: item.contact,
+              "data-label": "Contact Number",
+              class: "custom-mobile-align no-wrap",
+            }),
+            $("<td>", {
+              text: item.message,
+              "data-label": "Message",
+              class: "custom-mobile-align",
+            }),
+            $("<td>", { html: action, "data-label": "Action", class: "" })
+          );
+
+          tableBody.append(tr);
+        });
+      }
+    }
+
+    function LoadTable() {
+      $.ajax({
+        url: "/masterstore/load",
+        method: "GET",
+        dataType: "json",
+        success: function (data) {
+          if (data.msg === "success") {
+            populatetable(data.data);
+          } else {
+            console.error(data.msg);
+          }
+        },
+        error: function (error) {
+          console.error(error);
+        },
+      });
+    }
+
+    $(document).on("click", "#updateBtn", function () {
+      let id = $("#idmodal").val();
+      let address = $("#addressmodal").val();
+      let contact = $("#contactmodal").val();
+      let messages = $("#messagemodal").val();
+
+      var message = "";
+
+      if (address == "" && contact == "" && messages == "") {
+        message += "Fill up atleast 1 input field before updating";
+      }
+
+      if (message != "") {
+        warning("Required", `${message}`);
+      } else {
+        $.ajax({
+          type: "POST",
+          url: "/masterstore/edit",
+          data: {
+            id: id,
+            address: address,
+            contact: contact,
+            messages: messages,
+          },
+          success: function (result) {
+            if (result.msg == "success") {
+              LoadTable();
+              $("#editModal").modal("hide");
+              $("#addressmodal").val("");
+              $("#contactmodal").val("");
+              $("#messagesmodal").val("");
+              success("Saved", "Successfully");
+            }
+
+            if (result.msg == "exist") {
+              warning("Exist", `${address} already exist!`);
+            }
+          },
+          error: function (err) {
+            errormsg(err);
+          },
+        });
+      }
+    });
+
+    $(document).on("change", "#imageInput", function () {
       const input = document.getElementById("imageInput");
       const file = input.files[0];
 
@@ -227,6 +267,5 @@
       };
       reader.readAsDataURL(file);
     }
-    
-    })
+  });
 </script>

@@ -4,6 +4,7 @@
         var activePositions = [];
         let employeeid = "";
         let status = "";
+        let username = "";
     
         LoadTable();
     
@@ -14,11 +15,13 @@
             });
             console.log(dataRow);
             employeeid = dataRow[0];
+            username = dataRow[3];
             status = dataRow[6]
         }) 
 
         $(document).on('click', '#editBtn', function(){
             $('#employeeidmodal').val(employeeid);
+            $('#usernamemodal').val(username);
             $('#editModal').modal('show');
         })
     
