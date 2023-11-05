@@ -45,6 +45,10 @@ exports.GetValue = (abr) => {
   if (abr == "AFND") return "LOAD";
   if (abr == "ONPS") return "ONLINE PURCHASE";
   if (abr == "PUEWLT") return "PAID W/ E-WALLET";
+  if (abr == "INSTK") return "INITIAL STOCK";
+  if (abr == "ADJNT") return "ADJUSTMENT";
+  if (abr == "CKNG") return "COOKING";
+  if (abr == "ODLV") return "ON DELIVERY";
 };
 
 //#region STATUS CODE
@@ -231,4 +235,21 @@ exports.AFND = () => {
 exports.PUEWLT = () => {
   return "PUEWLT";
 };
+
+exports.INSTK = () => {
+  return "INSTK";
+};
+
+exports.ADJNT = () => {
+  return "ADJNT";
+};
+
+exports.CKNG = () => {
+  return "CKNG";
+};
+
+exports.ODLV = () => {
+  return "ODLV";
+};
+
 //#endregion
