@@ -13,6 +13,7 @@ const {
 const helper = require("./repository/customhelper.js");
 const { ProdcutInventory } = require("./model/soismodel.js");
 const { Validator } = require("./controller/middleware.js");
+const { GetValue, ADJNT, INSTK } = require("./repository/dictionary.js");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -63,6 +64,7 @@ router.post("/save", (req, res) => {
       .then((result) => {
         let data = ProdcutInventory(result);
         if (result.length != 0) {
+          let inventoryid = data[0].id;
           let update_quantity = data[0].quantity + parseInt(quantity);
           let update_product_inventory = [update_quantity, productid];
 
@@ -75,8 +77,26 @@ router.post("/save", (req, res) => {
             update_product_inventory,
             (err, result) => {
               if (err) console.error("Error: ", err);
-
               console.log(result);
+
+              let inventory_history = [
+                [
+                  helper.GetCurrentDatetime(),
+                  inventoryid,
+                  productid,
+                  quantity,
+                  GetValue(ADJNT()),
+                ],
+              ];
+              InventoryHistory_Insert(inventory_history)
+                .then((result) => {
+                  console.log(result);
+                })
+                .catch((error) => {
+                  return res.json({
+                    msg: error,
+                  });
+                });
             }
           );
         } else {
@@ -85,6 +105,26 @@ router.post("/save", (req, res) => {
             if (err) console.error("Error: ", err);
 
             console.log(result);
+
+            let inventory_history = [
+              [
+                helper.GetCurrentDatetime(),
+                result[0].id,
+                productid,
+                quantity,
+                GetValue(INSTK()),
+              ],
+            ];
+
+            InventoryHistory_Insert(inventory_history)
+              .then((result) => {
+                console.log(result);
+              })
+              .catch((error) => {
+                return res.json({
+                  msg: error,
+                });
+              });
           });
         }
 
@@ -104,6 +144,18 @@ function ProdcutInventory_Check(productid) {
   return new Promise((resolve, reject) => {
     let sql = "select * from product_inventory where pi_productid=?";
     SelectParameter(sql, [productid], (err, result) => {
+      if (err) reject(err);
+
+      console.log(result);
+
+      resolve(result);
+    });
+  });
+}
+
+function InventoryHistory_Insert(inventory_history) {
+  return new Promise((resolve, reject) => {
+    InsertTable("inventory_history", inventory_history, (err, result) => {
       if (err) reject(err);
 
       console.log(result);
