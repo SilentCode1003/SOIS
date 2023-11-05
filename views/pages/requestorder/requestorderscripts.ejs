@@ -1,210 +1,304 @@
 <script>
-    $(document).ready(function () {
-        //Functionality
-        var activePositions = [];
-        let employeeid = "";
-        let status = "";
-    
-        LoadTable();
-    
-        $('#data-table tbody').on('click', 'tr', function () {
-            var dataRow = [];
-            $(this).closest('tr').find('td').each(function () {
-                dataRow.push($(this).text());
-            });
-            console.log(dataRow);
-            employeeid = dataRow[0];
-            status = dataRow[7]
-        }) 
-    
-        // $(document).on('click', '#editBtn', function(){
-        //     $('#employeeidmodal').val(employeeid);
-        //     $('#employeesModal').modal('show');
-        // })
-    
-        // $(document).on('click', '#closeBtn', function(){
-        //     $('#positionlist').val('');
-        //     $('#contactinfomodal').val('');
-        // })
-    
-        // $(document).on('click', '#deleteBtn', function(){
-        //     $('#employeeidmodal2').val(employeeid);
-        //     $('#deleteModal').modal('show');
-        // })
-        
-        // $('#confirm').on('input', function() {
-        //     const confirmValue = $(this).val().trim().toUpperCase();
-        //     const deleteBtnModal = $('#deleteBtnModal');
-    
-        //     // Enable the 'DELETE' button if the input value is 'CONFIRM', otherwise disable it
-        //     if (confirmValue === 'CONFIRM') {
-        //         deleteBtnModal.prop('disabled', false);
-        //     } else {
-        //         deleteBtnModal.prop('disabled', true);
-        //     }
-        // });
-        $(document).on('change', '#employeeid', function() {
-            var selectedEmployeeId = $(this).val();
-            var selectedEmployeeFullName = $('#employeeid option:selected').data('fullname');
-            
-            $('#fullname').val(selectedEmployeeFullName);
-        });
-    
-        $(document).on('click', '#addBtn', function () {
-            let employeeid = $('#employeeid').val();
-            let fullname = $('#fullname').val();
-            let username = $('#username').val();
-            let password = $('#password').val();
-            let accessid = $('#accessid').val();
+  $(document).ready(function () {
+    //Functionality
+    var activePositions = [];
+    let requestid = "";
+    let customerorderid = "";
+    let status = "";
 
-            var message = "";
-            if (employeeid == '') { message += 'Employee ID, ' }
-            if (fullname == '') { message += 'Full Name, ' }
-            if (username == '') { message += 'User Name, ' }
-            if (password == '') { message += 'Password, ' }
-            if (accessid == '') { message += 'Access Type, ' }
-    
-            if (message != '') {
-                warning('Required', `Please fill up ${message}`);
-            }
-            else {
-                console.log(employeeid, fullname, username, password, accessid,)
-                $.ajax({
-                    type: 'POST',
-                    url: '/masteruser/save',
-                    data: {
-                        employeeid: employeeid,
-                        fullname: fullname,
-                        username: username,
-                        password: password,
-                        accessid: accessid,
-                    },
-                    success: function (result) {
-                        if (result.msg == 'success') {
-                            LoadTable()
-                            success('Saved', 'Successfully')
-                            $('#employeeid').val('');
-                            $('#fullname').val('');
-                            $('#username').val('');
-                            $('#password').val('');
-                            $('#accesstype').val('');
-                        }
-    
-                        if (result.msg == 'exist') {
-                            warning('Exist', `${employeeid} already exist!`);
-                        }
-    
-                    },
-                    error: function (err) {
-                        errormsg(err);
-                    }
-                })
-            }
-        })
-     
-        function populatetable(data) {
-            console.log(data);
-            const tableBody = $('#data-table tbody');
-            tableBody.empty();
-    
-            if (data.length === 0) {
-                const tr = $('<tr>').append($('<td>', {
-                    colspan: 9,
-                    class: 'text-center',
-                    text: 'No Data Matched'
-                }));
-                tableBody.append(tr);
-            } else {
-                data.forEach(item => {
-                    let action = '';
-                    if (item.status === 'PENDING') {
-                        action = `<button id="approveBtn" class="btn btn-outline-success shadow-sm w-100 mt-1" name="approveBtn">APPROVE</button>
+    LoadTable();
+
+    $("#data-table tbody").on("click", "tr", function () {
+      var dataRow = [];
+      $(this)
+        .closest("tr")
+        .find("td")
+        .each(function () {
+          dataRow.push($(this).text());
+        });
+      console.log(dataRow);
+      requestid = dataRow[0];
+      customerorderid = dataRow[1];
+      status = dataRow[3];
+    });
+
+    // $(document).on('click', '#editBtn', function(){
+    //     $('#requestidmodal').val(requestid);
+    //     $('#requestorderModal').modal('show');
+    // })
+
+    // $(document).on('click', '#closeBtn', function(){
+    //     $('#positionlist').val('');
+    //     $('#contactinfomodal').val('');
+    // })
+
+    // $(document).on('click', '#deleteBtn', function(){
+    //     $('#requestidmodal2').val(requestid);
+    //     $('#deleteModal').modal('show');
+    // })
+
+    // $('#confirm').on('input', function() {
+    //     const confirmValue = $(this).val().trim().toUpperCase();
+    //     const deleteBtnModal = $('#deleteBtnModal');
+
+    //     // Enable the 'DELETE' button if the input value is 'CONFIRM', otherwise disable it
+    //     if (confirmValue === 'CONFIRM') {
+    //         deleteBtnModal.prop('disabled', false);
+    //     } else {
+    //         deleteBtnModal.prop('disabled', true);
+    //     }
+    // });
+    // $(document).on("change", "#requestid", function () {
+    //   var selectedrequestid = $(this).val();
+    //   var selectedEmployeeFullName = $("#requestid option:selected").data(
+    //     "fullname"
+    //   );
+
+    //   $("#fullname").val(selectedEmployeeFullName);
+    // });
+
+    // $(document).on("click", "#addBtn", function () {
+    //   let requestid = $("#requestid").val();
+    //   let fullname = $("#fullname").val();
+    //   let username = $("#username").val();
+    //   let password = $("#password").val();
+    //   let accessid = $("#accessid").val();
+
+    //   var message = "";
+    //   if (requestid == "") {
+    //     message += "Employee ID, ";
+    //   }
+    //   if (fullname == "") {
+    //     message += "Full Name, ";
+    //   }
+    //   if (username == "") {
+    //     message += "User Name, ";
+    //   }
+    //   if (password == "") {
+    //     message += "Password, ";
+    //   }
+    //   if (accessid == "") {
+    //     message += "Access Type, ";
+    //   }
+
+    //   if (message != "") {
+    //     warning("Required", `Please fill up ${message}`);
+    //   } else {
+    //     console.log(requestid, fullname, username, password, accessid);
+    //     $.ajax({
+    //       type: "POST",
+    //       url: "/masteruser/save",
+    //       data: {
+    //         requestid: requestid,
+    //         fullname: fullname,
+    //         username: username,
+    //         password: password,
+    //         accessid: accessid,
+    //       },
+    //       success: function (result) {
+    //         if (result.msg == "success") {
+    //           LoadTable();
+    //           success("Saved", "Successfully");
+    //           $("#requestid").val("");
+    //           $("#fullname").val("");
+    //           $("#username").val("");
+    //           $("#password").val("");
+    //           $("#accesstype").val("");
+    //         }
+
+    //         if (result.msg == "exist") {
+    //           warning("Exist", `${requestid} already exist!`);
+    //         }
+    //       },
+    //       error: function (err) {
+    //         errormsg(err);
+    //       },
+    //     });
+    //   }
+    // });
+
+    function populatetable(data) {
+      console.log(data);
+      const tableBody = $("#data-table tbody");
+      tableBody.empty();
+
+      if (data.length === 0) {
+        const tr = $("<tr>").append(
+          $("<td>", {
+            colspan: 9,
+            class: "text-center",
+            text: "No Data Matched",
+          })
+        );
+        tableBody.append(tr);
+      } else {
+        data.forEach((item) => {
+          let action = "";
+          if (item.status === "PENDING") {
+            action = `<button id="acceptBtn" class="btn btn-outline-success shadow-sm w-100 mt-1" name="acceptBtn">ACCEPT</button>
                         <button id="cancelBtn" class="btn btn-outline-danger shadow-sm w-100 mt-1" name="cancelBtn">CANCEL</button>`;
-                    } 
-                    const tr = $('<tr>').append(
-                        $('<td>', { text: item.id, 'data-label': 'ID', class: 'custom-mobile-align' }),
-                        $('<td>', { text: item.customerorderid, 'data-label': 'Customer ID', class: 'custom-mobile-align' }),
-                        $('<td>', { text: item.date, 'data-label': 'Date', class: 'custom-mobile-align' }),
-                        $('<td>', { text: item.status, 'data-label': 'Created By', class: 'custom-mobile-align no-wrap' }),
-                        $('<td>', { html: action, 'data-label': 'Action', class: '' })
-                    );
+          }
 
-                    tableBody.append(tr);
-                });
-            }
-        }
-    
-        function LoadTable() {
-            $.ajax({
-                url: '/requestorder/load',
-                method: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    if (data.msg === 'success') {
-                        populatetable(data.data);
-                    } else {
-                        console.error(data.msg);
-                    }
-                },
-                error: function (error) {
-                    console.error(error);
-                }
-            });
-        }
-    
-        $(document).on('click', '#activeBtn', function(){
-            console.log(employeeid);
-            console.log(status);
-            $.ajax({
-                type: 'POST',
-                url: '/employees/status',
-                data: {
-                    status: status,
-                    employeeid: employeeid,
-                },
-                success: function (result) {
-                    if (result.msg == 'success') {
-                        LoadTable();
-                        success('Saved', 'Successfully')
-                    }
-    
-                    if (result.msg == 'notexist') {
-                        warning(`${employeeid} does not exist!`);
-                    }
-    
-                },
-                error: function (err) {
-                    errormsg(err);
-                }
-            })
+          if (item.status === "COOKING") {
+            action = `<button id="deliverNowBtn" class="btn btn-outline-success shadow-sm w-100 mt-1" name="deliverNowBtn">DELIVER NOW</button>`;
+          }
+
+          if (item.status === "ON DELIVERY") {
+            action = `<button id="deliveredBtn" class="btn btn-outline-success shadow-sm w-100 mt-1" name="deliveredBtn">DELIVERED</button>`;
+          }
+          const tr = $("<tr>").append(
+            $("<td>", {
+              text: item.id,
+              "data-label": "ID",
+              class: "custom-mobile-align",
+            }),
+            $("<td>", {
+              text: item.customerorderid,
+              "data-label": "Customer ID",
+              class: "custom-mobile-align",
+            }),
+            $("<td>", {
+              text: item.date,
+              "data-label": "Date",
+              class: "custom-mobile-align",
+            }),
+            $("<td>", {
+              text: item.status,
+              "data-label": "Created By",
+              class: "custom-mobile-align no-wrap",
+            }),
+            $("<td>", { html: action, "data-label": "Action", class: "" })
+          );
+
+          tableBody.append(tr);
         });
-    
-        $(document).on('click', '#cancelBtn', function(){
-            console.log(employeeid);
-            console.log(status);
-            $.ajax({
-                type: 'POST',
-                url: '/employees/status',
-                data: {
-                    status: status,
-                    employeeid: employeeid,
-                },
-                success: function (result) {
-                    if (result.msg == 'success') {
-                        LoadTable();
-                        success('Saved', 'Successfully')
-                    }
-    
-                    if (result.msg == 'notexist') {
-                        warning(`${employeeid} does not exist!`);
-                    }
-    
-                },
-                error: function (err) {
-                    errormsg(err);
-                }
-            })
-        });
-    
-    })
+      }
+    }
+
+    function LoadTable() {
+      $.ajax({
+        url: "/requestorder/load",
+        method: "GET",
+        dataType: "json",
+        success: function (data) {
+          if (data.msg === "success") {
+            populatetable(data.data);
+          } else {
+            console.error(data.msg);
+          }
+        },
+        error: function (error) {
+          console.error(error);
+        },
+      });
+    }
+
+    $(document).on("click", "#acceptBtn", function () {
+      console.log(requestid);
+      console.log(status);
+      $.ajax({
+        type: "POST",
+        url: "/requestorder/status",
+        data: {
+          status: 'ACCEPT',
+          requestid: requestid,
+          customerorderid: customerorderid,
+        },
+        success: function (result) {
+          if (result.msg == "success") {
+            LoadTable();
+            success("Saved", "Successfully");
+          }
+
+          if (result.msg == "notexist") {
+            warning(`${requestid} does not exist!`);
+          }
+        },
+        error: function (err) {
+          errormsg(err);
+        },
+      });
+    });
+
+    $(document).on("click", "#cancelBtn", function () {
+      console.log(requestid);
+      console.log(status);
+      $.ajax({
+        type: "POST",
+        url: "/requestorder/status",
+        data: {
+          status: 'CANCEL',
+          requestid: requestid,
+          customerorderid: customerorderid,
+        },
+        success: function (result) {
+          if (result.msg == "success") {
+            LoadTable();
+            success("Saved", "Successfully");
+          }
+
+          if (result.msg == "notexist") {
+            warning(`${requestid} does not exist!`);
+          }
+        },
+        error: function (err) {
+          errormsg(err);
+        },
+      });
+    });
+
+    $(document).on("click", "#deliverNowBtn", function () {
+      console.log(requestid);
+      console.log(status);
+      $.ajax({
+        type: "POST",
+        url: "/requestorder/status",
+        data: {
+          status: 'DELIVERNOW',
+          requestid: requestid,
+          customerorderid: customerorderid,
+        },
+        success: function (result) {
+          if (result.msg == "success") {
+            LoadTable();
+            success("Saved", "Successfully");
+          }
+
+          if (result.msg == "notexist") {
+            warning(`${requestid} does not exist!`);
+          }
+        },
+        error: function (err) {
+          errormsg(err);
+        },
+      });
+    });
+
+    $(document).on("click", "#deliveredBtn", function () {
+      console.log(requestid);
+      console.log(status);
+      $.ajax({
+        type: "POST",
+        url: "/requestorder/status",
+        data: {
+          status: 'DELIVERED',
+          requestid: requestid,
+          customerorderid: customerorderid,
+        },
+        success: function (result) {
+          if (result.msg == "success") {
+            LoadTable();
+            success("Saved", "Successfully");
+          }
+
+          if (result.msg == "notexist") {
+            warning(`${requestid} does not exist!`);
+          }
+        },
+        error: function (err) {
+          errormsg(err);
+        },
+      });
+    });
+  });
 </script>

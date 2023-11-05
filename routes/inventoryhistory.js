@@ -21,7 +21,15 @@ module.exports = router;
 
 router.get("/load", (req, res) => {
   try {
-    let sql = `select * from inventory_history`;
+    let sql = `select 
+    ih_id,
+    ih_date,
+    ih_inventoryid,
+    p_description as ih_productid,
+    ih_quantity,
+    ih_type 
+    from inventory_history
+    inner join product on ih_productid = p_id;`;
     Select(sql, (err, result) => {
       if (err) console.log("Error: ", err);
       if (result.length != 0) {

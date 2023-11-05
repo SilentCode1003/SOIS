@@ -37,10 +37,10 @@
       } else {
         data.forEach((item) => {
           let action = "";
-          if (item.status === "PENDING") {
-            action = `<button id="approveBtn" class="btn btn-outline-success shadow-sm w-100 mt-1" name="approveBtn">APPROVE</button>
-                        <button id="cancelBtn" class="btn btn-outline-danger shadow-sm w-100 mt-1" name="cancelBtn">CANCEL</button>`;
-          }
+          // if (item.status === "PENDING") {
+          //   action = `<button id="approveBtn" class="btn btn-outline-success shadow-sm w-100 mt-1" name="approveBtn">APPROVE</button>
+          //               <button id="cancelBtn" class="btn btn-outline-danger shadow-sm w-100 mt-1" name="cancelBtn">CANCEL</button>`;
+          // }
 
           const descriptionArray = JSON.parse(item.details);
           const newDescription = descriptionArray[0].items
@@ -84,8 +84,9 @@
                         <td class="custom-mobile-align" data-label="Status">${
                           item.status
                         }</td>
-                        <td class="custom-mobile-align">${action}</td>
+                       
                     `;
+          // <td class="custom-mobile-align">${action}</td>
           tableBody.appendChild(tr);
         });
       }
