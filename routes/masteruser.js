@@ -115,3 +115,49 @@ router.post("/status", (req, res) => {
     });
   }
 });
+
+router.post("/edit", (req, res) => {
+  try {
+    const { employeeid, username, password, accessid } = req.body;
+    let data = [];
+    let sql_Update = `UPDATE master_user SET`;
+
+    crypto.Encrypter(password, (err, encryted) => {
+      if (err) console.error("Error: ", err);
+
+      if (username) {
+        sql_Update += ` mu_username = ?,`;
+        data.push(username);
+      }
+
+      if (password) {
+        sql_Update += ` mu_password = ?,`;
+
+        data.push(encryted);
+      }
+
+      if (accessid) {
+        sql_Update += ` mu_accessid = ?,`;
+        data.push(accessid);
+      }
+      sql_Update = sql_Update.slice(0, -1);
+      sql_Update += ` WHERE mu_id = ?;`;
+      data.push(employeeid);
+
+      console.log(`${sql_Update} ${data}`);
+
+      UpdateMultiple(sql_Update, data, (err, result) => {
+        if (err) console.error("Error: ", err);
+        console.log(result);
+
+        res.json({
+          msg: "success",
+        });
+      });
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
