@@ -100,7 +100,6 @@ router.post("/getpos", (req, res) => {
   }
 });
 
-
 router.post("/status", (req, res) => {
   try {
     const { id } = req.body;
@@ -118,6 +117,50 @@ router.post("/status", (req, res) => {
     UpdateMultiple(sql, data, (err, result) => {
       if (err) console.error("Error: ", err);
       console.log(result);
+      res.json({
+        msg: "success",
+      });
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
+
+router.post("/edit", (req, res) => {
+  try {
+    const { posid, serial, min, ptu } = req.body;
+    let data = [];
+    let sql_Update = `UPDATE master_pos SET`;
+
+    console.log(`${posid} ${serial} ${min} ${ptu}`);
+
+    if (serial) {
+      sql_Update += ` mp_serial = ?,`;
+      data.push(serial);
+    }
+
+    if (min) {
+      sql_Update += ` mp_min = ?,`;
+      data.push(min);
+    }
+
+    if (ptu) {
+      sql_Update += ` mp_ptu = ?,`;
+      data.push(ptu);
+    }
+
+    sql_Update = sql_Update.slice(0, -1);
+    sql_Update += ` WHERE mp_id = ?;`;
+    data.push(posid);
+
+    console.log(`${sql_Update} ${data}`);
+
+    UpdateMultiple(sql_Update, data, (err, result) => {
+      if (err) console.error("Error: ", err);
+      console.log(result);
+
       res.json({
         msg: "success",
       });
