@@ -47,6 +47,8 @@ exports.GetValue = (abr) => {
   if (abr == "PUEWLT") return "PAID W/ E-WALLET";
   if (abr == "INSTK") return "INITIAL STOCK";
   if (abr == "ADJNT") return "ADJUSTMENT";
+  if (abr == "CKNG") return "COOKING";
+  if (abr == "ODLV") return "ON DELIVERY";
 };
 
 //#region STATUS CODE
@@ -241,3 +243,13 @@ exports.INSTK = () => {
 exports.ADJNT = () => {
   return "ADJNT";
 };
+
+exports.CKNG = () => {
+  return "CKNG";
+};
+
+exports.ODLV = () => {
+  return "ODLV";
+};
+
+//#endregion

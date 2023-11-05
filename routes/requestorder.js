@@ -47,20 +47,46 @@ router.get("/load", (req, res) => {
   }
 });
 
-router.post("/save", (req, res) => {
+router.post("/status", (req, res) => {
   try {
-    const { customerorderid, date } = req.body;
-    let status = disctionary.GetValue(disctionary.ACT());
-    let request_order = [[customerorderid, date, status]];
+    const { status, requestid, customerorderid } = req.body;
+    let request_order = [];
+    let customer_order = [];
 
-    InsertTable("request_order", request_order, (err, result) => {
-      if (err) console.error("Error: ", err);
+    if (status == "CANCEL") {
+      request_order = [disctionary.GetValue(disctionary.CND()), requestid];
+      customer_order = [disctionary.GetValue(disctionary.CND()), customerorderid];
 
-      console.log(result);
+      RequestOrder_Update(request_order);
+      CustomerOrder_Update(customer_order);
+    }
 
-      res.json({
-        msg: "success",
-      });
+    if (status == "ACCEPT") {
+      request_order = [disctionary.GetValue(disctionary.CKNG()), requestid];
+      customer_order = [disctionary.GetValue(disctionary.CKNG()), customerorderid];
+
+      RequestOrder_Update(request_order);
+      CustomerOrder_Update(customer_order);
+    }
+
+    if (status == "DELIVERNOW") {
+      request_order = [disctionary.GetValue(disctionary.ODLV()), requestid];
+      customer_order = [disctionary.GetValue(disctionary.ODLV()), customerorderid];
+
+      RequestOrder_Update(request_order);
+      CustomerOrder_Update(customer_order);
+    }
+
+    if (status == "DELIVERED") {
+      request_order = [disctionary.GetValue(disctionary.CMP()), requestid];
+      customer_order = [disctionary.GetValue(disctionary.CMP()), customerorderid];
+
+      RequestOrder_Update(request_order);
+      CustomerOrder_Update(customer_order);
+    }
+
+    res.json({
+      msg: "success",
     });
   } catch (error) {
     res.json({
@@ -68,3 +94,33 @@ router.post("/save", (req, res) => {
     });
   }
 });
+
+//#region Functions
+function RequestOrder_Update(request_order) {
+  return new Promise((resolve, reject) => {
+    let sql_request_order =
+      "update request_order set ro_status=? where ro_id=?";
+    UpdateMultiple(sql_request_order, request_order, (err, result) => {
+      if (err) reject(err);
+
+      console.log(result);
+
+      resolve(result);
+    });
+  });
+}
+
+function CustomerOrder_Update(customer_order) {
+  return new Promise((resolve, reject) => {
+    let sql_customer_order =
+      "update customer_order set co_status=? where co_id=?";
+
+    UpdateMultiple(sql_customer_order, customer_order, (err, result) => {
+      if (err) reject(err);
+
+      console.log(result);
+      resolve(result);
+    });
+  });
+}
+//#endregion
