@@ -92,7 +92,6 @@ router.post("/save", (req, res) => {
   }
 });
 
-
 router.post("/status", (req, res) => {
   try {
     const { employeeid } = req.body;
@@ -110,6 +109,70 @@ router.post("/status", (req, res) => {
     UpdateMultiple(sql, data, (err, result) => {
       if (err) console.error("Error: ", err);
       console.log(result);
+      res.json({
+        msg: "success",
+      });
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
+
+router.post("/edit", (req, res) => {
+  try {
+    const {
+      employeeid,
+      firstname,
+      middlename,
+      lastname,
+      position,
+      accesstype,
+      contactno,
+    } = req.body;
+    let data = [];
+    let sql_Update = `UPDATE master_employee SET`;
+
+    if (firstname) {
+      sql_Update += ` me_firstname = ?,`;
+      data.push(firstname);
+    }
+
+    if (middlename) {
+      sql_Update += ` me_middlename = ?,`;
+      data.push(middlename);
+    }
+
+    if (lastname) {
+      sql_Update += ` me_lastname = ?,`;
+      data.push(lastname);
+    }
+    if (position) {
+      sql_Update += ` me_position = ?,`;
+      data.push(position);
+    }
+
+    if (accesstype) {
+      sql_Update += ` me_accesstype = ?,`;
+      data.push(accesstype);
+    }
+
+    if (contactno) {
+      sql_Update += ` me_contactno = ?,`;
+      data.push(contactno);
+    }
+
+    sql_Update = sql_Update.slice(0, -1);
+    sql_Update += ` WHERE me_id = ?;`;
+    data.push(employeeid);
+
+    console.log(`${sql_Update} ${data}`);
+
+    UpdateMultiple(sql_Update, data, (err, result) => {
+      if (err) console.error("Error: ", err);
+      console.log(result);
+
       res.json({
         msg: "success",
       });
