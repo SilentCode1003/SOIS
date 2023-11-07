@@ -13,6 +13,11 @@ const helper = require("./repository/customhelper.js");
 const { SalesDetail, Product } = require("./model/soismodel.js");
 const { ItemsModel } = require("./model/model.js");
 const { Validator } = require("./controller/middleware.js");
+const {
+  CustomerCredit_Check,
+  BalanceHistory_Create,
+} = require("./repository/credit.js");
+const { GetValue, PUEWLT } = require("./repository/dictionary.js");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -64,33 +69,85 @@ router.post("/save", (req, res) => {
         .then((result) => {
           let data = SalesDetail(result);
           let detailid = data[0].id;
-          let items = JSON.parse(details);
+          let detail = JSON.parse(details);
+          console.log(detail);
+          detail.forEach((data) => {
+            let items = data.items;
 
-          items.forEach((item) => {
-            console.log(`${item.name} x ${item.quantity}`);
+            items.forEach((item) => {
+              console.log(`${item.name} x ${item.quantity}`);
 
-            Get_Product(item.name)
-              .then((result) => {
-                let data = Product(result);
-                let sales_inventory = [
-                  [detailid, data[0].id, posid, item.quantity],
-                ];
+              Get_Product(item.name)
+                .then((result) => {
+                  let data = Product(result);
+                  let sales_inventory = [
+                    [detailid, data[0].id, posid, item.quantity],
+                  ];
 
-                InsertTable(
-                  "sales_inventory",
-                  sales_inventory,
-                  (err, result) => {
-                    if (err) console.error("Error: ", err);
+                  InsertTable(
+                    "sales_inventory",
+                    sales_inventory,
+                    (err, result) => {
+                      if (err) console.error("Error: ", err);
 
-                    console.log(result);
-                  }
-                );
-              })
-              .catch((error) => {
-                return res.json({
-                  msg: error,
+                      console.log(result);
+                    }
+                  );
+                })
+                .catch((error) => {
+                  return res.json({
+                    msg: error,
+                  });
                 });
-              });
+            });
+            if (paymenttype == "UH POINTS") {
+              CustomerCredit_Check(data.customerid)
+                .then((result) => {
+                  if (err) console.error("Error: ", err);
+
+                  let balance = result[0].balance - parseFloat(data.points);
+                  let creditid = result[0].id;
+
+                  let customer_credit = [balance, data.customerid];
+                  let update_customer_credit =
+                    "update customer_credit set cc_balance=? where cc_customerid=?";
+                  UpdateMultiple(
+                    update_customer_credit,
+                    customer_credit,
+                    (err, result) => {
+                      if (err) console.error("Error: ", err);
+                      console.log(result);
+
+                      let balance_history = [
+                        [
+                          creditid,
+                          helper.GetCurrentDatetime(),
+                          -total,
+                          GetValue(PUEWLT()),
+                        ],
+                      ];
+                      BalanceHistory_Create(balance_history)
+                        .then((result) => {
+                          console.log(result);
+                        })
+                        .catch((error) => {
+                          return res.json({
+                            msg: error,
+                          });
+                        });
+                    }
+                  );
+                })
+                .catch((error) => {
+                  return res.json({
+                    msg: error,
+                  });
+                });
+            }
+
+            return res.json({
+              msg: "success",
+            });
           });
         })
         .catch((error) => {
@@ -98,10 +155,6 @@ router.post("/save", (req, res) => {
             msg: error,
           });
         });
-
-      res.json({
-        msg: "success",
-      });
     });
   } catch (error) {
     res.json({
