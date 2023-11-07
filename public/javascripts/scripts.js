@@ -2,10 +2,19 @@
 $(document).ready(function () {
   $('#sidebarCollapse').on('click', function () {
     $('#sidebar').toggleClass('active');
+    if ($(window).width() <= 768) {
+      $("#content").toggleClass("blur");
+      $("#blurnavbar").toggleClass("blur");
+    }
   });
 });
 
-
+$(window).resize(function () {
+  if ($(window).width() > 768) {
+    $("#content").removeClass("blur");
+    $("#blurnavbar").removeClass("blur");
+  }
+});
 
 // When the "Show Div" button is clicked
 $("#showButton").click(function () {

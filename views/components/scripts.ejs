@@ -80,6 +80,33 @@
     return "₱" + formattedValue.replace(/\d(?=(\d{3})+\.)/g, "$&,");
   }
 
+  function formatCurrencyColored(value) {
+    if (!value && value !== 0) {
+        return "₱0.00";
+    }
+
+    var formattedValue = parseFloat(Math.abs(value)).toFixed(2);
+    var currencySymbol = "₱";
+
+    if (value < 0) {
+        formattedValue = "- " + currencySymbol + formattedValue;
+    } else{
+      formattedValue = currencySymbol + formattedValue;
+    }
+
+    var formattedString = formattedValue.replace(/\d(?=(\d{3})+\.)/g, "$&,");
+    var finalOutput =  formattedString;
+
+    if (value < 0) {
+        finalOutput = '<span style="color: red;">' + finalOutput + '</span>';
+    } else {
+        finalOutput = '<span style="color: green;">' + finalOutput + '</span>';
+    }
+
+    return finalOutput;
+}
+
+
   function success(title, text) {
     toastr.success(text, title, {
       closeButton: false,
