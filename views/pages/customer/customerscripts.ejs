@@ -17,32 +17,6 @@
             status = dataRow[7]
         }) 
     
-        // $(document).on('click', '#editBtn', function(){
-        //     $('#employeeidmodal').val(employeeid);
-        //     $('#employeesModal').modal('show');
-        // })
-    
-        // $(document).on('click', '#closeBtn', function(){
-        //     $('#positionlist').val('');
-        //     $('#contactinfomodal').val('');
-        // })
-    
-        // $(document).on('click', '#deleteBtn', function(){
-        //     $('#employeeidmodal2').val(employeeid);
-        //     $('#deleteModal').modal('show');
-        // })
-        
-        // $('#confirm').on('input', function() {
-        //     const confirmValue = $(this).val().trim().toUpperCase();
-        //     const deleteBtnModal = $('#deleteBtnModal');
-    
-        //     // Enable the 'DELETE' button if the input value is 'CONFIRM', otherwise disable it
-        //     if (confirmValue === 'CONFIRM') {
-        //         deleteBtnModal.prop('disabled', false);
-        //     } else {
-        //         deleteBtnModal.prop('disabled', true);
-        //     }
-        // });
         $(document).on('change', '#employeeid', function() {
             var selectedEmployeeId = $(this).val();
             var selectedEmployeeFullName = $('#employeeid option:selected').data('fullname');
@@ -132,13 +106,13 @@
                             }
 
                             const tr = $('<tr>').append(
-                                $('<td>', { text: item.id, 'data-label': 'Employee ID', class: 'custom-mobile-align' }),
-                                $('<td>', { text: item.firstname, 'data-label': 'Middle Name', class: 'custom-mobile-align' }),
-                                $('<td>', { text: item.middlename, 'data-label': 'Last Name', class: 'custom-mobile-align' }),
-                                $('<td>', { text: item.lastname, 'data-label': 'Position', class: 'custom-mobile-align' }),
-                                $('<td>', { text: item.contactnumber, 'data-label': 'Access Type', class: 'custom-mobile-align' }),
-                                $('<td>', { text: item.gender, 'data-label': 'Status', class: 'custom-mobile-align' }),
-                                $('<td>', { text: item.address, 'data-label': 'Created By', class: 'custom-mobile-align no-wrap' }),
+                                $('<td>', { text: item.id, 'data-label': 'ID', class: 'custom-mobile-align' }),
+                                $('<td>', { text: item.firstname, 'data-label': 'First Name', class: 'custom-mobile-align' }),
+                                $('<td>', { text: item.middlename, 'data-label': 'Middle Name', class: 'custom-mobile-align' }),
+                                $('<td>', { text: item.lastname, 'data-label': 'Last Name', class: 'custom-mobile-align' }),
+                                $('<td>', { text: item.contactnumber, 'data-label': 'Contact No.', class: 'custom-mobile-align' }),
+                                $('<td>', { text: item.gender, 'data-label': 'Gender', class: 'custom-mobile-align' }),
+                                $('<td>', { text: item.address, 'data-label': 'Address', class: 'custom-mobile-align no-wrap' }),
                                 $('<td>', { text: item.registereddate, 'data-label': 'Created Date', class: 'custom-mobile-align no-wrap' }),
                                 // $('<td>', { html: action, 'data-label': 'Action', class: '' })
                             );
