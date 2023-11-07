@@ -20,7 +20,7 @@
       } else {
         data.forEach((item) => {
           const descriptionArray = JSON.parse(item.details);
-          const newDescription = descriptionArray
+          const newDescription = descriptionArray[0].items
             .map(
               (item) =>
                 `Name: ${item.name}, Quantity: ${item.quantity}, Price: ₱${item.price}`
