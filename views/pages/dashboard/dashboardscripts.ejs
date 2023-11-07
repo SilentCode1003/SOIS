@@ -72,7 +72,7 @@
         url: "/getmonthlysales",
         success: function (result) {
           $("#monthlyearning").html(
-            `₱ ${parseFloat(result["data"]).toFixed(2)}`
+            `${formatCurrency(result["data"])}`
           );
         },
         error: function (error) {},
@@ -83,7 +83,7 @@
         url: "/getyearlysales",
         success: function (result) {
           $("#annualearning").html(
-            `₱ ${parseFloat(result["data"]).toFixed(2)}`
+            `${formatCurrency(result["data"])}`
           );
         },
         error: function (error) {},

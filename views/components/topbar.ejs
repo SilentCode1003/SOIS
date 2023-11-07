@@ -4,7 +4,7 @@
       <div class="col-auto">
         <div class="btn-group ml-10">
           <!-- TOP BAR BUTTONS FOR MESSAGE -->
-          <button
+          <!-- <button
             href="#messageDropdown"
             class="btn topbar-btn btn-dark"
             type="button"
@@ -12,7 +12,7 @@
             aria-expanded="false"
           >
             <i class="fa-regular fa-message" style="color: #ffffff"></i>
-          </button>
+          </button> -->
 
           <!-- MESSAGE BOX -->
           <ul class="dropdown-menu dropdown-menu-right" id="messageDropdown">
@@ -45,7 +45,7 @@
           </ul>
 
           <!-- TOP BAR BUTTONS FOR NOTIFICATION -->
-          <button
+          <!-- <button
             href="#notificationDropdown"
             class="btn topbar-btn btn-dark"
             type="button"
@@ -53,7 +53,7 @@
             aria-expanded="false"
           >
             <i class="fa-regular fa-bell" style="color: #ffffff"></i>
-          </button>
+          </button> -->
 
           <!-- NOTIFICATION BOX -->
           <ul
@@ -79,7 +79,7 @@
           </ul>
 
           <!-- TOP BAR BUTTON FOR SEARCH -->
-          <button
+          <!-- <button
             href="#searchDropdown"
             class="btn topbar-btn btn-dark"
             type="button"
@@ -87,7 +87,7 @@
             aria-expanded="false"
           >
             <i class="fa fa-search" aria-hidden="true"></i>
-          </button>
+          </button> -->
 
           <!-- SEARCH BOX -->
           <ul class="dropdown-menu dropdown-menu-right" id="searchDropdown">
@@ -110,7 +110,10 @@
               </form>
             </li>
           </ul>
-
+              <a href="#" class="dropdown-item">
+                <span class="mr-2 d-none d-lg-inline text-gray-600"
+                ><%= fullname%></span
+              >
           <button
             href="#userdropdown"
             class="btn topbar-btn btn-dark"
@@ -124,12 +127,9 @@
           <!-- MESSAGE BOX -->
           <ul class="dropdown-menu dropdown-menu-right" id="userdropdown">
             <li class="user-dropbox">
-              <a href="#" class="dropdown-item">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small"
-                ><%= fullname%></span
-              >
+
               </a>
-              <a class="dropdown-item" href="#">
+              <!-- <a class="dropdown-item" href="#">
                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                 Profile
               </a>
@@ -140,7 +140,7 @@
               <a class="dropdown-item" href="#">
                 <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                 Activity Log
-              </a>
+              </a> -->
               <div class="dropdown-divider"></div>
               <a
                 class="dropdown-item"

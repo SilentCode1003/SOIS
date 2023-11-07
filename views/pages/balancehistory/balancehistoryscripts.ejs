@@ -45,96 +45,37 @@
 
             XLSX.writeFile(wb, 'exported_data.xlsx');
         });
-    
-        // $(document).on('click', '#editBtn', function(){
-        //     $('#employeeidmodal').val(employeeid);
-        //     $('#balancehistoryModal').modal('show');
-        // })
-    
-        // $(document).on('click', '#closeBtn', function(){
-        //     $('#positionlist').val('');
-        //     $('#contactinfomodal').val('');
-        // })
-    
-        // $(document).on('click', '#deleteBtn', function(){
-        //     $('#employeeidmodal2').val(employeeid);
-        //     $('#deleteModal').modal('show');
-        // })
-        
-        // $('#confirm').on('input', function() {
-        //     const confirmValue = $(this).val().trim().toUpperCase();
-        //     const deleteBtnModal = $('#deleteBtnModal');
-    
-        //     // Enable the 'DELETE' button if the input value is 'CONFIRM', otherwise disable it
-        //     if (confirmValue === 'CONFIRM') {
-        //         deleteBtnModal.prop('disabled', false);
-        //     } else {
-        //         deleteBtnModal.prop('disabled', true);
-        //     }
-        // });
-        // $(document).on('change', '#employeeid', function() {
-        //     var selectedEmployeeId = $(this).val();
-        //     var selectedEmployeeFullName = $('#employeeid option:selected').data('fullname');
-            
-        //     $('#fullname').val(selectedEmployeeFullName);
-        // });
-    
-        // $(document).on('click', '#addBtn', function () {
-        //     let employeeid = $('#employeeid').val();
-        //     let fullname = $('#fullname').val();
-        //     let username = $('#username').val();
-        //     let password = $('#password').val();
-        //     let accessid = $('#accessid').val();
-
-        //     var message = "";
-        //     if (employeeid == '') { message += 'Employee ID, ' }
-        //     if (fullname == '') { message += 'Full Name, ' }
-        //     if (username == '') { message += 'User Name, ' }
-        //     if (password == '') { message += 'Password, ' }
-        //     if (accessid == '') { message += 'Access Type, ' }
-    
-        //     if (message != '') {
-        //         warning('Required', `Please fill up ${message}`);
-        //     }
-        //     else {
-        //         console.log(employeeid, fullname, username, password, accessid,)
-        //         $.ajax({
-        //             type: 'POST',
-        //             url: '/masteruser/save',
-        //             data: {
-        //                 employeeid: employeeid,
-        //                 fullname: fullname,
-        //                 username: username,
-        //                 password: password,
-        //                 accessid: accessid,
-        //             },
-        //             success: function (result) {
-        //                 if (result.msg == 'success') {
-        //                     LoadTable()
-        //                     success('Saved', 'Successfully')
-        //                     $('#employeeid').val('');
-        //                     $('#fullname').val('');
-        //                     $('#username').val('');
-        //                     $('#password').val('');
-        //                     $('#accesstype').val('');
-        //                 }
-    
-        //                 if (result.msg == 'exist') {
-        //                     warning('Exist', `${employeeid} already exist!`);
-        //                 }
-    
-        //             },
-        //             error: function (err) {
-        //                 errormsg(err);
-        //             }
-        //         })
-        //     }
-        // })
      
         function populatetable(data) {
+            // console.log(data);
+            // const tableBody = $('#data-table tbody');
+            // tableBody.empty();
+    
+            // if (data.length === 0) {
+            //     const tr = $('<tr>').append($('<td>', {
+            //         colspan: 5,
+            //         class: 'text-center',
+            //         text: 'No Data Matched'
+            //     }));
+            //     tableBody.append(tr);
+            // } else {
+            //     data.forEach(item => {
+
+            //         const tr = $('<tr>').append(
+            //             $('<td>', { text: item.id, 'data-label': 'ID', class: 'custom-mobile-align' }),
+            //             $('<td>', { text: item.creditid, 'data-label': 'Credit ID', class: 'custom-mobile-align' }),
+            //             $('<td>', { text: item.date, 'data-label': 'Date', class: 'custom-mobile-align' }),
+            //             $('<td>', { text: formatCurrencyColored(item.amount), 'data-label': 'Amount', class: 'custom-mobile-align' }),
+            //             $('<td>', { text: item.type, 'data-label': 'Type', class: 'custom-mobile-align no-wrap' }),
+            //         );
+
+            //         tableBody.append(tr);
+            //     });
+            // }
+
             console.log(data);
-            const tableBody = $('#data-table tbody');
-            tableBody.empty();
+            const tableBody = document.querySelector('#data-table tbody');
+            tableBody.innerHTML = '';
     
             if (data.length === 0) {
                 const tr = $('<tr>').append($('<td>', {
@@ -145,16 +86,15 @@
                 tableBody.append(tr);
             } else {
                 data.forEach(item => {
-
-                    const tr = $('<tr>').append(
-                        $('<td>', { text: item.id, 'data-label': 'ID', class: 'custom-mobile-align' }),
-                        $('<td>', { text: item.creditid, 'data-label': 'Credit ID', class: 'custom-mobile-align' }),
-                        $('<td>', { text: item.date, 'data-label': 'Date', class: 'custom-mobile-align' }),
-                        $('<td>', { text: formatCurrency(item.amount), 'data-label': 'Amount', class: 'custom-mobile-align' }),
-                        $('<td>', { text: item.type, 'data-label': 'Status', class: 'custom-mobile-align no-wrap' }),
-                    );
-
-                    tableBody.append(tr);
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td class="custom-mobile-align" data-label="ID">${item.id}</td>
+                        <td class="custom-mobile-align" data-label="Credit ID">${item.creditid}</td>
+                        <td class="custom-mobile-align" data-label="Date">${item.date}</td>
+                        <td class="custom-mobile-align" data-label="Amount">${formatCurrencyColored(item.amount)}</td>
+                        <td class="custom-mobile-align" data-label="Type">${item.type}</td>
+                    `;
+                    tableBody.appendChild(tr); 
                 });
             }
         }

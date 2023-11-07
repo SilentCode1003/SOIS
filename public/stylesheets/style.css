@@ -109,6 +109,9 @@ a:focus {
   MOBILE RESPONSIVE TABLE
 ----------------------------------------------------- */
 @media (max-width: 767px) {
+
+
+
   .custom-mobile-table thead{
     display: none;
   }
@@ -222,6 +225,10 @@ main {
   vertical-align: middle!important;
 }
 
+.blur {
+  filter: blur(5px) brightness(0.75);
+}
+
 /* ---------------------------------------------------
   MEDIAQUERIES
 ----------------------------------------------------- */
@@ -232,9 +239,11 @@ main {
   }
   #sidebar {
     margin-left: -250px;
+    background-color: white;
+    position: fixed !important;
   }
   #sidebar.active {
-    margin-left: 0;
+    margin-left: 0px !important;
   }
   #sidebarCollapse span {
     display: none;
