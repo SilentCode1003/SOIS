@@ -18,32 +18,6 @@
             console.log("Clicked ID: "+ id)
         }) 
     
-        // $(document).on('click', '#editBtn', function(){
-        //     $('#employeeidmodal').val(employeeid);
-        //     $('#employeesModal').modal('show');
-        // })
-    
-        // $(document).on('click', '#closeBtn', function(){
-        //     $('#positionlist').val('');
-        //     $('#contactinfomodal').val('');
-        // })
-    
-        // $(document).on('click', '#deleteBtn', function(){
-        //     $('#employeeidmodal2').val(employeeid);
-        //     $('#deleteModal').modal('show');
-        // })
-        
-        // $('#confirm').on('input', function() {
-        //     const confirmValue = $(this).val().trim().toUpperCase();
-        //     const deleteBtnModal = $('#deleteBtnModal');
-    
-        //     // Enable the 'DELETE' button if the input value is 'CONFIRM', otherwise disable it
-        //     if (confirmValue === 'CONFIRM') {
-        //         deleteBtnModal.prop('disabled', false);
-        //     } else {
-        //         deleteBtnModal.prop('disabled', true);
-        //     }
-        // });
         $(document).on('change', '#employeeid', function() {
             var selectedEmployeeId = $(this).val();
             var selectedEmployeeFullName = $('#employeeid option:selected').data('fullname');
@@ -119,21 +93,34 @@
                 data.forEach(item => {
 
                     const descriptionArray = JSON.parse(item.details);
-                    const newDescription = descriptionArray
-                        .map(item => `Name: ${item.name}, Quantity: ${item.quantity}, Price: ₱${item.price}`)
-                        .join('<br>');
+                    let newDescription = descriptionArray[0].items;
+                    if (descriptionArray[0] && descriptionArray[0].items) {
+                        let newDescription = descriptionArray[0].items;
+                        const formattedDescription = newDescription.map(item => `Name: ${item.name}, Quantity: ${item.quantity}, Price: ₱${item.price}`)
+                                                                .join('<br>');
+
+                        console.log(formattedDescription);
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td class="custom-mobile-align sois-link" data-toggle="modal" data-target="#sales-details-modal" data-label="ID">${item.id}</td>
+                            <td class="custom-mobile-align responsive-wrap" data-label="POS ID">${item.posid}</td>
+                            <td class="custom-mobile-align" data-label="Date">${item.date}</td>
+                            <td class="custom-mobile-align" data-label="Cashier">${item.cashier}</td>
+                            <td class="custom-mobile-align" data-label="Payment Type">${item.paymenttype}</td>
+                            <td class="responsive-wrap">${formattedDescription}</td>
+                            <td class="custom-mobile-align" data-label="Total">${formatCurrency(item.total)}</td>
+                        `;
+                        tableBody.appendChild(tr); 
+                    } else {
+                        const tr = $('<tr>').append($('<td>', {
+                            colspan: 9,
+                            class: 'text-center',
+                            text: 'Invalid or missing items in descriptionArray'
+                        }));
+                        tableBody.append(tr);
+                    }
  
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td class="custom-mobile-align sois-link" data-toggle="modal" data-target="#sales-details-modal" data-label="ID">${item.id}</td>
-                        <td class="custom-mobile-align responsive-wrap" data-label="POS ID">${item.posid}</td>
-                        <td class="custom-mobile-align" data-label="Date">${item.date}</td>
-                        <td class="custom-mobile-align" data-label="Cashier">${item.cashier}</td>
-                        <td class="custom-mobile-align" data-label="Payment Type">${item.paymenttype}</td>
-                        <td class="responsive-wrap">${newDescription}</td>
-                        <td class="custom-mobile-align" data-label="Total">${formatCurrency(item.total)}</td>
-                    `;
-                    tableBody.appendChild(tr); 
+
                 });
             }
         }
@@ -206,7 +193,7 @@
                 },
                 success: function (result) {
                     var data = result.data;
-
+                    console.log(data)
                     $('#category-dataTable tbody').empty();
 
                     $.each(data, function (key, item) {
@@ -214,7 +201,7 @@
                         var date = item.date;
                         var items = JSON.parse(item.details);
 
-                        $.each(items, function (index, itemData) {
+                        $.each(items[0].items, function (index, itemData) {
                             var itemName = itemData.name;
                             var price = itemData.price;
                             var quantity = itemData.quantity;
