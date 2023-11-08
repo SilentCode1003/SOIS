@@ -221,3 +221,43 @@ router.post("/getorderdetail", (req, res) => {
     });
   }
 });
+
+router.post("/getitemorderdetail", (req, res) => {
+  try {
+    const { orderid } = req.body;
+    let sql = `select 
+    co_id,
+    concat(c_firstname, c_middlename, c_lastname) as co_customerid,
+    co_date,
+    co_details,
+    co_total,
+    co_paymenttype,
+    co_status
+    from customer_order 
+    inner join customer on co_customerid = c_id
+    where co_id=?`;
+
+    SelectParameter(sql, [orderid], (err, result) => {
+      if (err) console.error("Error: ", err);
+
+      if (result.length != 0) {
+        let data = CustomerOrder(result);
+        console.log(data);
+
+        res.json({
+          msg: "success",
+          data: data,
+        });
+      } else {
+        res.json({
+          msg: "success",
+          data: result,
+        });
+      }
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
