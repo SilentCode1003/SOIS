@@ -261,3 +261,31 @@ router.post("/getitemorderdetail", (req, res) => {
     });
   }
 });
+
+router.get("/getallactiveorder", (req, res) => {
+  try {
+    let data = [
+      dictionary.GetValue(dictionary.CMP()),
+      dictionary.GetValue(dictionary.CND()),
+    ];
+    let sql =
+      "select * from customer_order where not co_status in (?,?)";
+    let sql_active_customer_order = helper.SelectStatement(sql, data);
+
+    Select(sql_active_customer_order, (err, result) => {
+      if (err) console.error("Error: ", err);
+
+      console.log(result);
+
+      let data = CustomerOrder(result);
+      res.json({
+        msg: "success",
+        data: data,
+      });
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
