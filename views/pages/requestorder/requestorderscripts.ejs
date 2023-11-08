@@ -22,101 +22,6 @@
       status = dataRow[3];
     });
 
-    // $(document).on('click', '#editBtn', function(){
-    //     $('#requestidmodal').val(requestid);
-    //     $('#requestorderModal').modal('show');
-    // })
-
-    // $(document).on('click', '#closeBtn', function(){
-    //     $('#positionlist').val('');
-    //     $('#contactinfomodal').val('');
-    // })
-
-    // $(document).on('click', '#deleteBtn', function(){
-    //     $('#requestidmodal2').val(requestid);
-    //     $('#deleteModal').modal('show');
-    // })
-
-    // $('#confirm').on('input', function() {
-    //     const confirmValue = $(this).val().trim().toUpperCase();
-    //     const deleteBtnModal = $('#deleteBtnModal');
-
-    //     // Enable the 'DELETE' button if the input value is 'CONFIRM', otherwise disable it
-    //     if (confirmValue === 'CONFIRM') {
-    //         deleteBtnModal.prop('disabled', false);
-    //     } else {
-    //         deleteBtnModal.prop('disabled', true);
-    //     }
-    // });
-    // $(document).on("change", "#requestid", function () {
-    //   var selectedrequestid = $(this).val();
-    //   var selectedEmployeeFullName = $("#requestid option:selected").data(
-    //     "fullname"
-    //   );
-
-    //   $("#fullname").val(selectedEmployeeFullName);
-    // });
-
-    // $(document).on("click", "#addBtn", function () {
-    //   let requestid = $("#requestid").val();
-    //   let fullname = $("#fullname").val();
-    //   let username = $("#username").val();
-    //   let password = $("#password").val();
-    //   let accessid = $("#accessid").val();
-
-    //   var message = "";
-    //   if (requestid == "") {
-    //     message += "Employee ID, ";
-    //   }
-    //   if (fullname == "") {
-    //     message += "Full Name, ";
-    //   }
-    //   if (username == "") {
-    //     message += "User Name, ";
-    //   }
-    //   if (password == "") {
-    //     message += "Password, ";
-    //   }
-    //   if (accessid == "") {
-    //     message += "Access Type, ";
-    //   }
-
-    //   if (message != "") {
-    //     warning("Required", `Please fill up ${message}`);
-    //   } else {
-    //     console.log(requestid, fullname, username, password, accessid);
-    //     $.ajax({
-    //       type: "POST",
-    //       url: "/masteruser/save",
-    //       data: {
-    //         requestid: requestid,
-    //         fullname: fullname,
-    //         username: username,
-    //         password: password,
-    //         accessid: accessid,
-    //       },
-    //       success: function (result) {
-    //         if (result.msg == "success") {
-    //           LoadTable();
-    //           success("Saved", "Successfully");
-    //           $("#requestid").val("");
-    //           $("#fullname").val("");
-    //           $("#username").val("");
-    //           $("#password").val("");
-    //           $("#accesstype").val("");
-    //         }
-
-    //         if (result.msg == "exist") {
-    //           warning("Exist", `${requestid} already exist!`);
-    //         }
-    //       },
-    //       error: function (err) {
-    //         errormsg(err);
-    //       },
-    //     });
-    //   }
-    // });
-
     function populatetable(data) {
       console.log(data);
       const tableBody = $("#data-table tbody");
@@ -154,8 +59,8 @@
             }),
             $("<td>", {
               text: item.customerorderid,
-              "data-label": "Customer ID",
-              class: "custom-mobile-align",
+              "data-label": "Order ID",
+              class: "custom-mobile-align sois-link", "data-toggle": "modal", "data-target": "#sales-details-modal",
             }),
             $("<td>", {
               text: item.date,
@@ -298,6 +203,54 @@
         error: function (err) {
           errormsg(err);
         },
+      });
+    });
+
+    $(document).on('click', '.sois-link', function () {
+      console.log("clicked");
+      $.ajax({
+        type: 'POST',
+        url: '/customerorder/getitemorderdetail',
+        data: {
+          orderid: customerorderid,
+        },
+        success: function (result) {
+          $('#category-dataTable tbody').empty();
+          var data = result.data;
+          console.log(data)
+
+          $.each(data, function (key, item) {
+            $("#paymentmethod").val(item.paymenttype);
+            $("#customername").val(item.customerid);
+            var details = JSON.parse(item.details);
+            let overalltotal = 0;
+
+            $("#customeraddress").val(details[0].address);
+            console.log(details)
+            $.each(details[0].items, function (index, itemData) {
+              let itemName = itemData.name;
+              let price = itemData.price;
+              let quantity = itemData.quantity;
+              let total = price * quantity;
+
+              overalltotal += total;
+
+              var newRow = $("<tr>");
+
+              newRow.append($("<td>").attr('data-label', 'Details ID').addClass('custom-mobile-align').text(item.id));
+              newRow.append($("<td>").attr('data-label', 'Item Name').addClass('custom-mobile-align').text(itemName));
+              newRow.append($("<td>").attr('data-label', 'Price').addClass('custom-mobile-align').text(formatCurrency(price)));
+              newRow.append($("<td>").attr('data-label', 'Quantity').addClass('custom-mobile-align').text(quantity));
+              newRow.append($("<td>").attr('data-label', 'Total').addClass('custom-mobile-align').text(formatCurrency(total)));
+              $("#overalltotal").text(formatCurrency(overalltotal));
+              $('#category-dataTable tbody').append(newRow);
+            });
+          });
+
+        },
+        error: function (err) {
+          errormsg(err);
+        }
       });
     });
   });
