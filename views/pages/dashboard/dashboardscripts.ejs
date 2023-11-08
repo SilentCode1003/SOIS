@@ -29,20 +29,67 @@
 
           const tr = document.createElement("tr");
           tr.innerHTML = `
-                        <td class="custom-mobile-align" data-label="Date">${
-                          item.date
-                        }</td>
-                        <td class="custom-mobile-align" data-label="Payment Type">${
-                          item.paymenttype
-                        }</td>
+                        <td class="custom-mobile-align" data-label="Date">${item.date
+            }</td>
+                        <td class="custom-mobile-align" data-label="Payment Type">${item.paymenttype
+            }</td>
                         <td class="responsive-wrap">${newDescription}</td>
                         <td class="custom-mobile-align" data-label="Total">${formatCurrency(
-                          item.total
-                        )}</td>
-                        <td class="custom-mobile-align" data-label="Cashier">${
-                          item.cashier
-                        }</td>
+              item.total
+            )}</td>
+                        <td class="custom-mobile-align" data-label="Cashier">${item.cashier
+            }</td>
                     `;
+          tableBody.appendChild(tr);
+        });
+      }
+    }
+
+    function populatetable2(data) {
+      console.log(data);
+      console.log(data);
+      const tableBody = document.querySelector("#data-table2 tbody");
+      tableBody.innerHTML = "";
+
+      if (data.length === 0) {
+        const tr = $("<tr>").append(
+          $("<td>", {
+            colspan: 9,
+            class: "text-center",
+            text: "No Data Matched",
+          })
+        );
+        tableBody.append(tr);
+      } else {
+        data.forEach((item) => {
+          let action = "";
+
+          const descriptionArray = JSON.parse(item.details);
+          const newDescription = descriptionArray[0].items
+            .map(
+              (item) =>
+                `Name: ${item.name}, Quantity: ${item.quantity}, Price: ₱${item.price}`
+            )
+            .join("<br>");
+
+          const tr = document.createElement("tr");
+          var additional = "";
+          if (item.paymenttype == "UH POINTS") {
+            additional += `<br>Points: ${descriptionArray[0].points}`;
+          } else {
+            if (item.paymenttype != "COD") {
+              additional += `<br>Reference: ${descriptionArray[0].reference}`;
+            }
+          }
+          tr.innerHTML = `
+            <td class="custom-mobile-align sois-link" data-label="ID"><a href="/customerorder">${item.id}</a></td>
+            <td class="custom-mobile-align" data-label="Customer ID">${item.customerid}</td>
+            <td class="custom-mobile-align no-wrap" data-label="Date">${item.date}</td>
+            <td class="no-wrap">${newDescription}<br>Address: ${descriptionArray[0].address}<br>Latitude: ${descriptionArray[0].latitude}<br>Longitude: ${descriptionArray[0].longitude} ${additional}</td>
+            <td class="custom-mobile-align" data-label="Total">${formatCurrency(item.total)}</td>
+            <td class="custom-mobile-align" data-label="Payment Type">${item.paymenttype}</td>
+            <td class="custom-mobile-align" data-label="Status">${item.status}</td>`;
+          // <td class="custom-mobile-align">${action}</td>
           tableBody.appendChild(tr);
         });
       }
@@ -64,6 +111,22 @@
           console.error(error);
         },
       });
+
+      $.ajax({
+        url: "/customerorder/getallactiveorder",
+        method: "GET",
+        dataType: "json",
+        success: function (data) {
+          if (data.msg === "success") {
+            populatetable2(data.data);
+          } else {
+            console.error(data.msg);
+          }
+        },
+        error: function (error) {
+          console.error(error);
+        },
+      });
     }
 
     function LoadCardData() {
@@ -75,7 +138,7 @@
             `${formatCurrency(result["data"])}`
           );
         },
-        error: function (error) {},
+        error: function (error) { },
       });
 
       $.ajax({
@@ -86,7 +149,7 @@
             `${formatCurrency(result["data"])}`
           );
         },
-        error: function (error) {},
+        error: function (error) { },
       });
 
       $.ajax({
@@ -95,7 +158,7 @@
         success: function (result) {
           $("#totalorders").html(result["data"]);
         },
-        error: function (error) {},
+        error: function (error) { },
       });
 
       $.ajax({
@@ -104,7 +167,7 @@
         success: function (result) {
           $("#pendingrequest").html(result["data"]);
         },
-        error: function (error) {},
+        error: function (error) { },
       });
     }
   });
