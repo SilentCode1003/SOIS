@@ -227,7 +227,7 @@ router.post("/getitemorderdetail", (req, res) => {
     const { orderid } = req.body;
     let sql = `select 
     co_id,
-    concat(c_firstname, c_middlename, c_lastname) as co_customerid,
+    concat(c_firstname,' ', c_middlename,' ', c_lastname) as co_customerid,
     co_date,
     co_details,
     co_total,
