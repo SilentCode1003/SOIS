@@ -225,6 +225,41 @@ router.post("/getdetails", (req, res) => {
   }
 });
 
+router.get("/getcurrentsales", (req, res) => {
+  try {
+    let datefrom = `${helper.GetCurrentDate()} 00:00`;
+    let dateto = `${helper.GetCurrentDate()} 23:59`;
+    let data = [datefrom, dateto];
+    let sql = "select * from sales_detail where sd_date between ? and ?";
+
+    let command = helper.SelectStatement(sql, data);
+
+    console.log(command);
+
+    Select(command, (err, result) => {
+      if (err) console.error("Error: ", err);
+      if (result.length != 0) {
+        let data = SalesDetail(result);
+        console.log(data);
+
+        res.json({
+          msg: "success",
+          data: data,
+        });
+      } else {
+        res.json({
+          msg: "success",
+          data: result,
+        });
+      }
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
+
 //#region Functions
 function Get_Product(name) {
   return new Promise((resolve, reject) => {
