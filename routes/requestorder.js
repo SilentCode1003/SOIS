@@ -22,7 +22,7 @@ module.exports = router;
 
 router.get("/load", (req, res) => {
   try {
-    let sql = `select * from request_order`;
+    let sql = `select * from request_order order by ro_id desc`;
     Select(sql, (err, result) => {
       if (err) console.log("Error: ", err);
       if (result.length != 0) {

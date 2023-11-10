@@ -3,13 +3,13 @@ const model = require("../model/soismodel");
 require("dotenv").config();
 const crypt = require("./cryptography");
 
-console.log(process.env._PASSWORD);
+// console.log(process.env._PASSWORD);
 let password = "";
 crypt.Decrypter(process.env._PASSWORD, (err, result) => {
   if (err) throw err;
 
   password = result;
-  console.log(`${result}`);
+  // console.log(`${result}`);
 });
 
 const connection = mysql.createConnection({
@@ -19,17 +19,17 @@ const connection = mysql.createConnection({
   database: process.env._DATABASE,
 });
 
-// crypt.Encrypter("1234SantosRalph", (err, result) => {
-//   if (err) console.error("Error: ", err);
-
-//   console.log(result);
-// });
-
-crypt.Decrypter("a4960e8bf4f4afd0bcb52239dece75f6", (err, result) => {
+crypt.Encrypter("root", (err, result) => {
   if (err) console.error("Error: ", err);
 
-  console.log(`${result}`);
+  console.log(result);
 });
+
+// crypt.Decrypter("71379461e7d2efa3a03b3a5f337e7734", (err, result) => {
+//   if (err) console.error("Error: ", err);
+
+//   console.log(`${result}`);
+// });
 
 exports.CheckConnection = () => {
   connection.connect((err) => {
@@ -422,6 +422,7 @@ exports.InsertTable = (tablename, data, callback) => {
       c_middlename,
       c_lastname,
       c_contactnumber,
+      c_email,
       c_gender,
       c_address,
       c_username,
