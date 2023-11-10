@@ -26,6 +26,13 @@ router.get("/", function (req, res, next) {
 
 module.exports = router;
 
+let sql = `select 
+pi_id,
+p_description as pi_productid,
+pi_quantity
+ from product_inventory
+inner join product  on pi_productid = p_id;`;
+
 router.get("/load", (req, res) => {
   try {
     let sql = `select * from customer_credit`;
