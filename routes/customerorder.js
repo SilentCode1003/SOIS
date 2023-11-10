@@ -27,7 +27,7 @@ module.exports = router;
 
 router.get("/load", (req, res) => {
   try {
-    let sql = `select * from customer_order`;
+    let sql = `select * from customer_order order by co_id desc`;
     Select(sql, (err, result) => {
       if (err) console.log("Error: ", err);
       if (result.length != 0) {
@@ -142,7 +142,7 @@ router.post("/save", (req, res) => {
 router.post("/getorderhistory", (req, res) => {
   try {
     const { customerid } = req.body;
-    let sql = "select * from customer_order where co_customerid=?";
+    let sql = "select * from customer_order where co_customerid=? order by co_id desc";
 
     SelectParameter(sql, [customerid], (err, result) => {
       if (err) console.error("Error: ", err);
@@ -171,7 +171,7 @@ router.post("/getactiveorder", (req, res) => {
       dictionary.GetValue(dictionary.CND()),
     ];
     let sql =
-      "select * from customer_order where co_customerid=? and not co_status in (?,?)";
+      "select * from customer_order where co_customerid=? and not co_status in (?,?) order by co_id desc";
     let sql_active_customer_order = helper.SelectStatement(sql, data);
 
     Select(sql_active_customer_order, (err, result) => {
@@ -235,7 +235,7 @@ router.post("/getitemorderdetail", (req, res) => {
     co_status
     from customer_order 
     inner join customer on co_customerid = c_id
-    where co_id=?`;
+    where co_id=? order by co_id desc`;
 
     SelectParameter(sql, [orderid], (err, result) => {
       if (err) console.error("Error: ", err);
