@@ -96,14 +96,13 @@
       tableBody.innerHTML = "";
 
       if (data.length === 0) {
-        const tr = $("<tr>").append(
-          $("<td>", {
-            colspan: 9,
-            class: "text-center",
-            text: "No Data Matched",
-          })
-        );
-        tableBody.append(tr);
+        const tr = document.createElement("tr");
+        const td = document.createElement("td");
+        td.colSpan = 7;
+        td.className = "text-center";
+        td.textContent = "No Matched Data";
+        tr.appendChild(td);
+        tableBody.appendChild(tr);
       } else {
         data.forEach((item) => {
           const descriptionArray = JSON.parse(item.details);
@@ -117,29 +116,27 @@
               )
               .join("<br>");
 
-            console.log(formattedDescription);
             const tr = document.createElement("tr");
             tr.innerHTML = `
-                            <td class="custom-mobile-align sois-link" data-toggle="modal" data-target="#sales-details-modal" data-label="ID">${
-                              item.id
-                            }</td>
-                            <td class="custom-mobile-align responsive-wrap" data-label="POS ID">${
-                              item.posid
-                            }</td>
-                            <td class="custom-mobile-align" data-label="Date">${
-                              item.date
-                            }</td>
-                            <td class="custom-mobile-align" data-label="Cashier">${
-                              item.cashier
-                            }</td>
-                            <td class="custom-mobile-align" data-label="Payment Type">${
-                              item.paymenttype
-                            }</td>
-                            <td class="responsive-wrap">${formattedDescription}</td>
-                            <td class="custom-mobile-align" data-label="Total">${formatCurrency(
-                              item.total
-                            )}</td>
-                        `;
+              <td class="custom-mobile-align sois-link" data-toggle="modal" data-target="#sales-details-modal" data-label="ID">${
+                item.id
+              }</td>
+              <td class="custom-mobile-align responsive-wrap" data-label="POS ID">${
+                item.posid
+              }</td>
+              <td class="custom-mobile-align" data-label="Date">${
+                item.date
+              }</td>
+              <td class="custom-mobile-align" data-label="Cashier">${
+                item.cashier
+              }</td>
+              <td class="custom-mobile-align" data-label="Payment Type">${
+                item.paymenttype
+              }</td>
+              <td class="responsive-wrap">${formattedDescription}</td>
+              <td class="custom-mobile-align" data-label="Total">${formatCurrency(
+                item.total
+              )}</td>`;
             tableBody.appendChild(tr);
           } else {
             const tr = $("<tr>").append(
@@ -385,6 +382,9 @@
       const daterange = $("#dateRange").val();
       const posid = $("#posid").val();
 
+      if (daterange === "" && posid === ""){
+        warning("Empty Field", "Date Range or POS ID cannot be empty!");
+      }else{
         $.ajax({
           type: "POST",
           url: "/salesdetails/filter",
@@ -394,11 +394,14 @@
           },
           success: function (result) {
             populatetable(result.data);
+            $("#dateRange").val("");
+            $("#posid").val("");
           },
           error: function (error) {
             errormsg(err);
           },
         });
+      }
     });
 
     $("#dateRange").daterangepicker({

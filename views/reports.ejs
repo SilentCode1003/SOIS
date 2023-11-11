@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <%- include("./components/header.ejs")%>
+  </head>
+  <body>
+
+    <div id="blurnavbar">
+      <!-- Topbar Content -->
+      <%- include("./components/topbar.ejs")%>
+      <!-- Topbar Content End -->
+    </div>
+    
+    <div class="wrapper">
+
+        <!-- Sidebar Content -->
+        <%- include("./components/sidebar.ejs")%>
+        <!-- Sidebar Content End -->
+
+        <!-- Page Content -->
+        <div id="content">
+
+          <!-- Main Content -->
+          <%- include("./pages/reports/reports.ejs")%>
+          <!-- Main Content End -->
+          
+          </div>
+    </div>
+    <!-- Optional JavaScript -->
+    <%- include("./components/scripts.ejs")%>
+    <!-- Optional JavaScript -->
+    <%- include("./pages/reports/reportsscripts.ejs")%>
+       
+</body>
+</html>
