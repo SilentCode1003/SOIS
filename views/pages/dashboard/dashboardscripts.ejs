@@ -46,19 +46,18 @@
     }
 
     function populatetable2(data) {
-      console.log(data);
+      console.log(data.length);
       const tableBody = document.querySelector("#data-table2 tbody");
       tableBody.innerHTML = "";
 
       if (data.length === 0) {
-        const tr = $("<tr>").append(
-          $("<td>", {
-            colspan: 9,
-            class: "text-center",
-            text: "No Data Matched",
-          })
-        );
-        tableBody.append(tr);
+        const tr = document.createElement("tr");
+        const td = document.createElement("td");
+        td.colSpan = 7;
+        td.className = "text-center";
+        td.textContent = "No Pending Request";
+        tr.appendChild(td);
+        tableBody.appendChild(tr);
       } else {
         data.forEach((item) => {
           let action = "";
@@ -81,7 +80,7 @@
             }
           }
           tr.innerHTML = `
-            <td class="custom-mobile-align sois-link" data-label="ID"><a href="/customerorder">${item.id}</a></td>
+            <td class="custom-mobile-align sois-link" data-label="ID"><a href="/requestorder">${item.id}</a></td>
             <td class="custom-mobile-align" data-label="Customer ID">${item.customerid}</td>
             <td class="custom-mobile-align no-wrap" data-label="Date">${item.date}</td>
             <td class="no-wrap">${newDescription}<br>Address: ${descriptionArray[0].address}<br>Latitude: ${descriptionArray[0].latitude}<br>Longitude: ${descriptionArray[0].longitude} ${additional}</td>

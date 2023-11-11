@@ -29,7 +29,8 @@ router.get("/load", (req, res) => {
     ih_quantity,
     ih_type 
     from inventory_history
-    inner join product on ih_productid = p_id;`;
+    inner join product on ih_productid = p_id
+    order by ih_id desc;`;
     Select(sql, (err, result) => {
       if (err) console.log("Error: ", err);
       if (result.length != 0) {

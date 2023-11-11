@@ -167,6 +167,7 @@ class CustomerModel {
     middlename,
     lastname,
     contactnumber,
+    email,
     gender,
     address,
     username,
@@ -178,6 +179,7 @@ class CustomerModel {
     this.middlename = middlename;
     this.lastname = lastname;
     this.contactnumber = contactnumber;
+    this.email = email;
     this.gender = gender;
     this.address = address;
     this.username = username;

@@ -59,6 +59,7 @@ router.post("/save", (req, res) => {
       middlename,
       lastname,
       contactnumber,
+      email,
       gender,
       address,
       username,
@@ -75,6 +76,7 @@ router.post("/save", (req, res) => {
           middlename,
           lastname,
           contactnumber,
+          email,
           gender,
           address,
           username,
@@ -137,6 +139,29 @@ router.post("/save", (req, res) => {
             msg: error,
           });
         });
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
+
+router.post("/update", (req, res) => {
+  try {
+    const { contact, email, address, customerid } = req.body;
+    let data = [contact, email, address, customerid];
+    let sql =
+      "update customer set c_contactnumber=?, c_email=?, c_address=? where c_id=?";
+
+    console.log(data);
+    UpdateMultiple(sql, data, (err, result) => {
+      if (err) console.error("Error: ", err);
+
+      console.log(result);
+      res.json({
+        msg: "success",
+      });
     });
   } catch (error) {
     res.json({

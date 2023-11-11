@@ -28,7 +28,7 @@ module.exports = router;
 
 router.get("/load", (req, res) => {
   try {
-    let sql = `select * from sales_detail`;
+    let sql = `select * from sales_detail order by sd_id desc`;
     Select(sql, (err, result) => {
       if (err) console.log("Error: ", err);
       if (result.length != 0) {
@@ -230,7 +230,7 @@ router.get("/getcurrentsales", (req, res) => {
     let datefrom = `${helper.GetCurrentDate()} 00:00`;
     let dateto = `${helper.GetCurrentDate()} 23:59`;
     let data = [datefrom, dateto];
-    let sql = "select * from sales_detail where sd_date between ? and ?";
+    let sql = "select * from sales_detail where sd_date between ? and ?  order by sd_id desc";
 
     let command = helper.SelectStatement(sql, data);
 
