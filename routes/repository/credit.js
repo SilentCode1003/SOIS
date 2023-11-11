@@ -1,4 +1,4 @@
-const { CustomerCredit } = require("../model/soismodel");
+const { CustomerCredit, Customer } = require("../model/soismodel");
 const { SelectParameter, InsertTable } = require("./soisdb");
 
 exports.CustomerCredit_Check = (data) => {
@@ -26,5 +26,27 @@ exports.BalanceHistory_Create = (data) => {
       console.log(result);
       resolve(result);
     });
+  });
+};
+
+exports.GetCustomer = (customerid, callback) => {
+  let sql = "select * from customer where c_id=?";
+  SelectParameter(sql, [customerid], (err, result) => {
+    if (err) callback(err, null);
+
+    console.log(result);
+
+    callback(null, result);
+  });
+};
+
+exports.GetCustomerOrder = (orderid, callback) => {
+  let sql = "select * from customer_order where co_id=?";
+  SelectParameter(sql, [orderid], (err, result) => {
+    if (err) callback(err, null);
+
+    console.log(result);
+
+    callback(null, result);
   });
 };
