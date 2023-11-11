@@ -9,60 +9,62 @@
     LoadTable();
 
     $(document).on("change", "#imageInputModal", function () {
-        const input = document.getElementById("imageInputModal");
-        const file = input.files[0];
+      const input = document.getElementById("imageInputModal");
+      const file = input.files[0];
 
-        const reader = new FileReader();
-        reader.onload = function () {
-            const img = new Image();
-            img.src = reader.result;
-            img.onload = function () {
-                const maxWidth = 300; 
-                const maxHeight = 300; 
+      const reader = new FileReader();
+      reader.onload = function () {
+        const img = new Image();
+        img.src = reader.result;
+        img.onload = function () {
+          const maxWidth = 300;
+          const maxHeight = 300;
 
-                let width = img.width;
-                let height = img.height;
+          let width = img.width;
+          let height = img.height;
 
-                if (width > maxWidth) {
-                    height *= maxWidth / width;
-                    width = maxWidth;
-                }
+          if (width > maxWidth) {
+            height *= maxWidth / width;
+            width = maxWidth;
+          }
 
-                if (height > maxHeight) {
-                    width *= maxHeight / height;
-                    height = maxHeight;
-                }
+          if (height > maxHeight) {
+            width *= maxHeight / height;
+            height = maxHeight;
+          }
 
-                const canvas = document.createElement("canvas");
-                const ctx = canvas.getContext("2d");
-                canvas.width = width;
-                canvas.height = height;
-                ctx.drawImage(img, 0, 0, width, height);
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+          canvas.width = width;
+          canvas.height = height;
+          ctx.drawImage(img, 0, 0, width, height);
 
-                const base64StringModal = canvas.toDataURL("image/jpeg"); // You can change the format if needed
+          const base64StringModal = canvas.toDataURL("image/jpeg"); // You can change the format if needed
 
-                const preview = document.getElementById("productimagemodal");
-                preview.src = base64StringModal;
-                
-                processedImage(base64StringModal);
-            };
+          const preview = document.getElementById("productimagemodal");
+          preview.src = base64StringModal;
+
+          processedImage(base64StringModal);
         };
-        reader.readAsDataURL(file);
+      };
+      reader.readAsDataURL(file);
     });
 
     function processedImage() {
-        const input = document.getElementById("imageInputModal");
-        const file = input.files[0];
+      const input = document.getElementById("imageInputModal");
+      const file = input.files[0];
 
-        var reader = new FileReader();
-        console.log("next");
+      var reader = new FileReader();
+      console.log("next");
 
-        reader.onload = function () {
-        base64StringModal = reader.result.replace("data:", "").replace(/^.+,/, "");
+      reader.onload = function () {
+        base64StringModal = reader.result
+          .replace("data:", "")
+          .replace(/^.+,/, "");
         // alert(imageBase64Stringsep);
         console.log(base64StringModal);
-        };
-        reader.readAsDataURL(file);
+      };
+      reader.readAsDataURL(file);
     }
 
     $("#data-table tbody").on("click", "tr", function () {
@@ -75,13 +77,13 @@
         });
       console.log(dataRow);
       id = dataRow[0];
-      status = dataRow[5];
+      status = dataRow[6];
     });
 
-    $(document).on('click', '#editBtn', function(){
-        $('#idmodal').val(id);
-        $('#editModal').modal('show');
-    })
+    $(document).on("click", "#editBtn", function () {
+      $("#idmodal").val(id);
+      $("#editModal").modal("show");
+    });
 
     // $(document).on('click', '#closeBtn', function(){
     //     $('#positionlist').val('');
@@ -284,7 +286,7 @@
       console.log(status);
       $.ajax({
         type: "POST",
-        url: "/products/status",
+        url: "/product/status",
         data: {
           status: status,
           id: id,
@@ -310,7 +312,7 @@
       console.log(status);
       $.ajax({
         type: "POST",
-        url: "/products/status",
+        url: "/product/status",
         data: {
           status: status,
           id: id,
@@ -338,43 +340,54 @@
       let barcode = $("#barcodemodal").val();
       let description = $("#descriptionmodal").val();
 
-      console.log("Image: "+productimage, "ID: "+id,"Price: "+ price,"Barcode: "+ barcode,"Description: "+ description)
+      console.log(
+        "Image: " + productimage,
+        "ID: " + id,
+        "Price: " + price,
+        "Barcode: " + barcode,
+        "Description: " + description
+      );
       var message = "";
 
-      if (price == "") {
-        message += "Price cannot be empty";
+      if (
+        id == "" &&
+        price == "" &&
+        productimage == "" &&
+        barcode == "" &&
+        description == ""
+      ) {
+        message += "Fill up atleast 1 input field before updating";
       }
 
       if (message != "") {
         warning("Required", `${message}`);
-      } 
-      // else {
-      //   $.ajax({
-      //     type: "POST",
-      //     url: "/products/edit",
-      //     data: {
-      //       id: id,
-      //       price: price,
-      //       productimage: productimage,
-      //       description: description
-      //     },
-      //     success: function (result) {
-      //       if (result.msg == "success") {
-      //         LoadTable();
-      //         $("#idmodal").modal("hide");
-      //         $("#pricelist").val("");
-      //         success("Saved", "Successfully");
-      //       }
+      } else {
+        $.ajax({
+          type: "POST",
+          url: "/product/edit",
+          data: {
+            id: id,
+            price: price,
+            productimage: productimage,
+            description: description,
+          },
+          success: function (result) {
+            if (result.msg == "success") {
+              LoadTable();
+              $("#idmodal").modal("hide");
+              $("#pricelist").val("");
+              success("Saved", "Successfully");
+            }
 
-      //       // if (result.msg == "exist") {
-      //       //   warning("Exist", `${price} already exist!`);
-      //       // }
-      //     },
-      //     error: function (err) {
-      //       errormsg(err);
-      //     },
-      //   });
-      // }
+            // if (result.msg == "exist") {
+            //   warning("Exist", `${price} already exist!`);
+            // }
+          },
+          error: function (err) {
+            errormsg(err);
+          },
+        });
+      }
     });
 
     LoadList();
