@@ -21,7 +21,7 @@ module.exports = router;
 
 router.get("/load", (req, res) => {
   try {
-    let sql = `select * from balance_history`;
+    let sql = `select * from balance_history order by bh_id desc`;
     Select(sql, (err, result) => {
       if (err) console.log("Error: ", err);
       if (result.length != 0) {
