@@ -11,12 +11,18 @@ const {
 
 const helper = require("./repository/customhelper.js");
 const dictionary = require("./repository/dictionary.js");
-const { CustomerOrder, CustomerCredit } = require("./model/soismodel.js");
+const {
+  CustomerOrder,
+  CustomerCredit,
+  Customer,
+} = require("./model/soismodel.js");
 const { Validator } = require("./controller/middleware.js");
 const {
   CustomerCredit_Check,
   BalanceHistory_Create,
+  GetCustomer,
 } = require("./repository/credit.js");
+const { SendEmail } = require("./repository/mailer.js");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -66,6 +72,13 @@ router.post("/save", (req, res) => {
         status,
       ],
     ];
+
+    GetCustomer(customerid, (err, result) => {
+      if (err) console.error(err);
+      let data = Customer(result);
+
+      SendEmail(data[0].email, `Urban Hideout ${customerid}`, "Order Placed");
+    });
 
     InsertTable("customer_order", customer_order, (err, result) => {
       if (err) console.error("Error: ", err);
@@ -142,7 +155,8 @@ router.post("/save", (req, res) => {
 router.post("/getorderhistory", (req, res) => {
   try {
     const { customerid } = req.body;
-    let sql = "select * from customer_order where co_customerid=? order by co_id desc";
+    let sql =
+      "select * from customer_order where co_customerid=? order by co_id desc";
 
     SelectParameter(sql, [customerid], (err, result) => {
       if (err) console.error("Error: ", err);
@@ -268,8 +282,7 @@ router.get("/getallactiveorder", (req, res) => {
       dictionary.GetValue(dictionary.CMP()),
       dictionary.GetValue(dictionary.CND()),
     ];
-    let sql =
-      "select * from customer_order where not co_status in (?,?)";
+    let sql = "select * from customer_order where not co_status in (?,?)";
     let sql_active_customer_order = helper.SelectStatement(sql, data);
 
     Select(sql_active_customer_order, (err, result) => {

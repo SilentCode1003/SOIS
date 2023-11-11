@@ -10,8 +10,14 @@ const {
 
 const helper = require("./repository/customhelper.js");
 const disctionary = require("./repository/dictionary.js");
-const { RequestOrder } = require("./model/soismodel.js");
+const {
+  RequestOrder,
+  CustomerOrder,
+  Customer,
+} = require("./model/soismodel.js");
 const { Validator } = require("./controller/middleware.js");
+const { GetCustomer, GetCustomerOrder } = require("./repository/credit.js");
+const { SendEmail } = require("./repository/mailer.js");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -55,7 +61,10 @@ router.post("/status", (req, res) => {
 
     if (status == "CANCEL") {
       request_order = [disctionary.GetValue(disctionary.CND()), requestid];
-      customer_order = [disctionary.GetValue(disctionary.CND()), customerorderid];
+      customer_order = [
+        disctionary.GetValue(disctionary.CND()),
+        customerorderid,
+      ];
 
       RequestOrder_Update(request_order);
       CustomerOrder_Update(customer_order);
@@ -63,7 +72,10 @@ router.post("/status", (req, res) => {
 
     if (status == "ACCEPT") {
       request_order = [disctionary.GetValue(disctionary.CKNG()), requestid];
-      customer_order = [disctionary.GetValue(disctionary.CKNG()), customerorderid];
+      customer_order = [
+        disctionary.GetValue(disctionary.CKNG()),
+        customerorderid,
+      ];
 
       RequestOrder_Update(request_order);
       CustomerOrder_Update(customer_order);
@@ -71,7 +83,10 @@ router.post("/status", (req, res) => {
 
     if (status == "DELIVERNOW") {
       request_order = [disctionary.GetValue(disctionary.ODLV()), requestid];
-      customer_order = [disctionary.GetValue(disctionary.ODLV()), customerorderid];
+      customer_order = [
+        disctionary.GetValue(disctionary.ODLV()),
+        customerorderid,
+      ];
 
       RequestOrder_Update(request_order);
       CustomerOrder_Update(customer_order);
@@ -79,11 +94,29 @@ router.post("/status", (req, res) => {
 
     if (status == "DELIVERED") {
       request_order = [disctionary.GetValue(disctionary.CMP()), requestid];
-      customer_order = [disctionary.GetValue(disctionary.CMP()), customerorderid];
+      customer_order = [
+        disctionary.GetValue(disctionary.CMP()),
+        customerorderid,
+      ];
 
       RequestOrder_Update(request_order);
       CustomerOrder_Update(customer_order);
     }
+
+    GetCustomerOrder(customerorderid, (err, result) => {
+      if (err) console.error("Error: ", err);
+      let data = CustomerOrder(result);
+      let customerid = data[0].customerid;
+      console.log(result);
+      GetCustomer(customerid, (err, result) => {
+        if (err) console.error(err);
+        let data = Customer(result);
+
+        console.log(result);
+
+        SendEmail(data[0].email, `Urban Hideout ${customerid}`, status);
+      });
+    });
 
     res.json({
       msg: "success",
