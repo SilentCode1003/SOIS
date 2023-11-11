@@ -6,6 +6,7 @@ const {
   Select,
   SelectResult,
   UpdateMultiple,
+  SelectParameter,
 } = require("./repository/soisdb.js");
 
 const helper = require("./repository/customhelper.js");
@@ -75,6 +76,34 @@ router.post("/save", (req, res) => {
       res.json({
         msg: "success",
       });
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
+
+router.get("/getactive", (req, res) => {
+  try {
+    let status = disctionary.GetValue(disctionary.ACT());
+    let sql = `select * from product where p_status=?`;
+    SelectParameter(sql, [status], (err, result) => {
+      if (err) console.log("Error: ", err);
+      if (result.length != 0) {
+        let data = Product(result);
+        console.log(data);
+
+        res.json({
+          msg: "success",
+          data: data,
+        });
+      } else {
+        res.json({
+          msg: "success",
+          data: result,
+        });
+      }
     });
   } catch (error) {
     res.json({
