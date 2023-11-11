@@ -28,7 +28,7 @@ router.get("/load", (req, res) => {
       if (err) console.log("Error: ", err);
       if (result.length != 0) {
         let data = Product(result);
-        console.log(data);
+        // console.log(data);
 
         res.json({
           msg: "success",
@@ -120,7 +120,7 @@ router.get("/getactive", (req, res) => {
       if (err) console.log("Error: ", err);
       if (result.length != 0) {
         let data = Product(result);
-        console.log(data);
+        // console.log(data);
 
         res.json({
           msg: "success",
@@ -164,6 +164,77 @@ router.post("/edit", (req, res) => {
     sql_Update = sql_Update.slice(0, -1);
     sql_Update += ` WHERE p_id = ?;`;
     data.push(id);
+
+    console.log(`${sql_Update} ${data}`);
+
+    UpdateMultiple(sql_Update, data, (err, result) => {
+      if (err) console.error("Error: ", err);
+      console.log(result);
+
+      res.json({
+        msg: "success",
+      });
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
+
+router.post("/getproductinfo", (req, res) => {
+  try {
+    const { description } = req.body;
+    let sql = "select * from product where p_description=?";
+
+    SelectParameter(sql, [description], (err, result) => {
+      if (err) console.log("Error: ", err);
+      if (result.length != 0) {
+        let data = Product(result);
+        // console.log(data);
+
+        res.json({
+          msg: "success",
+          data: data,
+        });
+      } else {
+        res.json({
+          msg: "success",
+          data: result,
+        });
+      }
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
+
+router.post("/update", (req, res) => {
+  try {
+    const { description, image, price } = req.body;
+    let data = [];
+    let sql_Update = `UPDATE product SET`;
+
+    if (price) {
+      sql_Update += ` p_price = ?,`;
+      data.push(price);
+    }
+
+    if (image) {
+      sql_Update += ` p_image = ?,`;
+      data.push(image);
+    }
+
+    if (description) {
+      sql_Update += ` p_description = ?,`;
+      data.push(description);
+    }
+
+    sql_Update = sql_Update.slice(0, -1);
+    sql_Update += ` WHERE p_description = ?;`;
+    data.push(description);
 
     console.log(`${sql_Update} ${data}`);
 
