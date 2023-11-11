@@ -139,3 +139,45 @@ router.get("/getactive", (req, res) => {
     });
   }
 });
+
+router.post("/edit", (req, res) => {
+  try {
+    const { id, price, productimage, description } = req.body;
+    let data = [];
+    let sql_Update = `UPDATE product SET`;
+
+    if (price) {
+      sql_Update += ` p_price = ?,`;
+      data.push(price);
+    }
+
+    if (productimage) {
+      sql_Update += ` p_image = ?,`;
+      data.push(productimage);
+    }
+
+    if (description) {
+      sql_Update += ` p_description = ?,`;
+      data.push(description);
+    }
+
+    sql_Update = sql_Update.slice(0, -1);
+    sql_Update += ` WHERE p_id = ?;`;
+    data.push(id);
+
+    console.log(`${sql_Update} ${data}`);
+
+    UpdateMultiple(sql_Update, data, (err, result) => {
+      if (err) console.error("Error: ", err);
+      console.log(result);
+
+      res.json({
+        msg: "success",
+      });
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
