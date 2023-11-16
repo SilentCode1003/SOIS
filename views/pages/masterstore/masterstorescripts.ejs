@@ -69,7 +69,7 @@
             logo: logo,
             address: address,
             contact: contact,
-            message: messages,
+            messages: messages,
           },
           success: function (result) {
             if (result.msg == "success") {
@@ -121,7 +121,7 @@
             }),
             $("<td>", {
               html: item.logo
-                ? `<img src="data:image/png;base64,${item.logo}" alt="Product Image" style="max-width: 200px; max-height: 150px;"/>`
+                ? `<img src="data:image/svg+xml;base64,${item.logo}" alt="SVG Image" style="max-width: 200px; max-height: 150px;"/>`
                 : "No Image",
               "data-label": "Logo",
             }),
