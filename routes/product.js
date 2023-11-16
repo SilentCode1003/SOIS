@@ -68,14 +68,24 @@ router.post("/save", (req, res) => {
       ],
     ];
 
-    InsertTable("product", product, (err, result) => {
+    let sql = "select * from product where p_description=?";
+    SelectParameter(sql, [description], (err, result) => {
       if (err) console.error("Error: ", err);
 
-      console.log(result);
+      if (result.length != 0) {
+        return res.json({
+          msg: "exist",
+        });
+      } else {
+        InsertTable("product", product, (err, result) => {
+          if (err) console.error("Error: ", err);
 
-      res.json({
-        msg: "success",
-      });
+          console.log(result);
+          res.json({
+            msg: "success",
+          });
+        });
+      }
     });
   } catch (error) {
     res.json({
@@ -213,7 +223,7 @@ router.post("/getproductinfo", (req, res) => {
 
 router.post("/update", (req, res) => {
   try {
-    const { description, image, price } = req.body;
+    const { description, image, price, status } = req.body;
     let data = [];
     let sql_Update = `UPDATE product SET`;
 
@@ -232,6 +242,11 @@ router.post("/update", (req, res) => {
       data.push(description);
     }
 
+    if (status) {
+      sql_Update += ` p_status = ?,`;
+      data.push(status);
+    }
+
     sql_Update = sql_Update.slice(0, -1);
     sql_Update += ` WHERE p_description = ?;`;
     data.push(description);
@@ -245,6 +260,41 @@ router.post("/update", (req, res) => {
       res.json({
         msg: "success",
       });
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
+
+router.post("/addproduct", (req, res) => {
+  try {
+    const { description, image, price, user } = req.body;
+    let status = dictionary.GetValue(dictionary.ACT());
+    let createddate = helper.GetCurrentDatetime();
+    let product = [
+      [1007, description, image, description, price, status, user, createddate],
+    ]; //1007 - NO CATEGORY
+
+    let sql = "select * from product where p_description=?";
+    SelectParameter(sql, [description], (err, result) => {
+      if (err) console.error("Error: ", err);
+
+      if (result.length != 0) {
+        return res.json({
+          msg: "exist",
+        });
+      } else {
+        InsertTable("product", product, (err, result) => {
+          if (err) console.error("Error: ", err);
+
+          console.log(result);
+          res.json({
+            msg: "success",
+          });
+        });
+      }
     });
   } catch (error) {
     res.json({
