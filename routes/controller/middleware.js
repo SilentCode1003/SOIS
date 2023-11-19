@@ -59,6 +59,15 @@ var roleacess = [
       {
         layout: "salesinventory",
       },
+      {
+        layout: "masterrating",
+      },
+      {
+        layout: "customerfeedback",
+      },
+      {
+        layout: "reports",
+      },
     ],
   },
   {
@@ -96,6 +105,12 @@ var roleacess = [
       },
       {
         layout: "salesinventory",
+      },
+      {
+        layout: "customerfeedback",
+      },
+      {
+        layout: "reports",
       },
     ],
   },

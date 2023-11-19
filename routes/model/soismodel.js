@@ -21,6 +21,8 @@ const {
   ItemsModel,
   UserLoginModel,
   SalesProductInventoryModel,
+  MasterRatingModel,
+  CustomerFeedbackModel,
 } = require("./model");
 //#region Masters & Transactions Models
 exports.MasterEmployee = (data) => {
@@ -558,6 +560,55 @@ exports.Items = (data) => {
     (key) => new ItemsModel(key["id"], key["detailid"], key["productid"])
   );
 };
+
+exports.MasterRating = (data) => {
+  let dataResult = [];
+
+  data.forEach((key, item) => {
+    dataResult.push({
+      id: key.mr_id,
+      description: key.mr_description,
+      status: key.mr_status,
+      createdby: key.mr_createdby,
+      createddate: key.mr_createddate,
+    });
+  });
+
+  return dataResult.map(
+    (key) =>
+      new MasterRatingModel(
+        key["id"],
+        key["description"],
+        key["status"],
+        key["createdby"],
+        key["createddate"]
+      )
+  );
+};
+
+exports.CustomerFeedback = (data) => {
+  let dataResult = [];
+
+  data.forEach((key, item) => {
+    dataResult.push({
+      id: key.cf_id,
+      orderid: key.cf_orderid,
+      ratingid: key.cf_ratingid,
+      message: key.cf_message,
+    });
+  });
+
+  return dataResult.map(
+    (key) =>
+      new CustomerFeedbackModel(
+        key["id"],
+        key["orderid"],
+        key["ratingid"],
+        key["message"]
+      )
+  );
+};
+
 //#endregion
 
 //#region Custom Models

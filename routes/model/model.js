@@ -265,6 +265,25 @@ class ItemsModel {
   }
 }
 
+class MasterRatingModel {
+  constructor(id, description, status, createdby, createddate) {
+    this.id = id;
+    this.description = description;
+    this.status = status;
+    this.createdby = createdby;
+    this.createddate = createddate;
+  }
+}
+
+class CustomerFeedbackModel {
+  constructor(id, orderid, ratingid, message) {
+    this.id = id;
+    this.orderid = orderid;
+    this.ratingid = ratingid;
+    this.message = message;
+  }
+}
+
 //#endregion
 
 //#region
@@ -311,4 +330,6 @@ module.exports = {
   ItemsModel,
   UserLoginModel,
   SalesProductInventoryModel,
+  MasterRatingModel,
+  CustomerFeedbackModel,
 };
