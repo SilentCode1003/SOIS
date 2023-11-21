@@ -10,7 +10,7 @@ const {
 
 const helper = require("./repository/customhelper.js");
 const dictionary = require("./repository/dictionary.js");
-const { MasterPosition } = require("./model/soismodel.js");
+const { CustomerFeedbackFeedback } = require("./model/soismodel.js");
 const { Validator } = require("./controller/middleware.js");
 
 /* GET home page. */
@@ -22,12 +22,12 @@ module.exports = router;
 
 router.get("/load", (req, res) => {
   try {
-    let sql = `select * from master_position`;
+    let sql = `select * from customer_feedback`;
 
     Select(sql, (err, result) => {
       if (err) console.log("Error: ", err);
       if (result.length != 0) {
-        let data = MasterPosition(result);
+        let data = CustomerFeedback(result);
         console.log(data);
 
         res.json({
@@ -55,9 +55,9 @@ router.post("/save", (req, res) => {
     let createdby =
       req.session.fullname == null ? "TESTER" : req.session.fullname;
     let createddate = helper.GetCurrentDatetime();
-    let master_position = [[name, status, createdby, createddate]];
+    let customer_feedback = [[name, status, createdby, createddate]];
 
-    InsertTable("master_position", master_position, (err, result) => {
+    InsertTable("customer_feedback", customer_feedback, (err, result) => {
       if (err) console.error("Error: ", err);
 
       console.log(result);
@@ -76,11 +76,11 @@ router.post("/save", (req, res) => {
 router.post("/getname", (req, res) => {
   try {
     const { id } = req.body;
-    let sql = `select mp_name from master_position where mp_id = '${id}'`;
+    let sql = `select mp_name from customer_feedback where mp_id = '${id}'`;
 
     Select(sql, (err, result) => {
       if (err) console.log("Error: ", err);
-      let data = MasterPosition(result);
+      let data = CustomerFeedback(result);
 
       console.log(data);
 
@@ -106,7 +106,7 @@ router.post("/status", (req, res) => {
     let data = [status, id];
     console.log(data);
 
-    let sql = `update master_position 
+    let sql = `update customer_feedback 
                        set mp_status = ?
                        where mp_id = ?`;
 
@@ -130,7 +130,7 @@ router.post("/edit", (req, res) => {
 
     let data = [position, id];
     console.log(data);
-    let sql = `UPDATE master_position 
+    let sql = `UPDATE customer_feedback 
                        SET mp_name = ?
                        WHERE mp_id = ?`;
 

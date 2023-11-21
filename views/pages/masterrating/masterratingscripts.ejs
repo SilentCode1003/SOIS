@@ -1,0 +1,215 @@
+<script>
+    $(document).ready(function () {
+        //Functionality
+        let id = "";
+        let status = "";
+    
+        LoadTable();
+    
+        $('#data-table tbody').on('click', 'tr', function () {
+            var dataRow = [];
+            $(this).closest('tr').find('td').each(function () {
+                dataRow.push($(this).text());
+            });
+            console.log(dataRow);
+            id = dataRow[0];
+            rating = dataRow[1];
+            status = dataRow[2]
+        }) 
+
+        $(document).on('click', '#activeBtn', function(){
+            console.log(id);
+            console.log(status);
+            $.ajax({
+                type: 'POST',
+                url: '/masterrating/status',
+                data: {
+                    status: status,
+                    id: id,
+                },
+                success: function (result) {
+                    if (result.msg == 'success') {
+                        LoadTable();
+                        success('Saved', 'Successfully')
+                    }
+    
+                    if (result.msg == 'notexist') {
+                        warning(`${id} does not exist!`);
+                    }
+    
+                },
+                error: function (err) {
+                    errormsg(err);
+                }
+            })
+        });
+    
+        $(document).on('click', '#inactiveBtn', function(){
+            console.log(id);
+            console.log(status);
+            $.ajax({
+                type: 'POST',
+                url: '/masterrating/status',
+                data: {
+                    status: status,
+                    id: id,
+                },
+                success: function (result) {
+                    if (result.msg == 'success') {
+                        LoadTable();
+                        success('Saved', 'Successfully')
+                    }
+    
+                    if (result.msg == 'notexist') {
+                        warning(`${id} does not exist!`);
+                    }
+    
+                },
+                error: function (err) {
+                    errormsg(err);
+                }
+            })
+        });
+
+            
+        $(document).on('click', '#editBtn', function(){
+            $('#idmodal').val(id);
+            $('#ratingmodal').val(rating);
+            $('#editModal').modal('show');
+        })
+    
+    
+        $(document).on('click', '#updateBtn', function () {
+            let rating = $('#ratingnamemodal').val();
+            let id = $('#idmodal').val();
+
+            var message = "";
+
+            if (rating == '') { message += 'Rating Name ' }
+
+            if (message != '') {
+                warning('Required', `Please fill up ${message}`);
+            }
+            else {
+                $.ajax({
+                    type: 'POST',
+                    url: '/masterrating/edit',
+                    data: {
+                        id: id,
+                        rating: rating,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            $('#editModal').modal('hide');
+                            $('#ratingmodal').val('');
+                            success('Saved', 'Successfully')
+                        }
+
+                        if (result.msg == 'duplicate') {
+                            warning('Duplicate', `${rating} already exist!`);
+                        }
+
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+            }
+        })
+
+        $(document).on('click', '#addBtn', function () {
+            let name = $('#name').val();
+
+            var message = "";
+            if (name == '') { message += 'Rating Name, ' }
+    
+            if (message != '') {
+                warning('Required', `Please fill up ${message}`);
+            }
+            else {
+                console.log(name)
+                $.ajax({
+                    type: 'POST',
+                    url: '/masterrating/save',
+                    data: {
+                        name: name,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable()
+                            success('Saved', 'Successfully')
+                            $('#name').val('');
+                        }
+    
+                        if (result.msg == 'exist') {
+                            warning('Exist', `${name} already exist!`);
+                        }
+    
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+            }
+        })
+     
+        function populatetable(data) {
+            console.log(data);
+            const tableBody = $('#data-table tbody');
+            tableBody.empty();
+    
+            if (data.length === 0) {
+                const tr = $('<tr>').append($('<td>', {
+                    colspan: 9,
+                    class: 'text-center',
+                    text: 'No Data Matched'
+                }));
+                tableBody.append(tr);
+            } else {
+                data.forEach(item => {
+                    let action = '';
+                    if (item.status === 'ACTIVE') {
+                        action = `<button id="editBtn" class="btn btn-outline-primary shadow-sm w-100" name="editBtn" data-toggle="modal" data-target="#editModal">EDIT</button>
+                        <button id="inactiveBtn" class="btn btn-outline-danger shadow-sm w-100 mt-1" name="inactiveBtn">INACTIVE</button>`;
+                    } else if (item.status === 'INACTIVE') {
+                        action = `<button id="editBtn" class="btn btn-outline-primary shadow-sm w-100" name="editBtn" data-toggle="modal" data-target="#editModal">EDIT</button>
+                        <button id="activeBtn" class="btn btn-outline-success shadow-sm w-100 mt-1" name="activeBtn">ACTIVE</button>`;
+                    }
+
+                    const tr = $('<tr>').append(
+                        $('<td>', { text: item.id, 'data-label': 'ID', class: 'custom-mobile-align' }),
+                        $('<td>', { text: item.description, 'data-label': 'Access Type', class: 'custom-mobile-align no-wrap' }),
+                        $('<td>', { text: item.status, 'data-label': 'Status', class: 'custom-mobile-align' }),
+                        $('<td>', { text: item.createdby, 'data-label': 'Created By', class: 'custom-mobile-align no-wrap' }),
+                        $('<td>', { text: item.createddate, 'data-label': 'Created Date', class: 'custom-mobile-align no-wrap' }),
+                        $('<td>', { html: action, 'data-label': 'Action', class: '' })
+                    );
+
+                    tableBody.append(tr);
+                });
+            }
+        }
+    
+        function LoadTable() {
+            $.ajax({
+                url: '/masterrating/load',
+                method: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.msg === 'success') {
+                        populatetable(data.data);
+                    } else {
+                        console.error(data.msg);
+                    }
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            });
+        }
+
+        // LoadList()
+    
+    })
+</script>
