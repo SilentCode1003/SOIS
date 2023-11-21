@@ -117,8 +117,8 @@ var roleacess = [
 ];
 
 exports.Validator = function (req, res, layout) {
-  console.log(layout);
-  console.log(roleacess.length);
+  // console.log(layout);
+  // console.log(roleacess.length);
 
   if (req.session.accesstype == "User" && layout == "index") {
     return res.redirect("/dashboard");
@@ -127,9 +127,8 @@ exports.Validator = function (req, res, layout) {
       var routes = key.routes;
 
       routes.forEach((value, index) => {
-        console.log(`${key.role} - ${value.layout}`);
-
         if (key.role == req.session.accesstype && value.layout == layout) {
+          console.log(`${key.role} - ${value.layout}`);
           return res.render(`${layout}`, {
             employeeid: req.session.employeeid,
             fullname: req.session.fullname,

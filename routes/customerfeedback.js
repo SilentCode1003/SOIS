@@ -6,11 +6,12 @@ const {
   Select,
   SelectResult,
   UpdateMultiple,
+  SelectParameter,
 } = require("./repository/soisdb.js");
 
 const helper = require("./repository/customhelper.js");
 const dictionary = require("./repository/dictionary.js");
-const { CustomerFeedbackFeedback } = require("./model/soismodel.js");
+const { CustomerFeedback, MasterRating } = require("./model/soismodel.js");
 const { Validator } = require("./controller/middleware.js");
 
 /* GET home page. */
@@ -22,7 +23,13 @@ module.exports = router;
 
 router.get("/load", (req, res) => {
   try {
-    let sql = `select * from customer_feedback`;
+    let sql = `select
+    cf_id,
+    cf_orderid,
+    mr_description as cf_ratingid,
+    cf_message
+    from customer_feedback
+    inner join master_rating on cf_ratingid = mr_id;`;
 
     Select(sql, (err, result) => {
       if (err) console.log("Error: ", err);
@@ -48,23 +55,33 @@ router.get("/load", (req, res) => {
   }
 });
 
-router.post("/save", (req, res) => {
+router.post("/feedback", (req, res) => {
   try {
-    const { name } = req.body;
-    let status = dictionary.GetValue(dictionary.ACT());
-    let createdby =
-      req.session.fullname == null ? "TESTER" : req.session.fullname;
-    let createddate = helper.GetCurrentDatetime();
-    let customer_feedback = [[name, status, createdby, createddate]];
+    const { orderid, rating, message } = req.body;
 
-    InsertTable("customer_feedback", customer_feedback, (err, result) => {
+    console.log(orderid, rating, message);
+
+    Get_MasterRating(rating, (err, result) => {
       if (err) console.error("Error: ", err);
 
-      console.log(result);
+      if (result.length != 0) {
+        let data = MasterRating(result);
+        console.log(data);
 
-      res.json({
-        msg: "success",
-      });
+        let customer_feedback = [[orderid, data[0].id, message]];
+        InsertTable("customer_feedback", customer_feedback, (err, result) => {
+          if (err) console.log("Error: ", err);
+
+          console.log(result);
+          res.json({
+            msg: "success",
+          });
+        });
+      } else {
+        res.json({
+          msg: "notexist",
+        });
+      }
     });
   } catch (error) {
     res.json({
@@ -73,86 +90,22 @@ router.post("/save", (req, res) => {
   }
 });
 
-router.post("/getname", (req, res) => {
-  try {
-    const { id } = req.body;
-    let sql = `select mp_name from customer_feedback where mp_id = '${id}'`;
+// router.post("/getfeedback", (req, res) => {
+//   try {
+//     const { customerid } = req.body;
+//   } catch (error) {
+//     res.json({
+//       msg: error,
+//     });
+//   }
+// });
 
-    Select(sql, (err, result) => {
-      if (err) console.log("Error: ", err);
-      let data = CustomerFeedback(result);
+function Get_MasterRating(description, callback) {
+  let sql = "select * from master_rating where mr_description=?";
+  SelectParameter(sql, [description], (err, result) => {
+    if (err) callback(err, null);
+    console.log(result);
 
-      console.log(data);
-
-      res.json({
-        msg: "success",
-        data: data,
-      });
-    });
-  } catch (error) {
-    res.json({
-      msg: error,
-    });
-  }
-});
-
-router.post("/status", (req, res) => {
-  try {
-    const { id } = req.body;
-    let status =
-      req.body.status == dictionary.GetValue(dictionary.ACT())
-        ? dictionary.GetValue(dictionary.INACT())
-        : dictionary.GetValue(dictionary.ACT());
-    let data = [status, id];
-    console.log(data);
-
-    let sql = `update customer_feedback 
-                       set mp_status = ?
-                       where mp_id = ?`;
-
-    UpdateMultiple(sql, data, (err, result) => {
-      if (err) console.error("Error: ", err);
-      console.log(result);
-      res.json({
-        msg: "success",
-      });
-    });
-  } catch (error) {
-    res.json({
-      msg: error,
-    });
-  }
-});
-
-router.post("/edit", (req, res) => {
-  try {
-    const { position, id } = req.body;
-
-    let data = [position, id];
-    console.log(data);
-    let sql = `UPDATE customer_feedback 
-                       SET mp_name = ?
-                       WHERE mp_id = ?`;
-
-    UpdateMultiple(sql, data, (err, result) => {
-      if (err) console.error("Error: ", err);
-
-      console.log(result);
-
-      // let loglevel = dictionary.INF();
-      // let source = dictionary.MSTR();
-      // let message = `${dictionary.GetValue(dictionary.UPDT())} -  [${sql}]`;
-      // let user = req.session.employeeid;
-
-      // Logger(loglevel, source, message, user);
-    });
-
-    res.json({
-      msg: "success",
-    });
-  } catch (error) {
-    res.json({
-      msg: error,
-    });
-  }
-});
+    callback(null, result);
+  });
+}

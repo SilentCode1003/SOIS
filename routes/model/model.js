@@ -305,6 +305,34 @@ class SalesProductInventoryModel {
     this.quantity = quantity;
   }
 }
+
+class CustomerFeedbackHistoryModel {
+  constructor(
+    orderid,
+    customerid,
+    date,
+    details,
+    total,
+    paymenttype,
+    status,
+    feedbackid,
+    feedbackorderid,
+    ratingid,
+    message
+  ) {
+    this.orderid = orderid;
+    this.customerid = customerid;
+    this.date = date;
+    this.details = details;
+    this.total = total;
+    this.paymenttype = paymenttype;
+    this.status = status;
+    this.feedbackid = feedbackid;
+    this.feedbackorderid = feedbackorderid;
+    this.ratingid = ratingid;
+    this.message = message;
+  }
+}
 //#endregion
 
 module.exports = {
@@ -332,4 +360,5 @@ module.exports = {
   SalesProductInventoryModel,
   MasterRatingModel,
   CustomerFeedbackModel,
+  CustomerFeedbackHistoryModel,
 };

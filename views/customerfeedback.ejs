@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <%- include("./components/header.ejs")%>
@@ -9,26 +9,22 @@
       <%- include("./components/topbar.ejs")%>
       <!-- Topbar Content End -->
     </div>
-    
+
     <div class="wrapper">
+      <!-- Sidebar Content -->
+      <%- include("./components/sidebar.ejs")%>
+      <!-- Sidebar Content End -->
 
-        <!-- Sidebar Content -->
-        <%- include("./components/sidebar.ejs")%>
-        <!-- Sidebar Content End -->
-
-        <!-- Page Content -->
-        <div id="content">
-
-          <!-- Main Content -->
-          <%- include("./pages/customerfeedback/customerfeedback.ejs")%>
-          <!-- Main Content End -->
-          
-          </div>
+      <!-- Page Content -->
+      <div id="content">
+        <!-- Main Content -->
+        <%- include("./pages/customerfeedback/customerfeedback.ejs")%>
+        <!-- Main Content End -->
+      </div>
     </div>
     <!-- Optional JavaScript -->
     <%- include("./components/scripts.ejs")%>
     <!-- Optional JavaScript -->
     <%- include("./pages/customerfeedback/customerfeedbackscripts.ejs")%>
-       
-</body>
+  </body>
 </html>

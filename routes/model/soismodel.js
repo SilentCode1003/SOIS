@@ -23,6 +23,7 @@ const {
   SalesProductInventoryModel,
   MasterRatingModel,
   CustomerFeedbackModel,
+  CustomerFeedbackHistoryModel,
 } = require("./model");
 //#region Masters & Transactions Models
 exports.MasterEmployee = (data) => {
@@ -657,6 +658,43 @@ exports.SalesProductInventory = (data) => {
         key["productname"],
         key["posid"],
         key["quantity"]
+      )
+  );
+};
+
+exports.CustomerFeedbackHistory = (data) => {
+  let dataResult = [];
+
+  data.forEach((key, item) => {
+    dataResult.push({
+      orderid: key.co_id,
+      customerid: key.co_customerid,
+      date: key.co_date,
+      details: key.co_details,
+      total: key.co_total,
+      paymenttype: key.co_paymenttype,
+      status: key.co_status,
+      feedbackid: key.cf_id,
+      feedbackorderid: key.cf_orderid,
+      ratingid: key.cf_ratingid,
+      message: key.cf_message,
+    });
+  });
+
+  return dataResult.map(
+    (key) =>
+      new CustomerFeedbackHistoryModel(
+        key["orderid"],
+        key["customerid"],
+        key["date"],
+        key["details"],
+        key["total"],
+        key["paymenttype"],
+        key["status"],
+        key["feedbackid"],
+        key["feedbackorderid"],
+        key["ratingid"],
+        key["message"],
       )
   );
 };
