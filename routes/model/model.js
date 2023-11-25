@@ -333,6 +333,20 @@ class CustomerFeedbackHistoryModel {
     this.message = message;
   }
 }
+
+class ItemDetailsModel {
+  constructor(items) {
+    this.items = items;
+  }
+}
+
+class ItemInfoModel {
+  constructor(name, price, quantity) {
+    this.name = name;
+    this.price = price;
+    this.quantity = quantity;
+  }
+}
 //#endregion
 
 module.exports = {
@@ -361,4 +375,6 @@ module.exports = {
   MasterRatingModel,
   CustomerFeedbackModel,
   CustomerFeedbackHistoryModel,
+  ItemDetailsModel,
+  ItemInfoModel,
 };

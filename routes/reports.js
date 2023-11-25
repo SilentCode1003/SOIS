@@ -1,5 +1,8 @@
 var express = require("express");
 var router = express.Router();
+const pdfmake = require("pdfmake");
+const fs = require("fs");
+const path = require("path");
 
 const {
   InsertTable,
@@ -10,8 +13,16 @@ const {
 
 const helper = require("./repository/customhelper.js");
 const dictionary = require("./repository/dictionary.js");
-const { MasterPosition } = require("./model/soismodel.js");
+const {
+  MasterPosition,
+  SalesDetail,
+  Items,
+  ItemDetails,
+  ItemInfo,
+} = require("./model/soismodel.js");
 const { Validator } = require("./controller/middleware.js");
+const { Generate } = require("./repository/pdf.js");
+const { ItemInfoModel } = require("./model/model.js");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -150,6 +161,75 @@ router.post("/edit", (req, res) => {
     res.json({
       msg: "success",
     });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
+
+router.get("/pdf", (req, res) => {
+  try {
+    let sql = `select * from sales_detail
+    where sd_date between '2023-11-01 00:00' and '2023-11-30 23:59'`;
+
+    Select(sql, (err, result) => {
+      if (err) console.error("Error: ", err);
+      let sales_details = SalesDetail(result);
+      let data = [];
+      let datalength = sales_details.length;
+      let couter = 0;
+      sales_details.forEach((details) => {
+        couter += 1;
+        let items = ItemDetails(JSON.parse(details.details));
+        items.forEach((item) => {
+          let salesifo = ItemInfo(item.items);
+
+          salesifo.forEach((info) => {
+            console.log(info.name);
+            data.push(new ItemInfoModel(info.name, info.price, info.quantity));
+
+            if (couter == datalength) {
+              let data_summary = ItemInfo(data);
+
+              let summary = [];
+
+              data_summary.forEach((product) => {
+                let index = summary.findIndex((i) => i.name === product.name);
+                if (index !== -1) {
+                  summary[index].quantity =
+                    summary[index].quantity + product.quantity;
+                } else {
+                  summary.push({
+                    name: product.name,
+                    price: product.price,
+                    quantity: product.quantity,
+                  });
+                }
+                console.log(summary);
+              });
+
+              
+              console.log("Complete!");
+            }
+          });
+        });
+      });
+    });
+    // Generate((err, result) => {
+    //   if (err) console.error("Error: ", err);
+    //   console.log(result);
+
+    //   res.setHeader("Content-Type", "application/pdf");
+    //   res.setHeader(
+    //     "Content-Disposition",
+    //     `attachment; filename=Sales_Report_${helper.GetCurrentDate()}.pdf`
+    //   );
+    //   res.send(result);
+
+    //   // const pdfStream = fs.createReadStream(result);
+    //   // pdfStream.pipe(res);
+    // });
   } catch (error) {
     res.json({
       msg: error,
