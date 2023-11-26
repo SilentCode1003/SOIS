@@ -1,0 +1,98 @@
+<!-- Modal -->
+<div class="modal fade " id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header custom-bg">
+                <h5 class="modal-title" id="exampleModalLabel">Rating</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="custom-modal-body">
+                <div class="card ">
+                    <div class="card-header py-2 header-bg">
+                        <h6 class="m-0 font-weight-bold table-title">Update Rating: </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <label class="form-label" for="idmodal">Rating Code</label>
+                                <input id="idmodal" name="idmodal" type="text" class="form-control"aria-label="idmodal" aria-describedby="basic-addon1" disabled>        
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <label class="form-label" for="ratingnamemodal">Rating Name</label>
+                                <input id="ratingnamemodal" name="ratingnamemodal" type="text" class="form-control" placeholder="Enter new Category name" aria-label="ratingnamemodal" aria-describedby="basic-addon1">        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+                <button type="button" id="updateBtn" class="btn btn-outline-success">Update</button>
+            </div>
+        </div>
+    </div>
+  </div>
+  
+  <!-- Main Content Area -->
+  <div class="page-holder">
+  
+    <!-- ENTRIES CALLER -->
+    <div class="col-12 ml-auto mt-3 d-flex justify-content-end button-holder">
+      <!-- SHOW ENTRIES -->
+      <button class="btn btn-dark mr-1" id="showButton2">Entries</button>
+      <!-- HIDE ENTRIES -->
+      <button class="btn btn-danger" id="hideButton2">Close</button>
+    </div>
+  
+    <!-- ENTRIES -->
+    <div class="mt-3" id="targetDiv2" style="display: none;">
+      <!-- PAGE TITLE -->
+      <div class="col-sm-12 top-title-bar">
+        <label id="tittle-bar">Ratings Entries</label>
+      </div>
+  
+      <!-- ENTRIES CONTAINER -->
+      <div class="col-md-12 entry-container">
+        <div>
+          <!-- <form class="needs-validation combined-form" novalidate> -->
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label for="name">Rating Type</label>
+              <input id="name" name="name" type="text" class="form-control" placeholder="Rating type" required />
+            </div>
+          </div>
+          <!-- </form> -->
+          <div class="row justify-content-end mr-4">
+            <button id="addBtn" class="btn btn-success" type="submit">+ Add</button>
+          </div>
+        </div>
+      </div>
+      <!-- CONTAINER END -->
+    </div>
+    <!-- END ENTRIES -->
+  
+  </div>
+  
+    <!-- TABLE TITLE -->
+    <div class="col-sm-12 mid-title-bar">
+      <label id="tittle-bar">Rating Table</label>
+    </div>
+  
+    <!-- TABLE -->
+    <div class="table-responsive scrollable-table-container-lg">
+      <table id="data-table" class="table custom-mobile-table">
+        <thead class="table-header">
+          <th class="no-wrap">ID</th>
+          <th class="no-wrap">Rating Name</th>
+          <th class="no-wrap">Status</th>
+          <th class="no-wrap">Created By</th>
+          <th class="no-wrap">Created Date</th>
+          <th class="no-wrap col-2">Action</th>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>

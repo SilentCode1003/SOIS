@@ -1,0 +1,13 @@
+<script>
+  $(document).ready(function () {
+    $(document).on("click", "#export", function () {
+      console.log("clicked");
+      $.ajax({
+        type: "get",
+        url: "/reports/export",
+        success: function (result) {},
+        error: function (error) {},
+      });
+    });
+  });
+</script>

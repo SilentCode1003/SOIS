@@ -29,6 +29,7 @@ router.get("/load", (req, res) => {
         let data = BalanceHistory(result);
         console.log(data);
 
+
         res.json({
           msg: "success",
           data: data,
