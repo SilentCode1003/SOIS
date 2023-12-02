@@ -10,7 +10,7 @@ const {
 } = require("./repository/soisdb.js");
 
 const helper = require("./repository/customhelper.js");
-const { SalesDetail, Product } = require("./model/soismodel.js");
+const { SalesDetail, Product, ProdcutInventory } = require("./model/soismodel.js");
 const { ItemsModel } = require("./model/model.js");
 const { Validator } = require("./controller/middleware.js");
 const {
@@ -76,30 +76,53 @@ router.post("/save", (req, res) => {
 
             items.forEach((item) => {
               console.log(`${item.name} x ${item.quantity}`);
-
+              console.log(item.name)
               Get_Product(item.name)
-                .then((result) => {
-                  let data = Product(result);
-                  let sales_inventory = [
-                    [detailid, data[0].id, posid, item.quantity],
-                  ];
-
-                  InsertTable(
-                    "sales_inventory",
-                    sales_inventory,
-                    (err, result) => {
-                      if (err) console.error("Error: ", err);
-
-                      console.log(result);
-                    }
-                  );
-                })
-                .catch((error) => {
-                  return res.json({
-                    msg: error,
+              .then((result) => {
+                let data = Product(result);
+                let sales_inventory = [
+                  [detailid, data[0].id, posid, item.quantity],
+                ];
+                console.log("ProductID: ",data[0].id);
+                Get_ProductInventory(data[0].id)
+                .then((result)=> {
+                  let data = ProdcutInventory(result);
+                  let currentQuantity = data[0].quantity;
+                  let updatedQuantity = parseInt(currentQuantity) - parseInt(item.quantity)
+                  let updateData = [updatedQuantity, data[0].id]
+                  console.log("Data: ", updateData)
+                  let update_product_inventory = "update product_inventory set pi_quantity=? where pi_productid=?";
+                  UpdateMultiple(update_product_inventory, updateData,(err, result) => {
+                    if (err) console.error("Error: ", err);
+                    console.log(result);
                   });
+                  // if(item.quantity > currentQuantity){
+                  //   return res.json({
+                  //     msg: 'insufficient'
+                  //   });
+                  // }else{
+
+                  // }
+                })
+
+                InsertTable(
+                  "sales_inventory",
+                  sales_inventory,
+                  (err, result) => {
+                    if (err) console.error("Error: ", err);
+
+                    console.log(result);
+                  }
+                );
+
+              })
+              .catch((error) => {
+                return res.json({
+                  msg: error,
                 });
+              });
             });
+
             if (paymenttype == "UH POINTS") {
               CustomerCredit_Check(data.customerid)
                 .then((result) => {
@@ -111,10 +134,7 @@ router.post("/save", (req, res) => {
                   let customer_credit = [balance, data.customerid];
                   let update_customer_credit =
                     "update customer_credit set cc_balance=? where cc_customerid=?";
-                  UpdateMultiple(
-                    update_customer_credit,
-                    customer_credit,
-                    (err, result) => {
+                  UpdateMultiple(update_customer_credit, customer_credit,(err, result) => {
                       if (err) console.error("Error: ", err);
                       console.log(result);
 
@@ -314,6 +334,20 @@ router.post("/filter", (req, res) => {
 
 
 //#region Functions
+function Get_ProductInventory(id) {
+  return new Promise((resolve, reject) => {
+    let sql = "select * from product_inventory where pi_id=?";
+
+    SelectParameter(sql, [id], (err, result) => {
+      if (err) reject(err);
+
+      console.log(result);
+
+      resolve(result);
+    });
+  });
+}
+
 function Get_Product(name) {
   return new Promise((resolve, reject) => {
     let sql = "select * from product where p_description=?";
