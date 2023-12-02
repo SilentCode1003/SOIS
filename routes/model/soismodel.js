@@ -21,6 +21,11 @@ const {
   ItemsModel,
   UserLoginModel,
   SalesProductInventoryModel,
+  MasterRatingModel,
+  CustomerFeedbackModel,
+  CustomerFeedbackHistoryModel,
+  ItemDetailsModel,
+  ItemInfoModel,
 } = require("./model");
 //#region Masters & Transactions Models
 exports.MasterEmployee = (data) => {
@@ -558,6 +563,55 @@ exports.Items = (data) => {
     (key) => new ItemsModel(key["id"], key["detailid"], key["productid"])
   );
 };
+
+exports.MasterRating = (data) => {
+  let dataResult = [];
+
+  data.forEach((key, item) => {
+    dataResult.push({
+      id: key.mr_id,
+      description: key.mr_description,
+      status: key.mr_status,
+      createdby: key.mr_createdby,
+      createddate: key.mr_createddate,
+    });
+  });
+
+  return dataResult.map(
+    (key) =>
+      new MasterRatingModel(
+        key["id"],
+        key["description"],
+        key["status"],
+        key["createdby"],
+        key["createddate"]
+      )
+  );
+};
+
+exports.CustomerFeedback = (data) => {
+  let dataResult = [];
+
+  data.forEach((key, item) => {
+    dataResult.push({
+      id: key.cf_id,
+      orderid: key.cf_orderid,
+      ratingid: key.cf_ratingid,
+      message: key.cf_message,
+    });
+  });
+
+  return dataResult.map(
+    (key) =>
+      new CustomerFeedbackModel(
+        key["id"],
+        key["orderid"],
+        key["ratingid"],
+        key["message"]
+      )
+  );
+};
+
 //#endregion
 
 //#region Custom Models
@@ -607,6 +661,71 @@ exports.SalesProductInventory = (data) => {
         key["posid"],
         key["quantity"]
       )
+  );
+};
+
+exports.CustomerFeedbackHistory = (data) => {
+  let dataResult = [];
+
+  data.forEach((key, item) => {
+    dataResult.push({
+      orderid: key.co_id,
+      customerid: key.co_customerid,
+      date: key.co_date,
+      details: key.co_details,
+      total: key.co_total,
+      paymenttype: key.co_paymenttype,
+      status: key.co_status,
+      feedbackid: key.cf_id,
+      feedbackorderid: key.cf_orderid,
+      ratingid: key.cf_ratingid,
+      message: key.cf_message,
+    });
+  });
+
+  return dataResult.map(
+    (key) =>
+      new CustomerFeedbackHistoryModel(
+        key["orderid"],
+        key["customerid"],
+        key["date"],
+        key["details"],
+        key["total"],
+        key["paymenttype"],
+        key["status"],
+        key["feedbackid"],
+        key["feedbackorderid"],
+        key["ratingid"],
+        key["message"]
+      )
+  );
+};
+
+exports.ItemDetails = (data) => {
+  let dataResult = [];
+
+  data.forEach((key, item) => {
+    dataResult.push({
+      items: key.items,
+    });
+  });
+
+  return dataResult.map((key) => new ItemDetailsModel(key["items"]));
+};
+
+exports.ItemInfo = (data) => {
+  let dataResult = [];
+
+  data.forEach((key, item) => {
+    dataResult.push({
+      name: key.name,
+      price: key.price,
+      quantity: key.quantity,
+    });
+  });
+
+  return dataResult.map(
+    (key) => new ItemInfoModel(key["name"], key["price"], key["quantity"])
   );
 };
 //#endregion

@@ -265,6 +265,25 @@ class ItemsModel {
   }
 }
 
+class MasterRatingModel {
+  constructor(id, description, status, createdby, createddate) {
+    this.id = id;
+    this.description = description;
+    this.status = status;
+    this.createdby = createdby;
+    this.createddate = createddate;
+  }
+}
+
+class CustomerFeedbackModel {
+  constructor(id, orderid, ratingid, message) {
+    this.id = id;
+    this.orderid = orderid;
+    this.ratingid = ratingid;
+    this.message = message;
+  }
+}
+
 //#endregion
 
 //#region
@@ -283,6 +302,48 @@ class SalesProductInventoryModel {
     this.detailid = detailid;
     this.productname = productname;
     this.posid = posid;
+    this.quantity = quantity;
+  }
+}
+
+class CustomerFeedbackHistoryModel {
+  constructor(
+    orderid,
+    customerid,
+    date,
+    details,
+    total,
+    paymenttype,
+    status,
+    feedbackid,
+    feedbackorderid,
+    ratingid,
+    message
+  ) {
+    this.orderid = orderid;
+    this.customerid = customerid;
+    this.date = date;
+    this.details = details;
+    this.total = total;
+    this.paymenttype = paymenttype;
+    this.status = status;
+    this.feedbackid = feedbackid;
+    this.feedbackorderid = feedbackorderid;
+    this.ratingid = ratingid;
+    this.message = message;
+  }
+}
+
+class ItemDetailsModel {
+  constructor(items) {
+    this.items = items;
+  }
+}
+
+class ItemInfoModel {
+  constructor(name, price, quantity) {
+    this.name = name;
+    this.price = price;
     this.quantity = quantity;
   }
 }
@@ -311,4 +372,9 @@ module.exports = {
   ItemsModel,
   UserLoginModel,
   SalesProductInventoryModel,
+  MasterRatingModel,
+  CustomerFeedbackModel,
+  CustomerFeedbackHistoryModel,
+  ItemDetailsModel,
+  ItemInfoModel,
 };

@@ -25,7 +25,7 @@ crypt.Encrypter("root", (err, result) => {
   console.log(result);
 });
 
-// crypt.Decrypter("71379461e7d2efa3a03b3a5f337e7734", (err, result) => {
+// crypt.Decrypter("9de2c5798b1774b9a5ce9f66a705b03d", (err, result) => {
 //   if (err) console.error("Error: ", err);
 
 //   console.log(`${result}`);
@@ -532,6 +532,35 @@ exports.InsertTable = (tablename, data, callback) => {
       si_productid,
       si_posid,
       si_quantity) VALUES ?`;
+
+    this.Insert(sql, data, (err, result) => {
+      if (err) {
+        callback(err, null);
+      }
+      callback(null, result);
+    });
+  }
+
+  if (tablename == "master_rating") {
+    let sql = `INSERT INTO master_rating(
+      mr_description,
+      mr_status,
+      mr_createdby,
+      mr_createddate) VALUES ?`;
+
+    this.Insert(sql, data, (err, result) => {
+      if (err) {
+        callback(err, null);
+      }
+      callback(null, result);
+    });
+  }
+
+  if (tablename == "customer_feedback") {
+    let sql = `INSERT INTO customer_feedback(
+      cf_orderid,
+      cf_ratingid,
+      cf_message) VALUES ?`;
 
     this.Insert(sql, data, (err, result) => {
       if (err) {

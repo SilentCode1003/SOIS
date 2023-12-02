@@ -22,7 +22,7 @@
             console.log(status);
             $.ajax({
                 type: 'POST',
-                url: '/customerfeedback/status',
+                url: '/masterrating/status',
                 data: {
                     status: status,
                     id: id,
@@ -49,7 +49,7 @@
             console.log(status);
             $.ajax({
                 type: 'POST',
-                url: '/customerfeedback/status',
+                url: '/masterrating/status',
                 data: {
                     status: status,
                     id: id,
@@ -93,7 +93,7 @@
             else {
                 $.ajax({
                     type: 'POST',
-                    url: '/customerfeedback/edit',
+                    url: '/masterrating/edit',
                     data: {
                         id: id,
                         rating: rating,
@@ -131,7 +131,7 @@
                 console.log(name)
                 $.ajax({
                     type: 'POST',
-                    url: '/customerfeedback/save',
+                    url: '/masterrating/save',
                     data: {
                         name: name,
                     },
@@ -179,11 +179,11 @@
 
                     const tr = $('<tr>').append(
                         $('<td>', { text: item.id, 'data-label': 'ID', class: 'custom-mobile-align' }),
-                        $('<td>', { text: item.orderid, 'data-label': 'Access Type', class: 'custom-mobile-align no-wrap' }),
-                        $('<td>', { text: item.ratingid, 'data-label': 'Status', class: 'custom-mobile-align' }),
-                        $('<td>', { text: item.message, 'data-label': 'Created By', class: 'custom-mobile-align no-wrap' }),
-                        // $('<td>', { text: item.createddate, 'data-label': 'Created Date', class: 'custom-mobile-align no-wrap' }),
-                        // $('<td>', { html: action, 'data-label': 'Action', class: '' })
+                        $('<td>', { text: item.description, 'data-label': 'Access Type', class: 'custom-mobile-align no-wrap' }),
+                        $('<td>', { text: item.status, 'data-label': 'Status', class: 'custom-mobile-align' }),
+                        $('<td>', { text: item.createdby, 'data-label': 'Created By', class: 'custom-mobile-align no-wrap' }),
+                        $('<td>', { text: item.createddate, 'data-label': 'Created Date', class: 'custom-mobile-align no-wrap' }),
+                        $('<td>', { html: action, 'data-label': 'Action', class: '' })
                     );
 
                     tableBody.append(tr);
@@ -193,7 +193,7 @@
     
         function LoadTable() {
             $.ajax({
-                url: '/customerfeedback/load',
+                url: '/masterrating/load',
                 method: 'GET',
                 dataType: 'json',
                 success: function (data) {

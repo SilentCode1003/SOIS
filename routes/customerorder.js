@@ -15,6 +15,7 @@ const {
   CustomerOrder,
   CustomerCredit,
   Customer,
+  CustomerFeedbackHistory,
 } = require("./model/soismodel.js");
 const { Validator } = require("./controller/middleware.js");
 const {
@@ -155,15 +156,28 @@ router.post("/save", (req, res) => {
 router.post("/getorderhistory", (req, res) => {
   try {
     const { customerid } = req.body;
-    let sql =
-      "select * from customer_order where co_customerid=? order by co_id desc";
+    let sql = `select 
+      co_id,
+      co_customerid,
+      co_date,
+      co_details,
+      co_total,
+      co_paymenttype,
+      co_status,
+      cf_id,
+      cf_orderid,
+      cf_ratingid,
+      cf_message
+      from customer_order 
+      left join customer_feedback on co_id = cf_orderid
+      where co_customerid=? order by co_id desc`;
 
     SelectParameter(sql, [customerid], (err, result) => {
       if (err) console.error("Error: ", err);
 
       console.log(result);
 
-      let data = CustomerOrder(result);
+      let data = CustomerFeedbackHistory(result);
       res.json({
         msg: "success",
         data: data,

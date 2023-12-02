@@ -25,6 +25,9 @@ var productInventoryRouter = require("./routes/productinventory");
 var salesInventoryRouter = require("./routes/salesinventory");
 var inventoryHistoryRouter = require("./routes/inventoryhistory");
 var loginRouter = require("./routes/login");
+var customerfeedbackRouter = require("./routes/customerfeedback");
+var masterratingRouter = require("./routes/masterrating");
+var reportsRouter = require("./routes/reports");
 
 var app = express();
 
@@ -36,7 +39,9 @@ app.set("view engine", "ejs");
 
 app.use(logger("dev"));
 app.use(express.json());
-app.use(express.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
+app.use(
+  express.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 })
+);
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -60,6 +65,9 @@ app.use("/productinventory", productInventoryRouter);
 app.use("/salesinventory", salesInventoryRouter);
 app.use("/inventoryhistory", inventoryHistoryRouter);
 app.use("/login", loginRouter);
+app.use("/customerfeedback", customerfeedbackRouter);
+app.use("/reports", reportsRouter);
+app.use("/masterrating", masterratingRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
