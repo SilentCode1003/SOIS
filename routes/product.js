@@ -309,3 +309,37 @@ router.post("/addproduct", (req, res) => {
     });
   }
 });
+
+router.get("/getall", (req, res) => {
+  try {
+    let status = dictionary.GetValue(dictionary.ACT());
+    let sql = `select 
+    p_description as description,
+    p_price as price,
+    p_image as image,
+    pi_quantity as quantity
+    from product
+    inner join product_inventory on p_id = pi_productid`;
+    SelectParameter(sql, [status], (err, result) => {
+      if (err) console.log("Error: ", err);
+      if (result.length != 0) {
+        let data = ProductInfo(result);
+        // console.log(data);
+
+        res.json({
+          msg: "success",
+          data: data,
+        });
+      } else {
+        res.json({
+          msg: "success",
+          data: result,
+        });
+      }
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
