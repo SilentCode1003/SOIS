@@ -347,6 +347,15 @@ class ItemInfoModel {
     this.quantity = quantity;
   }
 }
+
+class ProductInfoModel {
+  constructor(description, price, image, quantity) {
+    this.description = description;
+    this.price = price;
+    this.image = image;
+    this.quantity = quantity;
+  }
+}
 //#endregion
 
 module.exports = {
@@ -377,4 +386,5 @@ module.exports = {
   CustomerFeedbackHistoryModel,
   ItemDetailsModel,
   ItemInfoModel,
+  ProductInfoModel,
 };
