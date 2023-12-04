@@ -11,7 +11,7 @@ const {
 
 const helper = require("./repository/customhelper.js");
 const dictionary = require("./repository/dictionary.js");
-const { Product } = require("./model/soismodel.js");
+const { Product, ProductInfo } = require("./model/soismodel.js");
 const { Validator } = require("./controller/middleware.js");
 
 /* GET home page. */
@@ -125,11 +125,18 @@ router.post("/status", (req, res) => {
 router.get("/getactive", (req, res) => {
   try {
     let status = dictionary.GetValue(dictionary.ACT());
-    let sql = `select * from product where p_status=?`;
+    let sql = `select 
+    p_description as description,
+    p_price as price,
+    p_image as image,
+    pi_quantity as quantity
+    from product
+    inner join product_inventory on p_id = pi_productid
+    where p_status=?`;
     SelectParameter(sql, [status], (err, result) => {
       if (err) console.log("Error: ", err);
       if (result.length != 0) {
-        let data = Product(result);
+        let data = ProductInfo(result);
         // console.log(data);
 
         res.json({

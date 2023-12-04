@@ -58,6 +58,7 @@ router.post("/status", (req, res) => {
     const { status, requestid, customerorderid } = req.body;
     let request_order = [];
     let customer_order = [];
+    let message = "";
 
     if (status == "CANCEL") {
       request_order = [disctionary.GetValue(disctionary.CND()), requestid];
@@ -68,6 +69,7 @@ router.post("/status", (req, res) => {
 
       RequestOrder_Update(request_order);
       CustomerOrder_Update(customer_order);
+      message = "ORDER CANCELLED";
     }
 
     if (status == "ACCEPT") {
@@ -79,6 +81,7 @@ router.post("/status", (req, res) => {
 
       RequestOrder_Update(request_order);
       CustomerOrder_Update(customer_order);
+      message = "ORDER ACCEPTED";
     }
 
     if (status == "DELIVERNOW") {
@@ -90,6 +93,8 @@ router.post("/status", (req, res) => {
 
       RequestOrder_Update(request_order);
       CustomerOrder_Update(customer_order);
+
+      message = "ON DELIVERY";
     }
 
     if (status == "DELIVERED") {
@@ -101,12 +106,15 @@ router.post("/status", (req, res) => {
 
       RequestOrder_Update(request_order);
       CustomerOrder_Update(customer_order);
+
+      message = "ORDER COMPLETED";
     }
 
     GetCustomerOrder(customerorderid, (err, result) => {
       if (err) console.error("Error: ", err);
       let data = CustomerOrder(result);
       let customerid = data[0].customerid;
+      let details = data[0].details;
       console.log(result);
       GetCustomer(customerid, (err, result) => {
         if (err) console.error(err);
@@ -114,7 +122,11 @@ router.post("/status", (req, res) => {
 
         console.log(result);
 
-        SendEmail(data[0].email, `Urban Hideout ${customerid}`, status);
+        SendEmail(
+          data[0].email,
+          `Urban Hideout - OR#: ${customerorderid}`,
+          helper.EmailStatus(details, message)
+        );
       });
     });
 

@@ -26,6 +26,7 @@ const {
   CustomerFeedbackHistoryModel,
   ItemDetailsModel,
   ItemInfoModel,
+  ProductInfoModel,
 } = require("./model");
 //#region Masters & Transactions Models
 exports.MasterEmployee = (data) => {
@@ -726,6 +727,29 @@ exports.ItemInfo = (data) => {
 
   return dataResult.map(
     (key) => new ItemInfoModel(key["name"], key["price"], key["quantity"])
+  );
+};
+
+exports.ProductInfo = (data) => {
+  let dataResult = [];
+
+  data.forEach((key, item) => {
+    dataResult.push({
+      description: key.description,
+      price: key.price,
+      image: key.image,
+      quantity: key.quantity,
+    });
+  });
+
+  return dataResult.map(
+    (key) =>
+      new ProductInfoModel(
+        key["description"],
+        key["price"],
+        key["image"],
+        key["quantity"]
+      )
   );
 };
 //#endregion
