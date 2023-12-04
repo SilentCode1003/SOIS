@@ -771,9 +771,9 @@ exports.EmailContent = (
     details.forEach((key, item) => {
       console.log("Items", key);
       let quantity = parseFloat(key.quantity);
-      let price = parseFloat(key.price);
+      let price = parseFloat(key.price) / quantity;
       let subtotal = quantity * price;
-
+1
       itemdetails += `        <tr>
             <td>${key.name} x ${key.quantity} </td>
             <td class="alignright">${this.formatCurrency(price)}</td>
