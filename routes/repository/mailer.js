@@ -8,24 +8,24 @@ Decrypter("334381f4aa236941a6d80e6b57eee75d", (err, encryted) => {
   password = encryted;
 });
 
-exports.SendEmail = (to, subject, text) => {
-  // Create a Nodemailer transporter with custom SMTP settings
-  const transporter = nodemailer.createTransport({
-    host: "mail.5lsolutions.com", // Your mail server hostname or IP address
-    port: 587, // Your mail server port (587 is the default for secure SMTP)
-    secure: false, // Set to true if your server uses SSL/TLS, otherwise false
-    auth: {
-      user: "5lpos@5lsolutions.com",
-      pass: password,
-    },
-  });
+// Create a Nodemailer transporter with custom SMTP settings
+const transporter = nodemailer.createTransport({
+  host: "mail.5lsolutions.com", // Your mail server hostname or IP address
+  port: 587, // Your mail server port (587 is the default for secure SMTP)
+  secure: false, // Set to true if your server uses SSL/TLS, otherwise false
+  auth: {
+    user: "5lpos@5lsolutions.com",
+    pass: password,
+  },
+});
 
+exports.SendEmail = (to, subject, text) => {
   // Email content
   const mailOptions = {
     from: "5lpos@5lsolutions.com",
     to: to,
     subject: subject,
-    text: text,
+    html: text,
   };
 
   // Send the email

@@ -74,17 +74,29 @@ router.post("/save", (req, res) => {
       ],
     ];
 
-    GetCustomer(customerid, (err, result) => {
-      if (err) console.error(err);
-      let data = Customer(result);
-
-      SendEmail(data[0].email, `Urban Hideout ${customerid}`, "Order Placed");
-    });
-
     InsertTable("customer_order", customer_order, (err, result) => {
       if (err) console.error("Error: ", err);
 
       console.log(result);
+      let customer_order_id = result[0].id;
+
+      GetCustomer(customerid, (err, result) => {
+        if (err) console.error(err);
+        let data = Customer(result);
+        let fullname = `${data[0].firstname} ${data[0].middlename} ${data[0].lastname}`;
+
+        SendEmail(
+          data[0].email,
+          `Urban Hideout - OR#: ${customer_order_id}`,
+          helper.EmailContent(
+            details,
+            customer_order_id,
+            fullname,
+            paymenttype,
+            data[0].address
+          )
+        );
+      });
 
       let request_order = [[result[0].id, helper.GetCurrentDatetime(), status]];
       InsertTable("request_order", request_order, (err, result) => {
