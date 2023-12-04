@@ -868,7 +868,7 @@ exports.EmailStatus = (data, status) => {
     details.forEach((key, item) => {
       console.log("Items", key);
       let quantity = parseFloat(key.quantity);
-      let price = parseFloat(key.price);
+      let price = parseFloat(key.price) / quantity;
       let subtotal = quantity * price;
 
       itemdetails += `        <tr>
