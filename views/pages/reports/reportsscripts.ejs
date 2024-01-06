@@ -1,13 +1,27 @@
 <script>
   $(document).ready(function () {
     $(document).on("click", "#export", function () {
-      console.log("clicked");
-      $.ajax({
-        type: "get",
-        url: "/reports/export",
-        success: function (result) {},
-        error: function (error) {},
-      });
+      let daterange = $("#dateRange").val();
+      let posid = $("#posid").val();
+      console.log(daterange);
+
+      if (daterange === "" && posid === "") {
+        warning("Empty Field", "Date Range or POS ID cannot be empty!");
+      } else {
+        $.ajax({
+          type: "post",
+          url: "/reports/pdf",
+          data: {
+            daterange: daterange,
+            posid: posid,
+          },
+          success: function (result) {
+            success("Success", "PDF generate successfully!");
+            window.open(`/reports/generatepdf`, "_blank");
+          },
+          error: function (error) {},
+        });
+      }
     });
   });
 </script>

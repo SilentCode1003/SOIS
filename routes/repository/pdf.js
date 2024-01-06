@@ -1,15 +1,16 @@
 const PdfMake = require("pdfmake");
 const fs = require("fs");
-const { GetCurrentDate } = require("./customhelper");
+const { GetCurrentDate, formatCurrency } = require("./customhelper");
 const path = require("path");
+require("dotenv").config();
 
 const fontPath = path.join(
   __dirname,
   "/fonts/Roboto/roboto-regular-webfont.ttf"
 );
 
-exports.Generate = (callback) => {
-  try {
+exports.Generate = (items) => {
+  return new Promise((resolve, reject) => {
     var fonts = {
       Roboto: {
         normal: fontPath,
@@ -26,6 +27,46 @@ exports.Generate = (callback) => {
     // data["item"] = "TEST";
 
     const printer = new PdfMake(fonts);
+
+    let itemdetails = [];
+    let totalsales = 0;
+
+    //Column Header
+    itemdetails.push([
+      { text: "Pos", border: [false, true, false, true] },
+      { text: "Item", border: [false, true, false, true] },
+      { text: "Price", border: [false, true, false, true] },
+      {
+        text: "Quantity",
+        alignment: "center",
+        border: [false, true, false, true],
+      },
+      { text: "Total", border: [false, true, false, true] },
+    ]);
+
+    items.forEach((key, index) => {
+      let total = parseFloat(key.price) * parseFloat(key.quantity);
+      totalsales += total;
+      itemdetails.push([
+        { text: "1", border: [false, true, false, true] },
+        { text: key.name, border: [false, true, false, true] },
+        {
+          text: `Php ${formatCurrency(key.price)}`,
+          border: [false, true, false, true],
+        },
+        {
+          text: key.quantity,
+          alignment: "center",
+          border: [false, true, false, true],
+        },
+        {
+          text: `Php ${formatCurrency(total)}`,
+          border: [false, true, false, true],
+        },
+      ]);
+    });
+
+    // console.log("Items Details: ", itemdetails);
 
     var reportContent = {
       pageSize: "A4",
@@ -45,9 +86,9 @@ exports.Generate = (callback) => {
                   style: "header",
                 },
               ],
-              [{ text: "Orencio Kitchenmate", style: "subheader" }],
-              [{ text: "Poblacion 1, Hamtic, Antique", style: "subheader" }],
-              [{ text: "VAT REG: 002-125-548-546", style: "subheader" }],
+              [{ text: process.env._COMPANY_NAME, style: "subheader" }],
+              [{ text: process.env._COMPANY_ADDRESS, style: "subheader" }],
+              [{ text: process.env._TIN, style: "subheader" }],
             ],
           },
         }, //Header Company Details like name, address, vat reg
@@ -103,30 +144,7 @@ exports.Generate = (callback) => {
           fontSize: 8,
           table: {
             widths: ["5%", "56%", "13%", "13%", "13%"],
-            body: [
-              [
-                { text: "Pos", border: [false, true, false, true] },
-                { text: "Item", border: [false, true, false, true] },
-                { text: "Price", border: [false, true, false, true] },
-                {
-                  text: "Quantity",
-                  alignment: "center",
-                  border: [false, true, false, true],
-                },
-                { text: "Total", border: [false, true, false, true] },
-              ],
-              [
-                { text: "1", border: [false, true, false, true] },
-                { text: "Sisig Classic", border: [false, true, false, true] },
-                { text: "Php 79.00", border: [false, true, false, true] },
-                {
-                  text: "20",
-                  alignment: "center",
-                  border: [false, true, false, true],
-                },
-                { text: "Php 1,580.00", border: [false, true, false, true] },
-              ],
-            ],
+            body: itemdetails,
           },
         },
         {
@@ -143,7 +161,10 @@ exports.Generate = (callback) => {
                   margin: [0, 5, 0, 0],
                   style: "subheader",
                 },
-                { text: "Php 1,580.00", margin: [0, 5, 0, 0] },
+                {
+                  text: `Php ${formatCurrency(totalsales)}`,
+                  margin: [0, 5, 0, 0],
+                },
               ],
               // [{ text: "Tax %:", alignment: "right" }, "$0.00"],
             ],
@@ -163,7 +184,7 @@ exports.Generate = (callback) => {
                   style: "subheader",
                 },
                 {
-                  text: "Php 1,580.00",
+                  text: `Php ${formatCurrency(totalsales)}`,
                   border: [false, false, false, true],
                   margin: [0, 0, 0, 10],
                 },
@@ -186,29 +207,19 @@ exports.Generate = (callback) => {
     };
     var options = {};
 
-    const pdfPath = path.join(
-      __dirname,
-      `/reports/Sales_Report_${GetCurrentDate()}.pdf`
-    );
+    // const pdfPath = path.join(
+    //   __dirname,
+    //   `/reports/Sales_Report_${GetCurrentDate()}.pdf`
+    // );
 
-    // create invoice and save it to invoices_pdf folder
-    // const printer = new PdfMake();
     var pdfDoc = printer.createPdfKitDocument(reportContent);
+    // pdfDoc.pipe(fs.createWriteStream(pdfPath));
 
     const chunks = [];
     pdfDoc.on("data", (chunk) => chunks.push(chunk));
-    pdfDoc.on("end", () => callback(null, Buffer.concat(chunks)));
-    pdfDoc.on("error", (error) => callback(error, null));
+    pdfDoc.on("end", () => resolve(Buffer.concat(chunks)));
+    pdfDoc.on("error", (error) => reject(error));
 
     pdfDoc.end();
-
-    // pdfDoc.pipe(fs.createWriteStream(pdfPath));
-    // pdfDoc.end();
-
-    // callback(null, pdfPath);
-  } catch (error) {
-    callback(error, null);
-
-    console.log(error);
-  }
+  });
 };
