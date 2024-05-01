@@ -9,6 +9,7 @@ const {
   Select,
   SelectResult,
   UpdateMultiple,
+  SelectParameter,
 } = require("./repository/soisdb.js");
 
 const helper = require("./repository/customhelper.js");
@@ -33,12 +34,15 @@ module.exports = router;
 
 router.get("/load", (req, res) => {
   try {
-    let sql = `select * from master_position`;
+    let datefrom = helper.GetCurrentDate();
+    let dateto = helper.GetCurrentDate();
+    let sql = `select * from sales_detail
+    where sd_date between '${datefrom} 00:00' and '${dateto} 23:59'`;
 
     Select(sql, (err, result) => {
       if (err) console.log("Error: ", err);
       if (result.length != 0) {
-        let data = MasterPosition(result);
+        let data = SalesDetail(result);
         console.log(data);
 
         res.json({
@@ -168,68 +172,111 @@ router.post("/edit", (req, res) => {
   }
 });
 
-router.get("/pdf", (req, res) => {
+let pdfBuffer = "";
+router.post("/pdf", (req, res) => {
   try {
-    let sql = `select * from sales_detail
-    where sd_date between '2023-11-01 00:00' and '2023-11-30 23:59'`;
+    const { daterange, posid } = req.body;
 
-    Select(sql, (err, result) => {
+    console.log(req.body);
+    let dates = daterange.split(" to ");
+    let datefrom = dates[0] + " 00:00";
+    let dateto = dates[1] + " 23:59";
+    // let datefrom = "2024-01-02";
+    // let dateto = "2024-01-02";
+
+    // console.log(datefrom, dateto);
+
+    let sql = `select * from sales_detail where sd_date between ? and ? and sd_posid=?`;
+    let command = helper.SelectStatement(sql, [datefrom, dateto, posid]);
+
+    // console.log(command);
+
+    Select(command, (err, result) => {
       if (err) console.error("Error: ", err);
-      let sales_details = SalesDetail(result);
-      let data = [];
-      let datalength = sales_details.length;
-      let couter = 0;
-      sales_details.forEach((details) => {
-        couter += 1;
-        let items = ItemDetails(JSON.parse(details.details));
-        items.forEach((item) => {
-          let salesifo = ItemInfo(item.items);
 
-          salesifo.forEach((info) => {
-            console.log(info.name);
-            data.push(new ItemInfoModel(info.name, info.price, info.quantity));
+      if (result.length != 0) {
+        let sales_details = SalesDetail(result);
+        let data = [];
+        let datalength = sales_details.length;
+        let couter = 0;
+        sales_details.forEach((details) => {
+          couter += 1;
+          let items = ItemDetails(JSON.parse(details.details));
+          items.forEach((item) => {
+            let salesifo = ItemInfo(item.items);
 
-            if (couter == datalength) {
-              let data_summary = ItemInfo(data);
+            salesifo.forEach((info) => {
+              // console.log(info.name);
+              data.push(
+                new ItemInfoModel(info.name, info.price, info.quantity)
+              );
 
-              let summary = [];
+              if (couter == datalength) {
+                let data_summary = ItemInfo(data);
 
-              data_summary.forEach((product) => {
-                let index = summary.findIndex((i) => i.name === product.name);
-                if (index !== -1) {
-                  summary[index].quantity =
-                    summary[index].quantity + product.quantity;
-                } else {
-                  summary.push({
-                    name: product.name,
-                    price: product.price,
-                    quantity: product.quantity,
-                  });
-                }
-                console.log(summary);
-              });
+                let summary = [];
 
-              
-              console.log("Complete!");
-            }
+                let summary_length = 0;
+                data_summary.forEach((product) => {
+                  summary_length += 1;
+                  let index = summary.findIndex((i) => i.name === product.name);
+                  if (index !== -1) {
+                    summary[index].quantity =
+                      summary[index].quantity + product.quantity;
+                  } else {
+                    summary.push({
+                      name: product.name,
+                      price: product.price,
+                      quantity: product.quantity,
+                    });
+                  }
+
+                  if (summary_length == data_summary.length) {
+                    Generate(summary)
+                      .then((result) => {
+                        // console.log(result);
+
+                        pdfBuffer = result;
+
+                        res.json({
+                          msg: "success",
+                        });
+                      })
+                      .catch((error) => {
+                        return res.json({
+                          msg: error,
+                        });
+                      });
+                  }
+                });
+
+                // console.log("Complete!");
+              }
+            });
           });
         });
-      });
+      } else {
+        return res.json({
+          msg: "No Data",
+        });
+      }
     });
-    // Generate((err, result) => {
-    //   if (err) console.error("Error: ", err);
-    //   console.log(result);
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
 
-    //   res.setHeader("Content-Type", "application/pdf");
-    //   res.setHeader(
-    //     "Content-Disposition",
-    //     `attachment; filename=Sales_Report_${helper.GetCurrentDate()}.pdf`
-    //   );
-    //   res.send(result);
+router.get("/generatepdf", (req, res) => {
+  try {
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=Sales_Report.pdf"
+    );
 
-    //   // const pdfStream = fs.createReadStream(result);
-    //   // pdfStream.pipe(res);
-    // });
+    res.send(pdfBuffer);
   } catch (error) {
     res.json({
       msg: error,
