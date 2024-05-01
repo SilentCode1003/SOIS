@@ -302,8 +302,8 @@ router.post("/filter", (req, res) => {
   try {
     const { daterange, posid } = req.body;
     let dates = daterange.split(" to ");
-    let datefrom = dates[0];
-    let dateto = dates[1];
+    let datefrom = dates[0] + ' 00:00:00';
+    let dateto = dates[1] + '23:59:59';
     let data = [];
     let sql = "select * from sales_detail where";
 
