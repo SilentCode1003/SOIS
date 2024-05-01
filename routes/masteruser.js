@@ -16,6 +16,17 @@ const { Validator } = require("./controller/middleware.js");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
+  // req.session.employeeid = '999999';
+  // req.session.fullname = 'DEV42';
+  // req.session.accesstype = 'Administrator';
+  // req.session.position = 'CREATOR';
+
+  // res.render("masteruser", {
+  //   employeeid: req.session.employeeid,
+  //   fullname: req.session.fullname,
+  //   accesstype: req.session.accesstype,
+  //   position: req.session.position,
+  // });
   Validator(req, res, "masteruser");
 });
 
